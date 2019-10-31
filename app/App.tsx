@@ -1,6 +1,7 @@
+import React from 'react'
 import { createAppContainer } from 'react-navigation'
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
-import Ionicons from 'react-native-vector-icons/Ionicons'
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import { createStackNavigator } from 'react-navigation-stack'
 import Chat from './src/Chat'
 import Matches from './src/Matches'
@@ -26,9 +27,42 @@ const ProfileStack = createStackNavigator({
 
 const App = createMaterialBottomTabNavigator(
   {
-    Chat: { screen: ChatStack },
-    Matches: { screen: MatchesStack },
-    Profile: { screen: ProfileStack }
+    Chat: {
+      screen: ChatStack,
+      navigationOptions: {
+        tabBarIcon: props => (
+          <MaterialIcon
+            name="chat-bubble"
+            size={24}
+            color={props.focused ? '#1b1b1b' : '#9b9b9b'}
+          />
+        )
+      }
+    },
+    Matches: {
+      screen: MatchesStack,
+      navigationOptions: {
+        tabBarIcon: props => (
+          <MaterialIcon
+            name="people"
+            size={24}
+            color={props.focused ? '#1b1b1b' : '#9b9b9b'}
+          />
+        )
+      }
+    },
+    Profile: {
+      screen: ProfileStack,
+      navigationOptions: {
+        tabBarIcon: props => (
+          <MaterialIcon
+            name="person"
+            size={24}
+            color={props.focused ? '#1b1b1b' : '#9b9b9b'}
+          />
+        )
+      }
+    }
   },
   {
     barStyle: {
