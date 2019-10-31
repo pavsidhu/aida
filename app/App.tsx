@@ -28,7 +28,7 @@ const MatchesStack = createStackNavigator(
     Matches: {
       screen: Matches,
       navigationOptions: {
-        headerTitle: 'Your Matches',
+        headerTitle: 'My Matches',
         headerStyle: { elevation: 0 },
         headerTitleStyle: {
           fontSize: 18
@@ -44,7 +44,7 @@ const ProfileStack = createStackNavigator(
     Profile: {
       screen: Profile,
       navigationOptions: {
-        headerTitle: 'Your Profile',
+        headerTitle: 'My Profile',
         headerStyle: { elevation: 0 },
         headerTitleStyle: {
           fontSize: 18
@@ -81,7 +81,7 @@ const App = createMaterialBottomTabNavigator(
         )
       }
     },
-    Profile: {
+    'My Profile': {
       screen: ProfileStack,
       navigationOptions: {
         tabBarIcon: props => (

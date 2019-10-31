@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components/native'
-import { View } from 'react-native'
 import IMatch from './IMatch'
 
 const Container = styled.View`
