@@ -6,7 +6,9 @@ import { createStackNavigator } from 'react-navigation-stack'
 import Chat from './src/Chat'
 import Matches from './src/Matches'
 import Profile from './src/Profile'
+import Settings from './src/Settings'
 import { View } from 'react-native'
+import { TouchableRipple } from 'react-native-paper'
 
 const ChatStack = createStackNavigator(
   {
@@ -43,8 +45,28 @@ const ProfileStack = createStackNavigator(
   {
     Profile: {
       screen: Profile,
-      navigationOptions: {
+      navigationOptions: ({ navigation }) => ({
         headerTitle: 'My Profile',
+        headerStyle: { elevation: 0 },
+        headerTitleStyle: {
+          fontSize: 18
+        },
+        headerRight: () => (
+          <TouchableRipple
+            onPress={() => {
+              navigation.navigate('Settings')
+            }}
+            style={{ padding: 16 }}
+          >
+            <MaterialIcon name="settings" size={24} color="#1b1b1b" />
+          </TouchableRipple>
+        )
+      })
+    },
+    Settings: {
+      screen: Settings,
+      navigationOptions: {
+        headerTitle: 'Settings',
         headerStyle: { elevation: 0 },
         headerTitleStyle: {
           fontSize: 18
