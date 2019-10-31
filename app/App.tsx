@@ -6,24 +6,54 @@ import { createStackNavigator } from 'react-navigation-stack'
 import Chat from './src/Chat'
 import Matches from './src/Matches'
 import Profile from './src/Profile'
+import { View } from 'react-native'
 
-const ChatStack = createStackNavigator({
-  Chat: {
-    screen: Chat,
-    navigationOptions: { header: null }
-  }
-})
-const MatchesStack = createStackNavigator({
-  Matches: {
-    screen: Matches,
-    navigationOptions: { header: null }
-  }
-})
-const ProfileStack = createStackNavigator({
-  Profile: {
-    screen: Profile
-  }
-})
+const ChatStack = createStackNavigator(
+  {
+    Chat: {
+      screen: Chat,
+      navigationOptions: {
+        headerTitle: 'Chat',
+        headerStyle: { elevation: 0 },
+        headerTitleStyle: {
+          fontSize: 18
+        }
+      }
+    }
+  },
+  { headerLayoutPreset: 'center' }
+)
+const MatchesStack = createStackNavigator(
+  {
+    Matches: {
+      screen: Matches,
+      navigationOptions: {
+        headerTitle: 'Your Matches',
+        headerStyle: { elevation: 0 },
+        headerTitleStyle: {
+          fontSize: 18
+        }
+      }
+    }
+  },
+  { headerLayoutPreset: 'center' }
+)
+
+const ProfileStack = createStackNavigator(
+  {
+    Profile: {
+      screen: Profile,
+      navigationOptions: {
+        headerTitle: 'Your Profile',
+        headerStyle: { elevation: 0 },
+        headerTitleStyle: {
+          fontSize: 18
+        }
+      }
+    }
+  },
+  { headerLayoutPreset: 'center' }
+)
 
 const App = createMaterialBottomTabNavigator(
   {
@@ -66,7 +96,7 @@ const App = createMaterialBottomTabNavigator(
   },
   {
     barStyle: {
-      backgroundColor: '#fefefe'
+      backgroundColor: '#eeeeee'
     }
   }
 )
