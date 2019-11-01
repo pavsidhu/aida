@@ -3,11 +3,10 @@ import { createAppContainer } from 'react-navigation'
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import { createStackNavigator } from 'react-navigation-stack'
-import Chat from './src/Chat'
-import Matches from './src/Matches'
-import Profile from './src/Profile'
-import Settings from './src/Settings'
-import { View } from 'react-native'
+import Chat from './Chat'
+import Matches from './Matches'
+import Profile from './Profile'
+import Settings from './Profile/Settings'
 import { TouchableRipple } from 'react-native-paper'
 
 const ChatStack = createStackNavigator(
@@ -77,7 +76,7 @@ const ProfileStack = createStackNavigator(
   { headerLayoutPreset: 'center' }
 )
 
-const App = createMaterialBottomTabNavigator(
+const Home = createMaterialBottomTabNavigator(
   {
     Chat: {
       screen: ChatStack,
@@ -123,4 +122,4 @@ const App = createMaterialBottomTabNavigator(
   }
 )
 
-export default createAppContainer(App)
+export default createAppContainer(Home)
