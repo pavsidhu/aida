@@ -9,10 +9,21 @@ const Container = styled.SafeAreaView`
   background: #fefefe;
 `
 
+const NoMatchesContainer = styled.SafeAreaView`
+  flex: 1;
+  background: #fefefe;
+  justify-content: center;
+  align-items: center;
+`
+
+const NoMatchesText = styled.Text`
+  font-size: 16px;
+`
+
 export default function Matches() {
   const matchList: IMatch[] = []
 
-  return (
+  return matchList.length > 0 ? (
     <Container>
       <ScrollView>
         {matchList.map(match => (
@@ -25,5 +36,11 @@ export default function Matches() {
         ))}
       </ScrollView>
     </Container>
+  ) : (
+    <NoMatchesContainer>
+      <NoMatchesText>
+        When Aida finds you matches, they will appear here!
+      </NoMatchesText>
+    </NoMatchesContainer>
   )
 }
