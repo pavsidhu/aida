@@ -85,7 +85,7 @@ const Home = createMaterialBottomTabNavigator(
           <MaterialIcon
             name="chat-bubble"
             size={24}
-            color={props.focused ? '#1b1b1b' : '#9b9b9b'}
+            color={props.focused ? '#5C30D3' : '#9b9b9b'}
           />
         )
       }
@@ -97,7 +97,7 @@ const Home = createMaterialBottomTabNavigator(
           <MaterialIcon
             name="people"
             size={24}
-            color={props.focused ? '#1b1b1b' : '#9b9b9b'}
+            color={props.focused ? '#5C30D3' : '#9b9b9b'}
           />
         )
       }
@@ -109,15 +109,16 @@ const Home = createMaterialBottomTabNavigator(
           <MaterialIcon
             name="person"
             size={24}
-            color={props.focused ? '#1b1b1b' : '#9b9b9b'}
+            color={props.focused ? '#5C30D3' : '#9b9b9b'}
           />
         )
       }
     }
   },
   {
+    activeColor: '#5C30D3',
     barStyle: {
-      backgroundColor: '#eeeeee'
+      backgroundColor: '#fefefe'
     }
   }
 )
