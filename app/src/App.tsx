@@ -1,23 +1,21 @@
 import React, { useEffect, useState } from 'react'
-import Home from './Home'
-import Welcome from './Welcome'
-import { createStackNavigator } from 'react-navigation-stack'
 import {
   createAppContainer,
   NavigationScreenProp,
   NavigationState,
-  NavigationActions,
-  StackActions
+  StackActions,
+  createSwitchNavigator
 } from 'react-navigation'
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth'
+import Home from './Home'
+import SignIn from './SignIn'
+import Onboarding from './Onboarding'
 
-const Navigator = createStackNavigator(
-  {
-    Home: { screen: Home },
-    Welcome: { screen: Welcome }
-  },
-  { headerMode: 'none' }
-)
+const Navigator = createSwitchNavigator({
+  Home: { screen: Home },
+  SignIn: { screen: SignIn },
+  Onboarding: { screen: Onboarding }
+})
 
 interface Props {
   navigation: NavigationScreenProp<NavigationState>
@@ -26,23 +24,34 @@ interface Props {
 function App(props: Props) {
   const [initialised, setInitialised] = useState(false)
   const [user, setUser] = useState<FirebaseAuthTypes.User>()
+  const [isNewUser, setIsNewUser] = useState<boolean>()
 
   useEffect(
     () =>
       auth().onAuthStateChanged(user => {
         setInitialised(true)
-        user ? setUser(user) : setUser(undefined)
+        if (user) {
+          const { creationTime, lastSignInTime } = user.metadata
+          setIsNewUser(creationTime === lastSignInTime)
+        }
+        setUser(user ? user : undefined)
       }),
     []
   )
 
   useEffect(() => {
-    initialised && user
-      ? props.navigation.navigate({
-          routeName: 'Home',
-          action: StackActions.popToTop()
-        })
-      : props.navigation.navigate('SignIn')
+    if (!initialised) return
+
+    if (user) {
+      isNewUser
+        ? props.navigation.navigate('Onboarding')
+        : props.navigation.navigate({
+            routeName: 'Home',
+            action: StackActions.popToTop()
+          })
+    } else {
+      props.navigation.navigate('SignIn')
+    }
   }, [user, initialised])
 
   return initialised ? <Navigator navigation={props.navigation} /> : null
