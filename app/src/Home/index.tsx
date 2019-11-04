@@ -1,5 +1,4 @@
 import React from 'react'
-import { createAppContainer } from 'react-navigation'
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import { createStackNavigator } from 'react-navigation-stack'
@@ -123,4 +122,4 @@ const Home = createMaterialBottomTabNavigator(
   }
 )
 
-export default createAppContainer(Home)
+export default Home

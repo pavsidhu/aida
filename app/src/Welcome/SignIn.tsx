@@ -70,6 +70,8 @@ export default function SignIn() {
 
     const { confirm } = await auth().signInWithPhoneNumber(phoneNumber)
 
+    setIsVerifying(true)
+
     yield
 
     confirm(verificationCode)
