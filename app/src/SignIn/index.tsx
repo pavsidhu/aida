@@ -36,7 +36,7 @@ const Subtitle = styled.Text`
   text-align: center;
 `
 
-const PhoneInput = styled.TextInput`
+const Input = styled.TextInput`
   background: #fefefe;
   margin-bottom: 16px;
   padding: 16px;
@@ -63,6 +63,7 @@ const ButtonText = styled.Text`
 export default function SignIn() {
   const [phoneNumber, setPhoneNumber] = useState('')
   const [verificationCode, setVerificationCode] = useState('')
+  const [isVerifying, setIsVerifying] = useState(false)
 
   async function* handleSignIn() {
     if (!phoneNumber) return
@@ -90,29 +91,35 @@ export default function SignIn() {
           Your digital assistant for {'\n'} meeting new people
         </Subtitle>
       </TitleSection>
-      <FormSection>
-        <PhoneInput
-          placeholder="Phone Number"
-          placeholderTextColor="#5D5D5D"
-          value={phoneNumber}
-          onChangeText={text => setPhoneNumber(text)}
-        />
 
-        <Button onPress={() => signInHandler.next()}>
-          <ButtonText>Sign In</ButtonText>
-        </Button>
+      {isVerifying ? (
+        <FormSection>
+          <Input
+            placeholder="Verification Code"
+            placeholderTextColor="#5D5D5D"
+            value={verificationCode}
+            onChangeText={text => setVerificationCode(text)}
+            onSubmitEditing={() => signInHandler.next()}
+          />
+          <Button onPress={() => signInHandler.next()}>
+            <ButtonText>Verify</ButtonText>
+          </Button>
+        </FormSection>
+      ) : (
+        <FormSection>
+          <Input
+            placeholder="Phone Number"
+            placeholderTextColor="#5D5D5D"
+            value={phoneNumber}
+            onChangeText={text => setPhoneNumber(text)}
+            onSubmitEditing={() => signInHandler.next()}
+          />
 
-        {/* 
-        <TextInput
-          mode="outlined"
-          label="Verification Code"
-          value={verificationCode}
-          onChangeText={text => setVerificationCode(text)}
-        />
-        <SignInButton mode="contained" onPress={() => signInHandler.next()}>
-          Verify
-        </SignInButton> */}
-      </FormSection>
+          <Button onPress={() => signInHandler.next()}>
+            <ButtonText>Send Verification Code</ButtonText>
+          </Button>
+        </FormSection>
+      )}
     </Container>
   )
 }
