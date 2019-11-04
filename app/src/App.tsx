@@ -5,16 +5,14 @@ import SignIn from './SignIn'
 
 export default function App() {
   const [initilizing, setInitilizing] = useState(true)
-  const [user, setUser] = useState<FirebaseAuthTypes.User>()
+  const [user, setUser] = useState<FirebaseAuthTypes.User | null>()
 
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(user => {
-      if (user) setUser(user)
-      if (initilizing) setInitilizing(false)
-    })
+  function handleAuthStateChanged(user: FirebaseAuthTypes.User | null) {
+    if (initilizing) setInitilizing(false)
+    setUser(user)
+  }
 
-    return subscriber
-  }, [])
+  useEffect(() => auth().onAuthStateChanged(handleAuthStateChanged), [])
 
   if (initilizing) return null
 
