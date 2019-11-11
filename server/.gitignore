@@ -1,0 +1,17 @@
+# Python Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Pip logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Virtual Environment
+venv
+
+# macOS
+.DS_Store
+
+# VSCode
+.vscode
