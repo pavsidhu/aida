@@ -7,6 +7,7 @@ import LinearGradient from 'react-native-linear-gradient'
 const Container = styled(LinearGradient)`
   flex: 1;
   background: #fefefe;
+  padding: 24px;
 `
 
 const TitleSection = styled.View`
@@ -14,12 +15,6 @@ const TitleSection = styled.View`
   padding: 24px;
   justify-content: center;
   align-items: center;
-`
-
-const FormSection = styled.View`
-  flex: 1;
-  padding: 24px;
-  justify-content: center;
 `
 
 const Title = styled.Text`
@@ -95,7 +90,7 @@ export default function SignIn() {
       </TitleSection>
 
       {isVerifying ? (
-        <FormSection>
+        <>
           <Input
             placeholder="Verification Code"
             placeholderTextColor="#5D5D5D"
@@ -106,9 +101,9 @@ export default function SignIn() {
           <Button onPress={() => signInHandler.next()}>
             <ButtonText>Verify</ButtonText>
           </Button>
-        </FormSection>
+        </>
       ) : (
-        <FormSection>
+        <>
           <Input
             placeholder="Phone Number"
             placeholderTextColor="#5D5D5D"
@@ -120,7 +115,7 @@ export default function SignIn() {
           <Button onPress={() => signInHandler.next()}>
             <ButtonText>Send Verification Code</ButtonText>
           </Button>
-        </FormSection>
+        </>
       )}
     </Container>
   )
