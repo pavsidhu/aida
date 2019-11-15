@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
-import { StatusBar } from 'react-native'
+import React from 'react'
+import { NativeModules, StatusBar } from 'react-native'
 import styled from 'styled-components/native'
 import auth from '@react-native-firebase/auth'
 import LinearGradient from 'react-native-linear-gradient'
+import config from '../config'
+
+const { RNTwitterSignIn } = NativeModules
 
 const Container = styled(LinearGradient)`
   flex: 1;
@@ -31,16 +34,6 @@ const Subtitle = styled.Text`
   text-align: center;
 `
 
-const Input = styled.TextInput`
-  background: #fefefe;
-  margin-bottom: 16px;
-  padding: 16px;
-  align-items: center;
-  font-size: 16px;
-  border-radius: 8px;
-  color: #1b1b1b;
-`
-
 const Button = styled.TouchableOpacity`
   border: 2px solid #fefefe;
   padding: 16px;
@@ -56,23 +49,19 @@ const ButtonText = styled.Text`
 `
 
 export default function SignIn() {
-  const [phoneNumber, setPhoneNumber] = useState('')
-  const [verificationCode, setVerificationCode] = useState('')
-  const [isVerifying, setIsVerifying] = useState(false)
+  async function continueWithTwitter() {
+    RNTwitterSignIn.init(
+      config.twitter.consumerKey,
+      config.twitter.consumerSecret
+    )
 
-  async function* handleSignIn() {
-    if (!phoneNumber) return
-
-    const { confirm } = await auth().signInWithPhoneNumber(phoneNumber)
-
-    setIsVerifying(true)
-
-    yield
-
-    confirm(verificationCode)
+    const { authToken, authTokenSecret } = RNTwitterSignIn.logIn()
+    const credential = auth.TwitterAuthProvider.credential(
+      authToken,
+      authTokenSecret
+    )
+    await auth().signInWithCredential(credential)
   }
-
-  const signInHandler = handleSignIn()
 
   return (
     <Container
@@ -89,34 +78,9 @@ export default function SignIn() {
         </Subtitle>
       </TitleSection>
 
-      {isVerifying ? (
-        <>
-          <Input
-            placeholder="Verification Code"
-            placeholderTextColor="#5D5D5D"
-            value={verificationCode}
-            onChangeText={text => setVerificationCode(text)}
-            onSubmitEditing={() => signInHandler.next()}
-          />
-          <Button onPress={() => signInHandler.next()}>
-            <ButtonText>Verify</ButtonText>
-          </Button>
-        </>
-      ) : (
-        <>
-          <Input
-            placeholder="Phone Number"
-            placeholderTextColor="#5D5D5D"
-            value={phoneNumber}
-            onChangeText={text => setPhoneNumber(text)}
-            onSubmitEditing={() => signInHandler.next()}
-          />
-
-          <Button onPress={() => signInHandler.next()}>
-            <ButtonText>Send Verification Code</ButtonText>
-          </Button>
-        </>
-      )}
+      <Button onPress={continueWithTwitter}>
+        <ButtonText>Continue With Twitter</ButtonText>
+      </Button>
     </Container>
   )
 }
