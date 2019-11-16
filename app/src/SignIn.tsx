@@ -3,7 +3,9 @@ import { NativeModules, StatusBar } from 'react-native'
 import styled from 'styled-components/native'
 import auth from '@react-native-firebase/auth'
 import LinearGradient from 'react-native-linear-gradient'
+import Icon from 'react-native-vector-icons/FontAwesome5'
 import config from '../config'
+import logo from './images/logo.png'
 
 const { RNTwitterSignIn } = NativeModules
 
@@ -16,8 +18,14 @@ const Container = styled(LinearGradient)`
 const TitleSection = styled.View`
   flex: 2;
   padding: 24px;
+  padding-bottom: 80px;
   justify-content: center;
   align-items: center;
+`
+
+const Logo = styled.Image`
+  width: 180px;
+  height: 180px;
 `
 
 const Title = styled.Text`
@@ -35,17 +43,26 @@ const Subtitle = styled.Text`
 `
 
 const Button = styled.TouchableOpacity`
-  border: 2px solid #fefefe;
-  padding: 16px;
+  flex-direction: row;
+  align-items: center;
+  background: #fefefe;
+  padding: 20px;
   align-items: center;
   border-radius: 8px;
 `
 
+const TwitterIcon = styled(Icon)`
+  position: absolute;
+  left: 20px;
+`
+
 const ButtonText = styled.Text`
+  flex: 1;
   font-size: 14px;
   font-weight: bold;
-  color: #fefefe;
+  color: #1b1b1b;
   text-transform: uppercase;
+  text-align: center;
 `
 
 export default function SignIn() {
@@ -55,7 +72,7 @@ export default function SignIn() {
       config.twitter.consumerSecret
     )
 
-    const { authToken, authTokenSecret } = RNTwitterSignIn.logIn()
+    const { authToken, authTokenSecret } = await RNTwitterSignIn.logIn()
     const credential = auth.TwitterAuthProvider.credential(
       authToken,
       authTokenSecret
@@ -65,13 +82,14 @@ export default function SignIn() {
 
   return (
     <Container
-      colors={['#4D2ACC', '#C457FF']}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
+      colors={['#D363C7', '#705EF1']}
+      start={{ x: 0.2, y: 0.2 }}
+      end={{ x: 0.8, y: 0.8 }}
     >
       <StatusBar translucent={true} backgroundColor="transparent" />
 
       <TitleSection>
+        <Logo source={logo} resizeMode="contain" />
         <Title>Aida</Title>
         <Subtitle>
           Your digital assistant for {'\n'} meeting new people
@@ -79,6 +97,7 @@ export default function SignIn() {
       </TitleSection>
 
       <Button onPress={continueWithTwitter}>
+        <TwitterIcon name="twitter" size={24} color="#1DA1F2" />
         <ButtonText>Continue With Twitter</ButtonText>
       </Button>
     </Container>
