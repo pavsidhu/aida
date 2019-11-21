@@ -16,19 +16,19 @@ export interface UserDoc {
     conscientiousness: number
     neuroticism: number
   }
-  messages: FirebaseFirestoreTypes.DocumentReference[] | Message[]
+  messages: FirebaseFirestoreTypes.DocumentReference[] | MessageDoc[]
   createdAt: any
 }
 
 export interface MatchDoc {
   id: string
   users: FirebaseFirestoreTypes.DocumentReference[] | UserDoc[]
-  messages: FirebaseFirestoreTypes.DocumentReference[] | Message[]
+  messages: FirebaseFirestoreTypes.DocumentReference[] | MessageDoc[]
   createdAt: any
 }
 
-export interface Message {
-  sender: FirebaseFirestoreTypes.DocumentReference[] | UserDoc[]
+export interface MessageDoc {
+  sender: FirebaseFirestoreTypes.DocumentReference | UserDoc
   type: MessageType
   content: string
   createdAt: any

@@ -5,7 +5,7 @@ import auth from '@react-native-firebase/auth'
 import firestore, {
   FirebaseFirestoreTypes
 } from '@react-native-firebase/firestore'
-import { MatchDoc, UserDoc, Message } from 'src/firestore-docs'
+import { MatchDoc, UserDoc, MessageDoc } from 'src/firestore-docs'
 import Match from './Match'
 
 const Container = styled.ScrollView.attrs(() => ({
@@ -110,7 +110,7 @@ export default function MatchesTab() {
             user => user.id !== currentUser.uid
           )
 
-          const lastMessage = match.messages[0] as Message
+          const lastMessage = match.messages[0] as MessageDoc
 
           return (
             matchedUser && (
