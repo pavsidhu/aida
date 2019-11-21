@@ -36,6 +36,8 @@ target 'Matcher' do
 
   pod 'react-native-twitter-signin', :path => '../node_modules/react-native-twitter-signin'
 
+  pod 'react-native-dialogflow', :path => '../node_modules/react-native-dialogflow'
+
   target 'MatcherTests' do
     inherit! :search_paths
     # Pods for testing
