@@ -7,10 +7,8 @@ import {
   createSwitchNavigator
 } from 'react-navigation'
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth'
-import { Dialogflow_V2 as Dialogflow } from 'react-native-dialogflow'
 import Home from './Home'
 import SignIn from './SignIn'
-import config from '../config'
 
 const Navigator = createSwitchNavigator({
   Home: { screen: Home },
@@ -24,15 +22,6 @@ interface Props {
 function App(props: Props) {
   const [initialised, setInitialised] = useState(false)
   const [user, setUser] = useState<FirebaseAuthTypes.User>()
-
-  useEffect(() => {
-    Dialogflow.setConfiguration(
-      config.dialogflow.serviceAccount,
-      config.dialogflow.privateKey,
-      Dialogflow.LANG_ENGLISH_GB,
-      config.dialogflow.projectId
-    )
-  }, [])
 
   useEffect(
     () =>
