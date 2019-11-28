@@ -4,6 +4,7 @@ import auth from '@react-native-firebase/auth'
 
 const Container = styled.SafeAreaView`
   flex: 1;
+  align-items: center;
   background: #fefefe;
 `
 
