@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components/native'
 import auth from '@react-native-firebase/auth'
-import firestore from '@react-native-firebase/firestore'
 import { GiftedChat, IMessage } from 'react-native-gifted-chat'
 import MessageBubble from '../../common/MessageBubble'
 import useAida from '../../useAida'
@@ -13,6 +12,10 @@ const Container = styled.SafeAreaView`
   justify-content: center;
 `
 
+const LoadingIndicator = styled.ActivityIndicator`
+  align-self: center;
+`
+
 export default function Chat() {
   const { currentUser } = auth()
   if (!currentUser) return null
@@ -20,30 +23,25 @@ export default function Chat() {
   const [messages, addMessage] = useAida()
 
   function onSend(messages: IMessage[]) {
-    const message = messages[0]
-
-    addMessage({
-      content: message.text,
-      sender:
-        message.user._id !== 0
-          ? firestore().doc(`user/${message.user._id}`)
-          : null,
-      createdAt: message.createdAt
-    })
+    addMessage(messages[0])
   }
 
   return (
     <Container>
-      <GiftedChat
-        messages={messages}
-        onSend={messages => onSend(messages)}
-        user={{ _id: currentUser.uid }}
-        renderBubble={props => <MessageBubble {...props} />}
-        renderAvatar={null}
-        showAvatarForEveryMessage={false}
-        renderAvatarOnTop={false}
-        showUserAvatar={false}
-      />
+      {!messages ? (
+        <LoadingIndicator size="large" color="#5C30D3" />
+      ) : (
+        <GiftedChat
+          messages={messages}
+          onSend={messages => onSend(messages)}
+          user={{ _id: currentUser.uid }}
+          renderBubble={props => <MessageBubble {...props} />}
+          renderAvatar={null}
+          showAvatarForEveryMessage={false}
+          renderAvatarOnTop={false}
+          showUserAvatar={false}
+        />
+      )}
     </Container>
   )
 }

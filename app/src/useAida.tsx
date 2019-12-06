@@ -5,7 +5,7 @@ import { MessageDoc } from './firestore-docs'
 import { IMessage } from 'react-native-gifted-chat'
 
 export default function useAida(): [IMessage[], (message: IMessage) => void] {
-  const [messages, setMessages] = useState<any[]>([])
+  const [messages, setMessages] = useState<IMessage[]>()
 
   const { currentUser } = auth()
 
