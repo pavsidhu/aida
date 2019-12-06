@@ -34,6 +34,6 @@ export interface MatchDoc {
 
 export interface MessageDoc {
   sender: FirebaseFirestoreTypes.DocumentReference | UserDoc
-  text: string
+  content: string
   createdAt: FirestoreTimestamp
 }
