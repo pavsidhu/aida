@@ -3,17 +3,16 @@ import Message from './Message'
 const messages: { [key: string]: Message } = {
   'introduction-1': {
     message: 'Hey, my name is Aida',
-    route: { next: 'name-prompt' }
+    route: { next: 'introduction-2' }
   },
   'introduction-2': {
     message:
       'My goal is to help you meet new people, bots like me can only talk so much 😅',
-    route: { next: 'name-prompt' }
+    route: { next: 'name-prompt-1' }
   },
   'name-prompt-1': {
     message:
       'In order to find people I think you’ll get along with, It’d be great to get to know each other',
-    input: 'name',
     route: { next: 'name-prompt-2' }
   },
   'name-prompt-2': {
