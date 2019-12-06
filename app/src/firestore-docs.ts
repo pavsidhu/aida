@@ -1,5 +1,10 @@
 import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore'
 
+interface FirestoreTimestamp {
+  _nanoseconds: number
+  _seconds: number
+}
+
 export interface UserDoc {
   id: string
   name: string
@@ -17,23 +22,18 @@ export interface UserDoc {
     neuroticism: number
   }
   messages: FirebaseFirestoreTypes.DocumentReference[] | MessageDoc[]
-  createdAt: any
+  createdAt: FirestoreTimestamp
 }
 
 export interface MatchDoc {
   id: string
   users: FirebaseFirestoreTypes.DocumentReference[] | UserDoc[]
   messages: FirebaseFirestoreTypes.DocumentReference[] | MessageDoc[]
-  createdAt: any
+  createdAt: FirestoreTimestamp
 }
 
 export interface MessageDoc {
   sender: FirebaseFirestoreTypes.DocumentReference | UserDoc
-  type: MessageType
-  content: string
-  createdAt: any
-}
-
-export enum MessageType {
-  'text'
+  text: string
+  createdAt: FirestoreTimestamp
 }

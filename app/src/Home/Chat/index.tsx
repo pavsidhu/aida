@@ -1,33 +1,48 @@
 import React from 'react'
-import { GiftedChat } from 'react-native-gifted-chat'
 import styled from 'styled-components/native'
+import auth from '@react-native-firebase/auth'
+import firestore from '@react-native-firebase/firestore'
+import { GiftedChat, IMessage } from 'react-native-gifted-chat'
+import MessageBubble from '../../common/MessageBubble'
+import useAida from '../../useAida'
 
 const Container = styled.SafeAreaView`
   flex: 1;
   background: #fefefe;
   margin-bottom: 18px;
-`
-
-const MessageInput = styled.TextInput`
-  padding: 16px;
-  background: #fefefe;
-  font-size: 16px;
-  border-color: #eeeeee;
-  border-top-width: 2px;
+  justify-content: center;
 `
 
 export default function Chat() {
-  const messages = []
+  const { currentUser } = auth()
+  if (!currentUser) return null
 
-  function onSend(messages) {}
+  const [messages, addMessage] = useAida()
+
+  function onSend(messages: IMessage[]) {
+    const message = messages[0]
+
+    addMessage({
+      content: message.text,
+      sender:
+        message.user._id !== 0
+          ? firestore().doc(`user/${message.user._id}`)
+          : null,
+      createdAt: message.createdAt
+    })
+  }
 
   return (
     <Container>
       <GiftedChat
         messages={messages}
         onSend={messages => onSend(messages)}
-        user={{ _id: 1 }}
-        renderInputToolbar={props => <MessageInput {...props} />}
+        user={{ _id: currentUser.uid }}
+        renderBubble={props => <MessageBubble {...props} />}
+        renderAvatar={null}
+        showAvatarForEveryMessage={false}
+        renderAvatarOnTop={false}
+        showUserAvatar={false}
       />
     </Container>
   )
