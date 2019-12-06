@@ -25,10 +25,8 @@ export default function useAida(): [IMessage[], (message: IMessage) => void] {
             return {
               _id: doc.id,
               text: data.content,
-              createdAt: new Date(data.createdAt._seconds * 1000),
-              user: data.sender
-                ? { _id: data.sender.id, name: currentUser.displayName }
-                : { _id: 0, name: 'Aida' }
+              user: { _id: data.sender ? data.sender.id : 0 },
+              createdAt: new Date(data.createdAt._seconds * 1000)
             }
           })
         )
