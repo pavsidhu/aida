@@ -11,7 +11,6 @@ const { RNTwitterSignIn } = NativeModules
 
 const Container = styled(LinearGradient)`
   flex: 1;
-  background: #fefefe;
   padding: 24px;
 `
 
@@ -45,10 +44,10 @@ const Subtitle = styled.Text`
 const Button = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
-  background: #fefefe;
+  background: rgba(255, 255, 255, 0.25);
   padding: 20px;
   align-items: center;
-  border-radius: 8px;
+  border-radius: 15px;
 `
 
 const TwitterIcon = styled(Icon)`
@@ -60,7 +59,7 @@ const ButtonText = styled.Text`
   flex: 1;
   font-size: 14px;
   font-weight: bold;
-  color: #1b1b1b;
+  color: #360069;
   text-transform: uppercase;
   text-align: center;
 `
@@ -82,7 +81,7 @@ export default function SignIn() {
 
   return (
     <Container
-      colors={['#D363C7', '#705EF1']}
+      colors={['#405DF8', '#9379FF', '#E8A2FF']}
       start={{ x: 0.2, y: 0.2 }}
       end={{ x: 0.8, y: 0.8 }}
     >
