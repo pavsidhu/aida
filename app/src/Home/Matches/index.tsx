@@ -8,11 +8,19 @@ import firestore, {
 import { MatchDoc, UserDoc, MessageDoc } from 'src/firestore-docs'
 import Match from './Match'
 
-const Container = styled.ScrollView.attrs(() => ({
-  justifyContent: 'center'
-}))`
+const Container = styled.View`
   flex: 1;
-  background: #fefefe;
+  justify-content: center;
+`
+
+interface MatchesListProps {
+  hasMatches: boolean
+}
+
+const MatchesList = styled.ScrollView.attrs<MatchesListProps>(props => ({
+  justifyContent: props.hasMatches ? 'flex-start' : 'center'
+}))<MatchesListProps>`
+  flex: 1;
 `
 
 const LoadingIndicator = styled.ActivityIndicator`
@@ -93,8 +101,43 @@ export default function MatchesTab() {
     return unsubscribe
   }, [refreshing])
 
+  function renderMatches(matches: MatchDoc[]) {
+    if (!currentUser) return null
+
+    return matches.map(match => {
+      const matchedUser = (match.users as UserDoc[]).find(
+        user => user.id !== currentUser.uid
+      )
+
+      const lastMessage = match.messages[0] as MessageDoc
+
+      return (
+        matchedUser && (
+          <Match
+            fullName={matchedUser.name}
+            profilePicture={matchedUser.photo || ''}
+            lastMessage={
+              (lastMessage && lastMessage.content) || 'Why not say hello?'
+            }
+            lastMessageTime={(lastMessage && lastMessage.createdAt) || ''}
+            key={matchedUser.id}
+          />
+        )
+      )
+    })
+  }
+
+  if (loading) {
+    return (
+      <Container>
+        <LoadingIndicator size="large" color="#5C30D3" />
+      </Container>
+    )
+  }
+
   return (
-    <Container
+    <MatchesList
+      hasMatches={matches.length > 0}
       refreshControl={
         <RefreshControl
           refreshing={refreshing}
@@ -102,36 +145,16 @@ export default function MatchesTab() {
         />
       }
     >
-      {loading ? (
-        <LoadingIndicator size="large" color="#5C30D3" />
-      ) : matches.length > 0 ? (
-        matches.map(match => {
-          const matchedUser = (match.users as UserDoc[]).find(
-            user => user.id !== currentUser.uid
-          )
-
-          const lastMessage = match.messages[0] as MessageDoc
-
-          return (
-            matchedUser && (
-              <Match
-                fullName={matchedUser.name}
-                profilePicture={matchedUser.photo || ''}
-                lastMessage={lastMessage.content || 'Why not say hello?'}
-                lastMessageTime={lastMessage.createdAt || ''}
-                key={matchedUser.id}
-              />
-            )
-          )
-        })
+      {matches.length > 0 ? (
+        renderMatches(matches)
       ) : (
-        <>
+        <Container>
           <NoMatchesTitle>Go Talk to Aida</NoMatchesTitle>
           <NoMatchesDescription>
             When Aida finds you a match they'll appear here
           </NoMatchesDescription>
-        </>
+        </Container>
       )}
-    </Container>
+    </MatchesList>
   )
 }
