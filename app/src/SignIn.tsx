@@ -44,7 +44,7 @@ const Subtitle = styled.Text`
 const Button = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.4);
   padding: 20px;
   align-items: center;
   border-radius: 15px;
