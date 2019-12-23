@@ -10,6 +10,7 @@
     "reload": "adb shell input keyevent 82"
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.7.1",
     "@react-native-firebase/app": "^6.0.3",
     "@react-native-firebase/auth": "^6.0.3",
     "@react-native-firebase/firestore": "^6.0.3",

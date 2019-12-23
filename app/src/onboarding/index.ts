@@ -1,6 +1,6 @@
-import Message from './Message'
+import OnboardingMessage from './OnboardingMessage'
 
-const messages: { [key: string]: Message } = {
+const onboardingMessages: { [key: string]: OnboardingMessage } = {
   'introduction-1': {
     message: 'Hey, my name is Aida',
     route: { next: 'introduction-2' }
@@ -17,7 +17,10 @@ const messages: { [key: string]: Message } = {
   },
   'name-prompt-2': {
     message: 'What’s your name?',
-    input: 'name',
+    input: {
+      name: 'name',
+      type: 'text'
+    },
     route: {
       next: 'name-prompt-success',
       failure: 'name-prompt-failure'
@@ -25,7 +28,10 @@ const messages: { [key: string]: Message } = {
   },
   'name-prompt-failure': {
     message: "I'm going to need your name to help find matches, what is it?",
-    input: 'name',
+    input: {
+      name: 'name',
+      type: 'text'
+    },
     route: { next: 'name-prompt-success' }
   },
   'name-prompt-success': {
@@ -35,6 +41,10 @@ const messages: { [key: string]: Message } = {
   'photo-prompt': {
     message:
       'For your profile, could you upload a photo? This will be displayed to other people when you make a match so look pretty',
+    input: {
+      name: 'photo',
+      type: 'photo'
+    },
     route: {
       next: 'photo-prompt-success',
       failure: 'photo-prompt-failure'
@@ -43,6 +53,10 @@ const messages: { [key: string]: Message } = {
   'photo-prompt-failure': {
     message:
       'I need a photo so I can have something to show when you match with new people',
+    input: {
+      name: 'photo',
+      type: 'photo'
+    },
     route: { next: 'photo-prompt-success' }
   },
   'photo-prompt-success': {
@@ -52,6 +66,10 @@ const messages: { [key: string]: Message } = {
   'location-prompt': {
     message:
       'Last step now, could you enable location access so I can help find new people around you?',
+    input: {
+      name: 'location',
+      type: 'permission'
+    },
     route: {
       next: 'location-prompt-success',
       failure: 'location-prompt-failure'
@@ -60,6 +78,10 @@ const messages: { [key: string]: Message } = {
   'location-prompt-failure': {
     message:
       "I'm going to need location access in order to find matches around you, please enable it in your settings",
+    input: {
+      name: 'location',
+      type: 'permission'
+    },
     route: {
       next: 'location-prompt-success',
       failure: 'location-prompt-failure'
@@ -94,4 +116,4 @@ const messages: { [key: string]: Message } = {
   }
 }
 
-export default messages
+export default onboardingMessages
