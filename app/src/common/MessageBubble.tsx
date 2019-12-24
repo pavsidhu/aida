@@ -53,7 +53,7 @@ export default function MessageBubble(props: GFBubble['props']) {
       duration={100}
     >
       <Bubble bubblePosition={props.position}>
-        {props.currentMessage.text}
+        {props.currentMessage?.text}
       </Bubble>
     </AnimatableContainer>
   )
