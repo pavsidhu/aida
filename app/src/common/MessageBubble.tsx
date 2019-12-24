@@ -1,5 +1,6 @@
 import React from 'react'
 import styled, { css } from 'styled-components/native'
+import { createAnimatableComponent } from 'react-native-animatable'
 import GFBubble from 'react-native-gifted-chat/lib/Bubble'
 
 interface PositionProps {
@@ -19,6 +20,8 @@ const Container = styled.View<PositionProps>`
           flex-direction: row-reverse;
         `};
 `
+
+const AnimatableContainer = createAnimatableComponent(Container)
 
 const Bubble = styled.Text<PositionProps>`
   padding: 8px 12px;
@@ -43,10 +46,15 @@ const Bubble = styled.Text<PositionProps>`
 
 export default function MessageBubble(props: GFBubble['props']) {
   return (
-    <Container bubblePosition={props.position}>
+    <AnimatableContainer
+      bubblePosition={props.position}
+      animation="slideInUp"
+      delay={0}
+      duration={100}
+    >
       <Bubble bubblePosition={props.position}>
         {props.currentMessage.text}
       </Bubble>
-    </Container>
+    </AnimatableContainer>
   )
 }
