@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components/native'
 import auth from '@react-native-firebase/auth'
+import storage from '@react-native-firebase/storage'
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -31,13 +32,21 @@ const NoProfileText = styled.Text`
 `
 
 export default function Profile() {
+  const [photoUrl, setPhotoUrl] = useState<string>()
   const { currentUser } = auth()
 
   if (!currentUser) return null
 
-  return currentUser.displayName && currentUser.photoURL ? (
+  useEffect(() => {
+    storage()
+      .ref(`${currentUser.uid}/photo.jpeg`)
+      .getDownloadURL()
+      .then(url => setPhotoUrl(url))
+  }, [])
+
+  return currentUser.displayName ? (
     <Container>
-      <ProfilePicture source={{ uri: currentUser.photoURL }} />
+      <ProfilePicture source={{ uri: photoUrl }} />
       <Name>{currentUser.displayName}</Name>
     </Container>
   ) : (
