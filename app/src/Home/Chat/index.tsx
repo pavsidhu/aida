@@ -3,13 +3,13 @@ import styled from 'styled-components/native'
 import auth from '@react-native-firebase/auth'
 import { GiftedChat, IMessage } from 'react-native-gifted-chat'
 import MessageBubble from '../../common/MessageBubble'
+import MessageInput from '../../common/MessageInput'
 import useAida from '../../useAida'
 import colors from '../../colors'
 
 const Container = styled.SafeAreaView`
   flex: 1;
   background: ${colors.white};
-  margin-bottom: 18px;
   justify-content: center;
 `
 
@@ -36,11 +36,13 @@ export default function Chat() {
           messages={messages}
           onSend={messages => onSend(messages)}
           user={{ _id: currentUser.uid }}
+          renderInputToolbar={props => <MessageInput {...props} />}
           renderBubble={props => <MessageBubble {...props} />}
           renderAvatar={null}
           showAvatarForEveryMessage={false}
           renderAvatarOnTop={false}
           showUserAvatar={false}
+          minInputToolbarHeight={60}
         />
       )}
     </Container>

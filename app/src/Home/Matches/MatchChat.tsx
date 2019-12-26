@@ -9,12 +9,12 @@ import { NavigationStackScreenProps } from 'react-navigation-stack'
 import { GiftedChat, IMessage } from 'react-native-gifted-chat'
 import { MatchDoc, UserDoc, MessageDoc } from '../../firestore-docs'
 import MessageBubble from '../../common/MessageBubble'
+import MessageInput from '../..//common/MessageInput'
 import colors from '../../colors'
 
 const Container = styled.SafeAreaView`
   flex: 1;
   background: ${colors.white};
-  margin-bottom: 18px;
   justify-content: center;
 `
 
@@ -133,12 +133,13 @@ export default function MatchChat(props: Props) {
           messages={messages}
           onSend={messages => onSend(messages)}
           user={{ _id: currentUser.uid }}
-          // renderInputToolbar={props => <MessageInput {...props} />}
+          renderInputToolbar={props => <MessageInput {...props} />}
           renderBubble={props => <MessageBubble {...props} />}
           renderAvatar={null}
           showAvatarForEveryMessage={false}
           renderAvatarOnTop={false}
           showUserAvatar={false}
+          minInputToolbarHeight={60}
         />
       )}
     </Container>
