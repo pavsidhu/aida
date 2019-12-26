@@ -1,124 +1,102 @@
 import React from 'react'
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
+import {
+  createStackNavigator,
+  NavigationStackScreenComponent
+} from 'react-navigation-stack'
+import { TouchableRipple } from 'react-native-paper'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
-import { createStackNavigator } from 'react-navigation-stack'
 import Chat from './Chat'
 import Matches from './Matches'
 import Profile from './Profile'
 import Settings from './Profile/Settings'
-import { TouchableRipple } from 'react-native-paper'
 
-const ChatStack = createStackNavigator(
-  {
-    Chat: {
-      screen: Chat,
-      navigationOptions: {
-        headerTitle: 'Chat',
-        headerStyle: { elevation: 0 },
-        headerTitleStyle: {
-          fontSize: 18
-        }
-      }
-    }
-  },
-  { headerLayoutPreset: 'center' }
-)
-const MatchesStack = createStackNavigator(
-  {
-    Matches: {
-      screen: Matches,
-      navigationOptions: {
-        headerTitle: 'My Matches',
-        headerStyle: { elevation: 0 },
-        headerTitleStyle: {
-          fontSize: 18
-        }
-      }
-    }
-  },
-  { headerLayoutPreset: 'center' }
-)
+const DEFAULT_NAVIGATION_OPTIONS = {
+  headerStyle: { elevation: 0 },
+  headerTitleStyle: {
+    fontSize: 18
+  }
+}
 
-const ProfileStack = createStackNavigator(
-  {
-    Profile: {
-      screen: Profile,
-      navigationOptions: ({ navigation }) => ({
-        headerTitle: 'My Profile',
-        headerStyle: { elevation: 0 },
-        headerTitleStyle: {
-          fontSize: 18
-        },
-        headerRight: () => (
-          <TouchableRipple
-            onPress={() => {
-              navigation.navigate('Settings')
-            }}
-            style={{ padding: 16 }}
-          >
-            <MaterialIcon name="settings" size={24} color="#1b1b1b" />
-          </TouchableRipple>
-        )
-      })
-    },
-    Settings: {
-      screen: Settings,
-      navigationOptions: {
-        headerTitle: 'Settings',
-        headerStyle: { elevation: 0 },
-        headerTitleStyle: {
-          fontSize: 18
+interface Screen {
+  name: string
+  screen: (props: any) => JSX.Element | null
+  navigationOptions?: NavigationStackScreenComponent['navigationOptions']
+}
+
+const generateTab = (screens: Screen[]) =>
+  createStackNavigator(
+    screens.reduce(
+      (acc, screen) => ({
+        ...acc,
+        [screen.name]: {
+          screen: screen.screen,
+          navigationOptions: {
+            ...DEFAULT_NAVIGATION_OPTIONS,
+            ...screen.navigationOptions,
+            headerTitle: screen.name
+          }
         }
-      }
-    }
+      }),
+      {}
+    ),
+    { headerLayoutPreset: 'center' }
+  )
+
+const ChatTab = generateTab([{ name: 'Chat', screen: Chat }])
+
+const MatchesTab = generateTab([
+  { name: 'Matches', screen: Matches },
+])
+
+const ProfileTab = generateTab([
+  {
+    name: 'Profile',
+    screen: Profile,
+    navigationOptions: ({ navigation }) => ({
+      headerRight: () => (
+        <TouchableRipple
+          onPress={() => {
+            navigation.navigate('Settings')
+          }}
+          style={{ padding: 16 }}
+        >
+          <MaterialIcon name="settings" size={24} color="#1b1b1b" />
+        </TouchableRipple>
+      )
+    })
   },
-  { headerLayoutPreset: 'center' }
+  { name: 'Settings', screen: Settings }
+])
+
+const generateTabBarIcon = (name: string, focused: boolean) => (
+  <MaterialIcon name={name} size={24} color={focused ? '#705EF1' : '#9b9b9b'} />
 )
 
 const Home = createMaterialBottomTabNavigator(
   {
     Chat: {
-      screen: ChatStack,
+      screen: ChatTab,
       navigationOptions: {
-        tabBarIcon: props => (
-          <MaterialIcon
-            name="chat-bubble"
-            size={24}
-            color={props.focused ? '#705EF1' : '#9b9b9b'}
-          />
-        )
+        tabBarIcon: props => generateTabBarIcon('chat-bubble', props.focused)
       }
     },
     Matches: {
-      screen: MatchesStack,
+      screen: MatchesTab,
       navigationOptions: {
-        tabBarIcon: props => (
-          <MaterialIcon
-            name="people"
-            size={24}
-            color={props.focused ? '#705EF1' : '#9b9b9b'}
-          />
-        )
+        tabBarIcon: props => generateTabBarIcon('people', props.focused)
       }
     },
-    'My Profile': {
-      screen: ProfileStack,
+    Profile: {
+      screen: ProfileTab,
       navigationOptions: {
-        tabBarIcon: props => (
-          <MaterialIcon
-            name="person"
-            size={24}
-            color={props.focused ? '#705EF1' : '#9b9b9b'}
-          />
-        )
+        tabBarIcon: props => generateTabBarIcon('person', props.focused)
       }
     }
   },
   {
     activeColor: '#705EF1',
-    barStyle: {
-      backgroundColor: '#fefefe'
-    }
+    barStyle: { backgroundColor: '#fefefe' }
   }
 )
 
