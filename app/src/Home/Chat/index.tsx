@@ -4,10 +4,11 @@ import auth from '@react-native-firebase/auth'
 import { GiftedChat, IMessage } from 'react-native-gifted-chat'
 import MessageBubble from '../../common/MessageBubble'
 import useAida from '../../useAida'
+import colors from '../../colors'
 
 const Container = styled.SafeAreaView`
   flex: 1;
-  background: #fefefe;
+  background: ${colors.white};
   margin-bottom: 18px;
   justify-content: center;
 `
@@ -29,7 +30,7 @@ export default function Chat() {
   return (
     <Container>
       {!messages ? (
-        <LoadingIndicator size="large" color="#5C30D3" />
+        <LoadingIndicator size="large" color={colors.purple} />
       ) : (
         <GiftedChat
           messages={messages}

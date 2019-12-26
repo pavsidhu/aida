@@ -2,6 +2,7 @@ import React from 'react'
 import styled, { css } from 'styled-components/native'
 import { createAnimatableComponent } from 'react-native-animatable'
 import GFBubble from 'react-native-gifted-chat/lib/Bubble'
+import colors from '../colors'
 
 interface PositionProps {
   bubblePosition: 'left' | 'right'
@@ -31,14 +32,14 @@ const Bubble = styled.Text<PositionProps>`
   ${props =>
     props.bubblePosition === 'left'
       ? css`
-          color: #fefefe;
-          background-color: #705ef1;
+          color: ${colors.white};
+          background-color: ${colors.purple};
           border-top-left-radius: 0;
           margin-right: 8px;
         `
       : css`
-          color: #1b1b1b;
-          background-color: #eaeaea;
+          color: ${colors.black};
+          background-color: ${colors.ownMessageBubble};
           border-top-right-radius: 0;
           margin-left: 8px;
         `};

@@ -5,6 +5,7 @@ import auth from '@react-native-firebase/auth'
 import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import config from '../config'
+import colors from './colors'
 import logo from './images/logo.png'
 
 const { RNTwitterSignIn } = NativeModules
@@ -28,7 +29,7 @@ const Logo = styled.Image`
 `
 
 const Title = styled.Text`
-  color: #fefefe;
+  color: ${colors.white};
   font-size: 56px;
   font-weight: bold;
   text-transform: uppercase;
@@ -36,7 +37,7 @@ const Title = styled.Text`
 `
 
 const Subtitle = styled.Text`
-  color: #fefefe;
+  color: ${colors.white};
   font-size: 18px;
   text-align: center;
 `
@@ -81,7 +82,7 @@ export default function SignIn() {
 
   return (
     <Container
-      colors={['#405DF8', '#9379FF', '#E8A2FF']}
+      colors={[colors.purpleDark, colors.purple, colors.purpleLight]}
       start={{ x: 0.2, y: 0.2 }}
       end={{ x: 0.8, y: 0.8 }}
     >
@@ -96,7 +97,7 @@ export default function SignIn() {
       </TitleSection>
 
       <Button onPress={continueWithTwitter}>
-        <TwitterIcon name="twitter" size={24} color="#1DA1F2" />
+        <TwitterIcon name="twitter" size={24} color={colors.blueTwitter} />
         <ButtonText>Continue With Twitter</ButtonText>
       </Button>
     </Container>

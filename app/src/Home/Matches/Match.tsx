@@ -4,6 +4,7 @@ import auth from '@react-native-firebase/auth'
 import firestore from '@react-native-firebase/firestore'
 import { format, isToday, isThisWeek } from 'date-fns'
 import { MessageDoc, MatchDoc, UserDoc } from '../../firestore-docs'
+import colors from '../../colors'
 
 const Container = styled.TouchableOpacity`
   flex-direction: row;
@@ -25,17 +26,17 @@ const Details = styled.View`
 const Name = styled.Text`
   font-weight: bold;
   font-size: 18px;
-  color: #1b1b1b;
+  color: ${colors.black};
 `
 
 const LastMessage = styled.Text`
   font-size: 16px;
-  color: #575757;
+  color: ${colors.secondaryText};
 `
 
 const LastMessageTime = styled.Text`
   font-size: 14px;
-  color: #575757;
+  color: ${colors.secondaryText};
 `
 
 function formatTime(date: Date) {

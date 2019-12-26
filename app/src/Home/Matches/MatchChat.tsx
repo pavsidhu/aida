@@ -9,11 +9,11 @@ import { NavigationStackScreenProps } from 'react-navigation-stack'
 import { MatchDoc, UserDoc, MessageDoc } from 'src/firestore-docs'
 import { GiftedChat, IMessage } from 'react-native-gifted-chat'
 import MessageBubble from '../../common/MessageBubble'
-import { NavigationActions } from 'react-navigation'
+import colors from '../../colors'
 
 const Container = styled.SafeAreaView`
   flex: 1;
-  background: #fefefe;
+  background: ${colors.white};
   margin-bottom: 18px;
   justify-content: center;
 `

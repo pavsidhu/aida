@@ -8,6 +8,7 @@ import firestore, {
 import { NavigationStackScreenProps } from 'react-navigation-stack'
 import { MatchDoc, UserDoc } from 'src/firestore-docs'
 import Match from './Match'
+import colors from '../../colors'
 
 const Container = styled.View`
   flex: 1;
@@ -32,14 +33,14 @@ const NoMatchesTitle = styled.Text`
   align-self: center;
   font-weight: bold;
   font-size: 20px;
-  color: #1b1b1b;
+  color: ${colors.black};
   margin-bottom: 8px;
 `
 
 const NoMatchesDescription = styled.Text`
   align-self: center;
   font-size: 16px;
-  color: #1b1b1b;
+  color: ${colors.black};
 `
 
 interface Props extends NavigationStackScreenProps {}

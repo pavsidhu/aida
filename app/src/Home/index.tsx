@@ -8,6 +8,7 @@ import Matches from './Matches'
 import MatchChat from './Matches/MatchChat'
 import Profile from './Profile'
 import Settings from './Profile/Settings'
+import colors from '../colors'
 
 const DEFAULT_NAVIGATION_OPTIONS = {
   headerStyle: { elevation: 0 },
@@ -60,7 +61,7 @@ const ProfileTab = createStackNavigator(
             }}
             style={{ padding: 16 }}
           >
-            <MaterialIcon name="settings" size={24} color="#1b1b1b" />
+            <MaterialIcon name="settings" size={24} color={colors.black} />
           </TouchableRipple>
         )
       })
@@ -77,7 +78,11 @@ const ProfileTab = createStackNavigator(
 )
 
 const generateTabBarIcon = (name: string, focused: boolean) => (
-  <MaterialIcon name={name} size={24} color={focused ? '#705EF1' : '#9b9b9b'} />
+  <MaterialIcon
+    name={name}
+    size={24}
+    color={focused ? colors.purple : colors.inActiveTab}
+  />
 )
 
 const Home = createMaterialBottomTabNavigator(
@@ -102,8 +107,8 @@ const Home = createMaterialBottomTabNavigator(
     }
   },
   {
-    activeColor: '#705EF1',
-    barStyle: { backgroundColor: '#fefefe' }
+    activeColor: colors.purple,
+    barStyle: { backgroundColor: colors.white }
   }
 )
 

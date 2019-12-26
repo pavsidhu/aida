@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components/native'
 import auth from '@react-native-firebase/auth'
 import storage from '@react-native-firebase/storage'
+import colors from '../../colors'
 
 const Container = styled.SafeAreaView`
   flex: 1;
   align-items: center;
-  background: #fefefe;
+  background: ${colors.white};
 `
 
 const ProfilePicture = styled.Image`
@@ -22,7 +23,7 @@ const Name = styled.Text`
 
 const NoProfileContainer = styled.SafeAreaView`
   flex: 1;
-  background: #fefefe;
+  background: ${colors.white};
   justify-content: center;
   align-items: center;
 `
