@@ -6,7 +6,7 @@ import firestore, {
   FirebaseFirestoreTypes
 } from '@react-native-firebase/firestore'
 import { NavigationStackScreenProps } from 'react-navigation-stack'
-import { MatchDoc, UserDoc } from 'src/firestore-docs'
+import { MatchDoc, UserDoc } from '../../firestore-docs'
 import Match from './Match'
 import colors from '../../colors'
 

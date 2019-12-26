@@ -6,8 +6,8 @@ import firestore, {
 import auth from '@react-native-firebase/auth'
 import storage from '@react-native-firebase/storage'
 import { NavigationStackScreenProps } from 'react-navigation-stack'
-import { MatchDoc, UserDoc, MessageDoc } from 'src/firestore-docs'
 import { GiftedChat, IMessage } from 'react-native-gifted-chat'
+import { MatchDoc, UserDoc, MessageDoc } from '../../firestore-docs'
 import MessageBubble from '../../common/MessageBubble'
 import colors from '../../colors'
 
