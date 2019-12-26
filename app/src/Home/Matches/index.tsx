@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { RefreshControl } from 'react-native'
 import styled from 'styled-components/native'
 import auth from '@react-native-firebase/auth'
+import storage from '@react-native-firebase/storage'
 import firestore, {
   FirebaseFirestoreTypes
 } from '@react-native-firebase/firestore'
-import { MatchDoc, UserDoc, MessageDoc } from 'src/firestore-docs'
+import { NavigationStackScreenProps } from 'react-navigation-stack'
+import { MatchDoc, UserDoc } from 'src/firestore-docs'
 import Match from './Match'
 
 const Container = styled.View`
@@ -41,18 +42,17 @@ const NoMatchesDescription = styled.Text`
   color: #1b1b1b;
 `
 
-export default function MatchesTab() {
+interface Props extends NavigationStackScreenProps {}
+
+export default function MatchesTab(props: Props) {
   const [matches, setMatches] = useState<MatchDoc[]>([])
   const [loading, setLoading] = useState(true)
-  const [refreshing, setRefreshing] = useState(false)
 
   const { currentUser } = auth()
 
   if (!currentUser) return null
 
   useEffect(() => {
-    if (!loading && !refreshing) return
-
     const currentUserRef = firestore()
       .collection('users')
       .doc(currentUser.uid)
@@ -76,17 +76,17 @@ export default function MatchesTab() {
               )
             )
 
-            const message = (
-              await doc.ref
-                .collection('messages')
-                .orderBy('createdAt', 'desc')
-                .limit(1)
-                .get()
-            ).docs[0]
+            await Promise.all(
+              users.map(async user => {
+                user.photo = await storage()
+                  .ref(`${currentUser.uid}/photo.jpeg`)
+                  .getDownloadURL()
+              })
+            )
 
             return {
               ...data,
-              messages: message && message.exists ? [message.data()] : [],
+              id: doc.id,
               users
             } as MatchDoc
           })
@@ -95,37 +95,10 @@ export default function MatchesTab() {
         setMatches(matches)
 
         if (loading) setLoading(false)
-        if (refreshing) setRefreshing(false)
       })
 
     return unsubscribe
-  }, [refreshing])
-
-  function renderMatches(matches: MatchDoc[]) {
-    if (!currentUser) return null
-
-    return matches.map(match => {
-      const matchedUser = (match.users as UserDoc[]).find(
-        user => user.id !== currentUser.uid
-      )
-
-      const lastMessage = match.messages[0] as MessageDoc
-
-      return (
-        matchedUser && (
-          <Match
-            fullName={matchedUser.name}
-            profilePicture={matchedUser.photo || ''}
-            lastMessage={
-              (lastMessage && lastMessage.content) || 'Why not say hello?'
-            }
-            lastMessageTime={(lastMessage && lastMessage.createdAt) || ''}
-            key={matchedUser.id}
-          />
-        )
-      )
-    })
-  }
+  }, [])
 
   if (loading) {
     return (
@@ -136,17 +109,17 @@ export default function MatchesTab() {
   }
 
   return (
-    <MatchesList
-      hasMatches={matches.length > 0}
-      refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => setRefreshing(true)}
-        />
-      }
-    >
+    <MatchesList hasMatches={matches.length > 0}>
       {matches.length > 0 ? (
-        renderMatches(matches)
+        matches.map(match => (
+          <Match
+            match={match}
+            key={match.id}
+            onPress={() =>
+              props.navigation.navigate('MatchChat', { id: match.id })
+            }
+          />
+        ))
       ) : (
         <Container>
           <NoMatchesTitle>Go Talk to Aida</NoMatchesTitle>

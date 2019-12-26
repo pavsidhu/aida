@@ -8,6 +8,7 @@ import { TouchableRipple } from 'react-native-paper'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 import Chat from './Chat'
 import Matches from './Matches'
+import MatchChat from './Matches/MatchChat'
 import Profile from './Profile'
 import Settings from './Profile/Settings'
 
@@ -21,6 +22,7 @@ const DEFAULT_NAVIGATION_OPTIONS = {
 interface Screen {
   name: string
   screen: (props: any) => JSX.Element | null
+  headerTitle?: boolean
   navigationOptions?: NavigationStackScreenComponent['navigationOptions']
 }
 
@@ -34,7 +36,7 @@ const generateTab = (screens: Screen[]) =>
           navigationOptions: {
             ...DEFAULT_NAVIGATION_OPTIONS,
             ...screen.navigationOptions,
-            headerTitle: screen.name
+            headerTitle: screen.headerTitle !== false ? screen.name : null
           }
         }
       }),
@@ -47,6 +49,7 @@ const ChatTab = generateTab([{ name: 'Chat', screen: Chat }])
 
 const MatchesTab = generateTab([
   { name: 'Matches', screen: Matches },
+  { name: 'MatchChat', screen: MatchChat, headerTitle: false }
 ])
 
 const ProfileTab = generateTab([
