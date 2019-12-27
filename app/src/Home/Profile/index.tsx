@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components/native'
 import auth from '@react-native-firebase/auth'
 import storage from '@react-native-firebase/storage'
+import TakeToAidaPrompt from '../../common/TalkToAidaPrompt'
 import colors from '../../colors'
+import onboardingStore from '../../onboarding/onboardingStore'
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -11,25 +13,16 @@ const Container = styled.SafeAreaView`
 `
 
 const ProfilePicture = styled.Image`
+  margin-top: 24px;
   width: 180px;
   height: 180px;
   border-radius: 90px;
   margin-bottom: 24px;
+  border: 5px solid ${colors.purple};
 `
 
 const Name = styled.Text`
   font-size: 24px;
-`
-
-const NoProfileContainer = styled.SafeAreaView`
-  flex: 1;
-  background: ${colors.white};
-  justify-content: center;
-  align-items: center;
-`
-
-const NoProfileText = styled.Text`
-  font-size: 16px;
 `
 
 export default function Profile() {
@@ -45,16 +38,16 @@ export default function Profile() {
       .then(url => setPhotoUrl(url))
   }, [])
 
-  return currentUser.displayName ? (
+  return (
     <Container>
-      <ProfilePicture source={{ uri: photoUrl }} />
-      <Name>{currentUser.displayName}</Name>
+      {!onboardingStore.isOnboarding ? (
+        <>
+          <ProfilePicture source={{ uri: photoUrl }} />
+          <Name>{currentUser.displayName}</Name>
+        </>
+      ) : (
+        <TakeToAidaPrompt description="You don't have a profile yet" />
+      )}
     </Container>
-  ) : (
-    <NoProfileContainer>
-      <NoProfileText>
-        You don't have a profile yet, go talk to Aida!
-      </NoProfileText>
-    </NoProfileContainer>
   )
 }

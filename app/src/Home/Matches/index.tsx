@@ -8,7 +8,7 @@ import firestore, {
 import { NavigationStackScreenProps } from 'react-navigation-stack'
 import { MatchDoc, UserDoc } from '../../firestore-docs'
 import Match from './Match'
-import colors from '../../colors'
+import TakeToAidaPrompt from '../../common/TalkToAidaPrompt'
 
 const Container = styled.View`
   flex: 1;
@@ -27,20 +27,6 @@ const MatchesList = styled.ScrollView.attrs<MatchesListProps>(props => ({
 
 const LoadingIndicator = styled.ActivityIndicator`
   align-self: center;
-`
-
-const NoMatchesTitle = styled.Text`
-  align-self: center;
-  font-weight: bold;
-  font-size: 20px;
-  color: ${colors.black};
-  margin-bottom: 8px;
-`
-
-const NoMatchesDescription = styled.Text`
-  align-self: center;
-  font-size: 16px;
-  color: ${colors.black};
 `
 
 interface Props extends NavigationStackScreenProps {}
@@ -122,12 +108,7 @@ export default function MatchesTab(props: Props) {
           />
         ))
       ) : (
-        <Container>
-          <NoMatchesTitle>Go Talk to Aida</NoMatchesTitle>
-          <NoMatchesDescription>
-            When Aida finds you a match they'll appear here
-          </NoMatchesDescription>
-        </Container>
+        <TakeToAidaPrompt description="When Aida finds you a match they'll appear here" />
       )}
     </MatchesList>
   )
