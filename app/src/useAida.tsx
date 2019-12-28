@@ -6,6 +6,7 @@ import storage from '@react-native-firebase/storage'
 import firestore from '@react-native-firebase/firestore'
 import { IMessage } from 'react-native-gifted-chat'
 import { MessageDoc, MessageType } from './firestore-docs'
+import { useObserver, useObservable } from 'mobx-react-lite'
 import onboardingStore from './onboarding/onboardingStore'
 
 const WORDS_PER_MINUTE = 200
@@ -16,13 +17,16 @@ function calculateReadingTime(content: string) {
   return (wordCount / WORDS_PER_MINUTE) * 60 * 1000 + MESSAGE_DELAY
 }
 
-export default function useAida(): [
+type AidaResponse = [
   IMessage[] | undefined,
   (message: IMessage) => void,
   () => void,
   () => void
-] {
-  const forceUpdate = useState<string>()[1]
+]
+
+export default function useAida(): AidaResponse {
+  const onboarding = useObservable(onboardingStore)
+
   const [messages, setMessages] = useState<IMessage[]>()
   const { currentUser } = auth()
 
@@ -56,15 +60,15 @@ export default function useAida(): [
 
   // Handle onboarding if the user is new
   useMemo(() => {
-    if (!onboardingStore.isOnboarding || !currentUser) return
+    if (!onboarding.isOnboarding || !currentUser) return
 
     // Fetch the current onboarding message
-    const { message, route, input } = onboardingStore.currentMessage
+    const { message, route, input } = onboarding.currentMessage
 
     // Replace message templates with data from the chatbot context
-    const parsedMessage = Object.keys(onboardingStore.context).reduce(
+    const parsedMessage = Object.keys(onboarding.context).reduce(
       (newMessage, key) =>
-        newMessage.replace(`{{${key}}}`, onboardingStore.context[key]),
+        newMessage.replace(`{{${key}}}`, onboarding.context[key]),
       message
     )
 
@@ -83,14 +87,13 @@ export default function useAida(): [
     // Schedule the next message/action after the current message
     setTimeout(() => {
       if (!input && route.next) {
-        onboardingStore.nextMessage(route.next)
-        forceUpdate(onboardingStore.step)
+        onboarding.nextMessage(route.next)
       }
     }, calculateReadingTime(parsedMessage))
-  }, [onboardingStore.isOnboarding, onboardingStore.currentMessage])
+  }, [onboarding.isOnboarding, onboarding.currentMessage])
 
   async function uploadPhoto() {
-    const { route } = onboardingStore.currentMessage
+    const { route } = onboarding.currentMessage
 
     try {
       const image = await ImagePicker.openPicker({
@@ -119,17 +122,15 @@ export default function useAida(): [
             createdAt: new Date()
           })
 
-        onboardingStore.nextMessage(route.next)
-        forceUpdate(onboardingStore.step)
+        onboarding.nextMessage(route.next)
       }
     } catch (error) {
-      onboardingStore.nextMessage(route.failure)
-      forceUpdate(onboardingStore.step)
+      onboarding.nextMessage(route.failure)
     }
   }
 
   async function showLocationPrompt() {
-    const { route } = onboardingStore.currentMessage
+    const { route } = onboarding.currentMessage
 
     try {
       const granted = await PermissionsAndroid.request(
@@ -137,32 +138,28 @@ export default function useAida(): [
       )
 
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        onboardingStore.nextMessage(route.next)
+        onboarding.nextMessage(route.next)
       } else {
-        onboardingStore.nextMessage(route.failure)
+        onboarding.nextMessage(route.failure)
       }
     } catch {
-      onboardingStore.nextMessage(route.failure)
+      onboarding.nextMessage(route.failure)
     }
-
-    forceUpdate(onboardingStore.step)
   }
 
   function addMessage(message: IMessage) {
     if (!currentUser) return
 
-    if (onboardingStore.isOnboarding && message.user._id === currentUser.uid) {
-      const { route, input } = onboardingStore.currentMessage
+    if (onboarding.isOnboarding && message.user._id === currentUser.uid) {
+      const { route, input } = onboarding.currentMessage
 
       if (input && route.next && route.failure) {
         if (message.text.trim() !== '') {
-          onboardingStore.nextMessage(route.next)
-          onboardingStore.context[input.name] = message.text.trim()
+          onboarding.nextMessage(route.next)
+          onboarding.context[input.name] = message.text.trim()
         } else {
-          onboardingStore.nextMessage(route.failure)
+          onboarding.nextMessage(route.failure)
         }
-
-        forceUpdate(onboardingStore.step)
       }
     }
 
@@ -182,5 +179,10 @@ export default function useAida(): [
       })
   }
 
-  return [messages, addMessage, uploadPhoto, showLocationPrompt]
+  return useObserver(() => [
+    messages,
+    addMessage,
+    uploadPhoto,
+    showLocationPrompt
+  ])
 }
