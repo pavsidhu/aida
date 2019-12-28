@@ -1,4 +1,4 @@
-import { observable, decorate, computed } from 'mobx'
+import { observable, decorate, computed, action } from 'mobx'
 import { persist, create } from 'mobx-persist'
 import AsyncStorage from '@react-native-community/async-storage'
 import onboardingMessages from '.'
@@ -22,7 +22,8 @@ decorate(OnboardingStore, {
   step: [persist, observable],
   isOnboarding: [persist, observable],
   context: [persist, observable],
-  currentMessage: [computed]
+  currentMessage: [computed],
+  nextMessage: [action]
 })
 
 const onboardingStore = new OnboardingStore()
