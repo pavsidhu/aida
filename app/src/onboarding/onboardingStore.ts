@@ -26,9 +26,9 @@ decorate(OnboardingStore, {
 
 const onboardingStore = new OnboardingStore()
 
-// const hydrate = create({
-//   storage: AsyncStorage
-// })
-// hydrate('onboarding', onboardingStore)
+const hydrate = create({
+  storage: AsyncStorage
+})
+hydrate('onboarding', onboardingStore)
 
 export default onboardingStore
