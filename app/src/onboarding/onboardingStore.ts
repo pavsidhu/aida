@@ -13,7 +13,8 @@ class OnboardingStore {
   }
 
   nextMessage(next?: string) {
-    if (next) onboardingStore.step = next
+    if (next) this.step = next
+    else this.isOnboarding = false
   }
 }
 
