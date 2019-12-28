@@ -6,6 +6,8 @@ import MessageBubble from '../../common/MessageBubble'
 import MessageInput from '../../common/MessageInput'
 import useAida from '../../useAida'
 import colors from '../../colors'
+import onboardingStore from '../../onboarding/onboardingStore'
+import MessageButton from '../../common/MessageButton'
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -21,7 +23,7 @@ export default function Chat() {
   const { currentUser } = auth()
   if (!currentUser) return null
 
-  const [messages, addMessage] = useAida()
+  const [messages, addMessage, uploadPhoto, showLocationPrompt] = useAida()
 
   function onSend(messages: IMessage[]) {
     addMessage(messages[0])
@@ -36,7 +38,22 @@ export default function Chat() {
           messages={messages}
           onSend={messages => onSend(messages)}
           user={{ _id: currentUser.uid }}
-          renderInputToolbar={props => <MessageInput {...props} />}
+          renderInputToolbar={props => {
+            if (onboardingStore.currentMessage.input?.type === 'photo')
+              return (
+                <MessageButton text="Upload a Photo" onPress={uploadPhoto} />
+              )
+
+            if (onboardingStore.currentMessage.input?.type === 'permission')
+              return (
+                <MessageButton
+                  text="Enable Location Access"
+                  onPress={showLocationPrompt}
+                />
+              )
+
+            return <MessageInput {...props} />
+          }}
           renderBubble={props => <MessageBubble {...props} />}
           renderAvatar={null}
           showAvatarForEveryMessage={false}

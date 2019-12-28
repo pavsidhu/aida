@@ -7,7 +7,12 @@ import auth from '@react-native-firebase/auth'
 import storage from '@react-native-firebase/storage'
 import { NavigationStackScreenProps } from 'react-navigation-stack'
 import { GiftedChat, IMessage } from 'react-native-gifted-chat'
-import { MatchDoc, UserDoc, MessageDoc } from '../../firestore-docs'
+import {
+  MatchDoc,
+  UserDoc,
+  MessageDoc,
+  MessageType
+} from '../../firestore-docs'
 import MessageBubble from '../../common/MessageBubble'
 import MessageInput from '../..//common/MessageInput'
 import colors from '../../colors'
@@ -119,6 +124,7 @@ export default function MatchChat(props: Props) {
       .collection('messages')
       .add({
         content: message.text,
+        type: MessageType.TEXT,
         sender: firestore().doc(`user/${currentUser.uid}`),
         createdAt: message.createdAt
       })

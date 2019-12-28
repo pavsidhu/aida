@@ -33,7 +33,13 @@ export interface MatchDoc {
 }
 
 export interface MessageDoc {
-  sender: FirebaseFirestoreTypes.DocumentReference | UserDoc
   content: string
+  type: MessageType
+  sender: FirebaseFirestoreTypes.DocumentReference | UserDoc
   createdAt: FirestoreTimestamp
+}
+
+export enum MessageType {
+  'TEXT' = 'text',
+  'PHOTO' = 'photo'
 }
