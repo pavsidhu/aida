@@ -31,7 +31,6 @@ export default function Profile() {
     const onboarding = useObservable(onboardingStore)
     const [photoUrl, setPhotoUrl] = useState<string>()
     const { currentUser } = auth()
-    console.log(12, onboarding.isOnboarding)
 
     if (!currentUser) return null
 
