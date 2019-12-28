@@ -88,9 +88,7 @@ export default function useAida(): AidaResponse {
 
       // Schedule the next message/action after the current message
       setTimeout(() => {
-        if (!input && route.next) {
-          onboarding.nextMessage(route.next)
-        }
+        if (!input) onboarding.nextMessage(route.next)
       }, calculateReadingTime(parsedMessage))
     }, [onboarding.isOnboarding, onboarding.currentMessage])
 
