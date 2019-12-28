@@ -112,7 +112,7 @@ const onboardingMessages: { [key: string]: OnboardingMessage } = {
   },
   'app-explaination-5': {
     message: "Let's talk soon!",
-    route: { next: null }
+    route: {}
   }
 }
 
