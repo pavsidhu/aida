@@ -5,6 +5,7 @@ import storage from '@react-native-firebase/storage'
 import TakeToAidaPrompt from '../../common/TalkToAidaPrompt'
 import colors from '../../colors'
 import onboardingStore from '../../onboarding/onboardingStore'
+import { useObservable, useObserver } from 'mobx-react-lite'
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -26,28 +27,32 @@ const Name = styled.Text`
 `
 
 export default function Profile() {
-  const [photoUrl, setPhotoUrl] = useState<string>()
-  const { currentUser } = auth()
+  return useObserver(() => {
+    const onboarding = useObservable(onboardingStore)
+    const [photoUrl, setPhotoUrl] = useState<string>()
+    const { currentUser } = auth()
+    console.log(12, onboarding.isOnboarding)
 
-  if (!currentUser) return null
+    if (!currentUser) return null
 
-  useEffect(() => {
-    storage()
-      .ref(`${currentUser.uid}/photo.jpeg`)
-      .getDownloadURL()
-      .then(url => setPhotoUrl(url))
-  }, [])
+    useEffect(() => {
+      storage()
+        .ref(`${currentUser.uid}/photo.jpeg`)
+        .getDownloadURL()
+        .then(url => setPhotoUrl(url))
+    }, [])
 
-  return (
-    <Container>
-      {!onboardingStore.isOnboarding ? (
-        <>
-          <ProfilePicture source={{ uri: photoUrl }} />
-          <Name>{currentUser.displayName}</Name>
-        </>
-      ) : (
-        <TakeToAidaPrompt description="You don't have a profile yet" />
-      )}
-    </Container>
-  )
+    return (
+      <Container>
+        {!onboarding.isOnboarding ? (
+          <>
+            <ProfilePicture source={{ uri: photoUrl }} />
+            <Name>{currentUser.displayName}</Name>
+          </>
+        ) : (
+          <TakeToAidaPrompt description="You don't have a profile yet" />
+        )}
+      </Container>
+    )
+  })
 }
