@@ -29,10 +29,9 @@ const SendButton = styled.TouchableOpacity`
 `
 
 const SendButtonText = styled.Text`
-  color: ${colors.black};
   font-size: 16px;
-  color: ${colors.purple};
   font-weight: bold;
+  color: ${colors.purple};
 `
 
 function MessageInput(props: InputToolbar['props']) {
