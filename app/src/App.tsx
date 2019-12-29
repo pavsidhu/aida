@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react'
+import AsyncStorage from '@react-native-community/async-storage'
 import {
   createAppContainer,
   createSwitchNavigator,
   NavigationContainerProps
 } from 'react-navigation'
 import auth from '@react-native-firebase/auth'
+import { create } from 'mobx-persist'
 
 import Home from './Home'
 import SignIn from './SignIn'
+import onboardingStore from './onboarding/onboardingStore'
+
+const hydrate = create({ storage: AsyncStorage })
 
 const Navigator = createSwitchNavigator({
   Home: { screen: Home },
@@ -16,6 +21,11 @@ const Navigator = createSwitchNavigator({
 
 function App(props: NavigationContainerProps) {
   const [initialised, setInitialised] = useState(false)
+  const [hydrated, setHydrated] = useState(false)
+
+  useEffect(() => {
+    hydrate('onboarding', onboardingStore).then(() => setHydrated(true))
+  }, [])
 
   useEffect(
     () =>
@@ -26,7 +36,7 @@ function App(props: NavigationContainerProps) {
     []
   )
 
-  return initialised && <Navigator navigation={props.navigation} />
+  return initialised && hydrated && <Navigator navigation={props.navigation} />
 }
 
 App.router = Navigator.router

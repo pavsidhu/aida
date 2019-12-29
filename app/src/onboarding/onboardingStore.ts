@@ -1,6 +1,5 @@
 import { observable, decorate, computed, action } from 'mobx'
-import { persist, create } from 'mobx-persist'
-import AsyncStorage from '@react-native-community/async-storage'
+import { persist } from 'mobx-persist'
 
 import onboardingMessages, { startingStep } from '.'
 
@@ -48,10 +47,5 @@ decorate(OnboardingStore, {
 })
 
 const onboardingStore = new OnboardingStore()
-
-const hydrate = create({
-  storage: AsyncStorage
-})
-hydrate('onboarding', onboardingStore)
 
 export default onboardingStore
