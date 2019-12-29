@@ -37,10 +37,11 @@ class OnboardingStore {
   }
 }
 
+// @ts-ignore
 decorate(OnboardingStore, {
   step: [persist, observable],
   isOnboarding: [persist, observable],
-  context: [persist, observable],
+  context: [persist('object'), observable],
   currentMessage: [computed],
   hasNotStarted: [computed],
   nextMessage: [action]
