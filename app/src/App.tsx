@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import {
   createAppContainer,
-  NavigationScreenProp,
-  NavigationState,
-  StackActions,
-  createSwitchNavigator
+  createSwitchNavigator,
+  NavigationContainerProps
 } from 'react-navigation'
-import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth'
+import auth from '@react-native-firebase/auth'
 import Home from './Home'
 import SignIn from './SignIn'
 
@@ -15,38 +13,19 @@ const Navigator = createSwitchNavigator({
   SignIn: { screen: SignIn }
 })
 
-interface Props {
-  navigation: NavigationScreenProp<NavigationState>
-}
-
-function App(props: Props) {
+function App(props: NavigationContainerProps) {
   const [initialised, setInitialised] = useState(false)
-  const [user, setUser] = useState<FirebaseAuthTypes.User>()
 
   useEffect(
     () =>
       auth().onAuthStateChanged(user => {
-        setInitialised(true)
-        setUser(user ? user : undefined)
+        if (!initialised) setInitialised(true)
+        props.navigation?.navigate(user ? 'Home' : 'SignIn')
       }),
     []
   )
 
-  useEffect(() => {
-    if (!initialised) return
-
-    if (!user) {
-      props.navigation.navigate('SignIn')
-      return
-    }
-
-    props.navigation.navigate({
-      routeName: 'Home',
-      action: StackActions.popToTop()
-    })
-  }, [user, initialised])
-
-  return initialised ? <Navigator navigation={props.navigation} /> : null
+  return initialised && <Navigator navigation={props.navigation} />
 }
 
 App.router = Navigator.router

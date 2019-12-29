@@ -1,15 +1,15 @@
 import React from 'react'
 import styled from 'styled-components/native'
+import { useObservable } from 'mobx-react-lite'
 import auth from '@react-native-firebase/auth'
 import { GiftedChat, IMessage } from 'react-native-gifted-chat'
 import MessageBubble from '../../common/MessageBubble'
 import MessageInput from '../../common/MessageInput'
+import MessageButton from '../../common/MessageButton'
+import MessageOptions from '../../common/MessageOptions'
 import useAida from '../../useAida'
 import colors from '../../colors'
 import onboardingStore from '../../onboarding/onboardingStore'
-import MessageButton from '../../common/MessageButton'
-import { useObservable } from 'mobx-react-lite'
-import MessageOptions from '../../common/MessageOptions'
 
 const Container = styled.SafeAreaView`
   flex: 1;

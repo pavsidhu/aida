@@ -1,15 +1,33 @@
 import { observable, decorate, computed, action } from 'mobx'
 import { persist, create } from 'mobx-persist'
 import AsyncStorage from '@react-native-community/async-storage'
-import onboardingMessages from '.'
+import onboardingMessages, { startingStep } from '.'
 
 class OnboardingStore {
-  step = 'introduction-1'
+  step = startingStep
   isOnboarding = true
   context: { [key: string]: string } = {}
 
   get currentMessage() {
     return onboardingMessages[this.step]
+  }
+
+  get hasNotStarted() {
+    return this.isOnboarding && this.step === startingStep
+  }
+
+  getMessage(route?: string) {
+    if (!route) return undefined
+
+    const onboardingMessage = onboardingMessages[route]
+
+    // Replace message templates with data from the chatbot context
+    const message = Object.keys(this.context).reduce(
+      (newMessage, key) => newMessage.replace(`{{${key}}}`, this.context[key]),
+      onboardingMessage.message
+    )
+
+    return { ...onboardingMessage, message }
   }
 
   nextMessage(next?: string) {
@@ -23,6 +41,7 @@ decorate(OnboardingStore, {
   isOnboarding: [persist, observable],
   context: [persist, observable],
   currentMessage: [computed],
+  hasNotStarted: [computed],
   nextMessage: [action]
 })
 

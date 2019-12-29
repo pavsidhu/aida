@@ -34,7 +34,7 @@ const onboardingMessages: { [key: string]: OnboardingMessage } = {
   },
   'gender-prompt': {
     message: "Next, what's your gender?",
-    input: { name: 'gender', type: 'options', values: ['male', 'female'] },
+    input: { name: 'gender', type: 'options', values: ['Male', 'Female'] },
     route: {
       next: 'gender-prompt-success',
       failure: 'gender-prompt-failure'
@@ -125,5 +125,7 @@ const onboardingMessages: { [key: string]: OnboardingMessage } = {
     route: {}
   }
 }
+
+export const startingStep = 'introduction-1'
 
 export default onboardingMessages
