@@ -56,18 +56,13 @@ export default function MatchesTab(props: NavigationStackScreenProps) {
               userRefs.map(
                 async userRef =>
                   ({
+                    ...(await userRef.get()).data(),
                     id: userRef.id,
-                    ...(await userRef.get()).data()
+                    photo: await storage()
+                      .ref(`${userRef.id}/photo.jpeg`)
+                      .getDownloadURL()
                   } as UserDoc)
               )
-            )
-
-            await Promise.all(
-              users.map(async user => {
-                user.photo = await storage()
-                  .ref(`${currentUser.uid}/photo.jpeg`)
-                  .getDownloadURL()
-              })
             )
 
             return {
