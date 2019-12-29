@@ -4,6 +4,7 @@ import styled from 'styled-components/native'
 import auth from '@react-native-firebase/auth'
 import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/FontAwesome5'
+
 import config from '../config'
 import colors from './colors'
 import logo from './images/logo.png'

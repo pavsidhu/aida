@@ -6,9 +6,10 @@ import firestore, {
   FirebaseFirestoreTypes
 } from '@react-native-firebase/firestore'
 import { NavigationStackScreenProps } from 'react-navigation-stack'
-import { MatchDoc, UserDoc } from '../../types/firestore'
+
 import Match from './Match'
 import { TalkToAidaPrompt } from '../../common'
+import { MatchDoc, UserDoc } from '../../types/firestore'
 
 const Container = styled.View`
   flex: 1;
@@ -29,9 +30,7 @@ const LoadingIndicator = styled.ActivityIndicator`
   align-self: center;
 `
 
-interface Props extends NavigationStackScreenProps {}
-
-export default function MatchesTab(props: Props) {
+export default function MatchesTab(props: NavigationStackScreenProps) {
   const [matches, setMatches] = useState<MatchDoc[]>([])
   const [loading, setLoading] = useState(true)
 

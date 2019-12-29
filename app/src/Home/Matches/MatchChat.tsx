@@ -7,15 +7,15 @@ import auth from '@react-native-firebase/auth'
 import storage from '@react-native-firebase/storage'
 import { NavigationStackScreenProps } from 'react-navigation-stack'
 import { GiftedChat, IMessage } from 'react-native-gifted-chat'
+
+import { MessageBubble, MessageInput } from '../../common'
+import colors from '../../colors'
 import {
   MatchDoc,
   UserDoc,
   MessageDoc,
   MessageType
 } from '../../types/firestore'
-import MessageBubble from '../../common/MessageBubble'
-import MessageInput from '../..//common/MessageInput'
-import colors from '../../colors'
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -27,9 +27,7 @@ const LoadingIndicator = styled.ActivityIndicator`
   align-self: center;
 `
 
-interface Props extends NavigationStackScreenProps {}
-
-export default function MatchChat(props: Props) {
+export default function MatchChat(props: NavigationStackScreenProps) {
   const id = props.navigation.getParam('id')
 
   const [loading, setLoading] = useState(true)

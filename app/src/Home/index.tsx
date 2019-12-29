@@ -3,6 +3,7 @@ import { createMaterialBottomTabNavigator } from 'react-navigation-material-bott
 import { createStackNavigator } from 'react-navigation-stack'
 import { TouchableRipple } from 'react-native-paper'
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
+
 import Chat from './Chat'
 import Matches from './Matches'
 import MatchChat from './Matches/MatchChat'

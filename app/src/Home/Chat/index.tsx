@@ -1,8 +1,9 @@
 import React from 'react'
 import styled from 'styled-components/native'
-import { useObservable } from 'mobx-react-lite'
 import auth from '@react-native-firebase/auth'
+import { useObservable } from 'mobx-react-lite'
 import { GiftedChat, IMessage } from 'react-native-gifted-chat'
+
 import {
   MessageBubble,
   MessageButton,

@@ -1,6 +1,7 @@
 import { observable, decorate, computed, action } from 'mobx'
 import { persist, create } from 'mobx-persist'
 import AsyncStorage from '@react-native-community/async-storage'
+
 import onboardingMessages, { startingStep } from '.'
 
 class OnboardingStore {

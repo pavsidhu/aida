@@ -3,8 +3,9 @@ import styled from 'styled-components/native'
 import auth from '@react-native-firebase/auth'
 import storage from '@react-native-firebase/storage'
 import { useObservable, useObserver } from 'mobx-react-lite'
-import { TalkToAidaPrompt } from '../../common'
+
 import colors from '../../colors'
+import { TalkToAidaPrompt } from '../../common'
 import onboardingStore from '../../onboarding/onboardingStore'
 
 const Container = styled.SafeAreaView`

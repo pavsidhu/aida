@@ -1,4 +1,4 @@
-import OnboardingMessage from './OnboardingMessage'
+import OnboardingMessage from '../types/OnboardingMessage'
 
 const onboardingMessages: { [key: string]: OnboardingMessage } = {
   'introduction-1': {

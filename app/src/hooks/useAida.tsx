@@ -4,10 +4,11 @@ import ImagePicker, { Image } from 'react-native-image-crop-picker'
 import auth from '@react-native-firebase/auth'
 import storage from '@react-native-firebase/storage'
 import firestore from '@react-native-firebase/firestore'
-import { IMessage } from 'react-native-gifted-chat'
 import { useObserver, useObservable } from 'mobx-react-lite'
-import { MessageDoc, MessageType } from '../types/firestore'
+import { IMessage } from 'react-native-gifted-chat'
+
 import onboardingStore from '../onboarding/onboardingStore'
+import { MessageDoc, MessageType } from '../types/firestore'
 
 const WORDS_PER_MINUTE = 200
 const MESSAGE_DELAY = 1500

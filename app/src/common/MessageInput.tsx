@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components/native'
 import { InputToolbar } from 'react-native-gifted-chat'
+
 import colors from '../colors'
 
 const Container = styled.View`

@@ -2,6 +2,7 @@ import React from 'react'
 import styled, { css } from 'styled-components/native'
 import { createAnimatableComponent } from 'react-native-animatable'
 import GFBubble from 'react-native-gifted-chat/lib/Bubble'
+
 import colors from '../colors'
 
 interface PositionProps {

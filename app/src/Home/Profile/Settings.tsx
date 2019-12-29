@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components/native'
 import auth from '@react-native-firebase/auth'
 import { NavigationScreenProp, NavigationState } from 'react-navigation'
+
 import colors from '../../colors'
 
 const Container = styled.SafeAreaView`

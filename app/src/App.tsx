@@ -5,6 +5,7 @@ import {
   NavigationContainerProps
 } from 'react-navigation'
 import auth from '@react-native-firebase/auth'
+
 import Home from './Home'
 import SignIn from './SignIn'
 
