@@ -12,7 +12,7 @@ import {
   UserDoc,
   MessageDoc,
   MessageType
-} from '../../firestore-docs'
+} from '../../types/firestore'
 import MessageBubble from '../../common/MessageBubble'
 import MessageInput from '../..//common/MessageInput'
 import colors from '../../colors'

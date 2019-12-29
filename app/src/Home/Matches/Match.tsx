@@ -3,7 +3,7 @@ import styled from 'styled-components/native'
 import auth from '@react-native-firebase/auth'
 import firestore from '@react-native-firebase/firestore'
 import { format, isToday, isThisWeek } from 'date-fns'
-import { MessageDoc, MatchDoc, UserDoc } from '../../firestore-docs'
+import { MessageDoc, MatchDoc, UserDoc } from '../../types/firestore'
 import colors from '../../colors'
 
 const Container = styled.TouchableOpacity`

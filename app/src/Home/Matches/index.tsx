@@ -6,9 +6,9 @@ import firestore, {
   FirebaseFirestoreTypes
 } from '@react-native-firebase/firestore'
 import { NavigationStackScreenProps } from 'react-navigation-stack'
-import { MatchDoc, UserDoc } from '../../firestore-docs'
+import { MatchDoc, UserDoc } from '../../types/firestore'
 import Match from './Match'
-import TakeToAidaPrompt from '../../common/TalkToAidaPrompt'
+import { TalkToAidaPrompt } from '../../common'
 
 const Container = styled.View`
   flex: 1;
@@ -108,7 +108,7 @@ export default function MatchesTab(props: Props) {
           />
         ))
       ) : (
-        <TakeToAidaPrompt description="When Aida finds you a match they'll appear here" />
+        <TalkToAidaPrompt description="When Aida finds you a match they'll appear here" />
       )}
     </MatchesList>
   )

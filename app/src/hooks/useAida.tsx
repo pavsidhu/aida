@@ -6,8 +6,8 @@ import storage from '@react-native-firebase/storage'
 import firestore from '@react-native-firebase/firestore'
 import { IMessage } from 'react-native-gifted-chat'
 import { useObserver, useObservable } from 'mobx-react-lite'
-import { MessageDoc, MessageType } from './firestore-docs'
-import onboardingStore from './onboarding/onboardingStore'
+import { MessageDoc, MessageType } from '../types/firestore'
+import onboardingStore from '../onboarding/onboardingStore'
 
 const WORDS_PER_MINUTE = 200
 const MESSAGE_DELAY = 1500

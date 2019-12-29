@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components/native'
 import auth from '@react-native-firebase/auth'
 import storage from '@react-native-firebase/storage'
-import TakeToAidaPrompt from '../../common/TalkToAidaPrompt'
+import { useObservable, useObserver } from 'mobx-react-lite'
+import { TalkToAidaPrompt } from '../../common'
 import colors from '../../colors'
 import onboardingStore from '../../onboarding/onboardingStore'
-import { useObservable, useObserver } from 'mobx-react-lite'
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -50,7 +50,7 @@ export default function Profile() {
             <Name>{currentUser.displayName}</Name>
           </>
         ) : (
-          <TakeToAidaPrompt description="You don't have a profile yet" />
+          <TalkToAidaPrompt description="You don't have a profile yet" />
         )}
       </Container>
     )

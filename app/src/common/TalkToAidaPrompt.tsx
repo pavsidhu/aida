@@ -25,7 +25,7 @@ interface Props {
   description: string
 }
 
-export default function TakeToAidaPrompt(props: Props) {
+export default function TalkToAidaPrompt(props: Props) {
   return (
     <Container>
       <Title>Go Talk to Aida</Title>
