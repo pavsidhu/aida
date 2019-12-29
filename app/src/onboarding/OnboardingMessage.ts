@@ -5,8 +5,5 @@ export default interface OnboardingMessage {
     type: 'text' | 'photo' | 'permission' | 'options'
     values?: string[]
   }
-  route: {
-    next?: string
-    failure?: string
-  }
+  route: { [key: string]: string }
 }

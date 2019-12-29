@@ -164,18 +164,21 @@ export default function useAida(): AidaResponse {
     async function showLocationPrompt() {
       const { route } = onboarding.currentMessage
 
-      try {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
-        )
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+      ).catch(() => onboarding.nextMessage(route.failure))
 
-        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      switch (granted) {
+        case PermissionsAndroid.RESULTS.GRANTED:
           onboarding.nextMessage(route.next)
-        } else {
+          break
+
+        case PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN:
+          onboarding.nextMessage(route.deny)
+          break
+
+        default:
           onboarding.nextMessage(route.failure)
-        }
-      } catch {
-        onboarding.nextMessage(route.failure)
       }
     }
 

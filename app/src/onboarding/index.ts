@@ -17,10 +17,7 @@ const onboardingMessages: { [key: string]: OnboardingMessage } = {
   },
   'name-prompt-2': {
     message: 'What’s your name?',
-    input: {
-      name: 'name',
-      type: 'text'
-    },
+    input: { name: 'name', type: 'text' },
     route: {
       next: 'name-prompt-success',
       failure: 'name-prompt-failure'
@@ -28,10 +25,7 @@ const onboardingMessages: { [key: string]: OnboardingMessage } = {
   },
   'name-prompt-failure': {
     message: "I'm going to need your name to help find matches, what is it?",
-    input: {
-      name: 'name',
-      type: 'text'
-    },
+    input: { name: 'name', type: 'text' },
     route: { next: 'name-prompt-success' }
   },
   'name-prompt-success': {
@@ -40,11 +34,7 @@ const onboardingMessages: { [key: string]: OnboardingMessage } = {
   },
   'gender-prompt': {
     message: "Next, what's your gender?",
-    input: {
-      name: 'gender',
-      type: 'options',
-      values: ['male', 'female']
-    },
+    input: { name: 'gender', type: 'options', values: ['male', 'female'] },
     route: {
       next: 'gender-prompt-success',
       failure: 'gender-prompt-failure'
@@ -56,11 +46,7 @@ const onboardingMessages: { [key: string]: OnboardingMessage } = {
   },
   'gender-prompt-failure': {
     message: 'Please choose one of the options.',
-    input: {
-      name: 'gender',
-      type: 'options',
-      values: ['Male', 'Female']
-    },
+    input: { name: 'gender', type: 'options', values: ['Male', 'Female'] },
     route: {
       next: 'gender-prompt-success'
     }
@@ -68,10 +54,7 @@ const onboardingMessages: { [key: string]: OnboardingMessage } = {
   'photo-prompt': {
     message:
       'For your profile, could you upload a photo? This will be displayed to other people when you make a match so look pretty',
-    input: {
-      name: 'photo',
-      type: 'photo'
-    },
+    input: { name: 'photo', type: 'photo' },
     route: {
       next: 'photo-prompt-success',
       failure: 'photo-prompt-failure'
@@ -80,10 +63,7 @@ const onboardingMessages: { [key: string]: OnboardingMessage } = {
   'photo-prompt-failure': {
     message:
       'I need a photo so I can have something to show when you match with new people',
-    input: {
-      name: 'photo',
-      type: 'photo'
-    },
+    input: { name: 'photo', type: 'photo' },
     route: { next: 'photo-prompt-success' }
   },
   'photo-prompt-success': {
@@ -93,27 +73,30 @@ const onboardingMessages: { [key: string]: OnboardingMessage } = {
   'location-prompt': {
     message:
       'Last step now, could you enable location access so I can help find new people around you?',
-    input: {
-      name: 'location',
-      type: 'permission'
-    },
+    input: { name: 'location', type: 'permission' },
     route: {
       next: 'location-prompt-success',
-      failure: 'location-prompt-failure'
+      failure: 'location-prompt-failure',
+      deny: 'location-prompt-never-ask-again'
     }
   },
   'location-prompt-failure': {
     message:
-      "I'm going to need location access in order to find matches around you, please enable it in your settings",
-    input: {
-      name: 'location',
-      type: 'permission'
-    },
+      "I'm going to need location access in order to find matches around you!",
+    input: { name: 'location', type: 'permission' },
     route: {
       next: 'location-prompt-success',
-      failure: 'location-prompt-failure'
+      failure: 'location-prompt-failure',
+      deny: 'location-prompt-never-ask-again'
     }
   },
+  'location-prompt-never-ask-again': {
+    message:
+      'Oh no! Please enable location permissions in your settings so I can find you matches',
+    input: { name: 'location', type: 'permission' },
+    route: { next: 'location-prompt-success' }
+  },
+
   'location-prompt-success': {
     message: 'Great, you’re all set up!',
     route: { next: 'app-explaination-1' }
