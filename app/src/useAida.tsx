@@ -5,8 +5,8 @@ import auth from '@react-native-firebase/auth'
 import storage from '@react-native-firebase/storage'
 import firestore from '@react-native-firebase/firestore'
 import { IMessage } from 'react-native-gifted-chat'
-import { MessageDoc, MessageType } from './firestore-docs'
 import { useObserver, useObservable } from 'mobx-react-lite'
+import { MessageDoc, MessageType } from './firestore-docs'
 import onboardingStore from './onboarding/onboardingStore'
 
 const WORDS_PER_MINUTE = 200
@@ -20,8 +20,11 @@ function calculateReadingTime(content: string) {
 type AidaResponse = [
   IMessage[] | undefined,
   (message: IMessage) => void,
-  () => void,
-  () => void
+  {
+    setGender: (gender: string) => void
+    uploadPhoto: () => void
+    showLocationPrompt: () => void
+  }
 ]
 
 export default function useAida(): AidaResponse {
@@ -92,6 +95,35 @@ export default function useAida(): AidaResponse {
       }, calculateReadingTime(parsedMessage))
     }, [onboarding.isOnboarding, onboarding.currentMessage])
 
+    async function setGender(gender: string) {
+      if (!currentUser) return
+
+      const { route, input } = onboarding.currentMessage
+
+      if (input?.values && !input.values.includes(gender)) {
+        onboarding.nextMessage(route.failure)
+        return
+      }
+
+      await firestore()
+        .collection('users')
+        .doc(currentUser.uid)
+        .update({ gender })
+
+      await firestore()
+        .collection('users')
+        .doc(currentUser.uid)
+        .collection('messages')
+        .add({
+          content: gender,
+          type: MessageType.TEXT,
+          sender: firestore().doc(`user/${currentUser.uid}`),
+          createdAt: new Date()
+        })
+
+      onboarding.nextMessage(route.next)
+    }
+
     async function uploadPhoto() {
       const { route } = onboarding.currentMessage
 
@@ -147,21 +179,35 @@ export default function useAida(): AidaResponse {
       }
     }
 
-    function addMessage(message: IMessage) {
+    async function handleTextInput(message: IMessage) {
       if (!currentUser) return
 
-      if (onboarding.isOnboarding && message.user._id === currentUser.uid) {
-        const { route, input } = onboarding.currentMessage
+      const text = message.text.trim()
+      const { route, input } = onboarding.currentMessage
 
-        if (input && route.next && route.failure) {
-          if (message.text.trim() !== '') {
-            onboarding.nextMessage(route.next)
-            onboarding.context[input.name] = message.text.trim()
-          } else {
-            onboarding.nextMessage(route.failure)
+      if (input && route.next && route.failure) {
+        if (text !== '') {
+          if (input.name === 'name') {
+            await currentUser.updateProfile({
+              displayName: text
+            })
+
+            await firestore()
+              .collection('users')
+              .doc(currentUser.uid)
+              .update({ name: text })
           }
+
+          onboarding.context[input.name] = text
+          onboarding.nextMessage(route.next)
+        } else {
+          onboarding.nextMessage(route.failure)
         }
       }
+    }
+
+    async function addMessage(message: IMessage) {
+      if (!currentUser) return
 
       // Store the message
       firestore()
@@ -177,8 +223,15 @@ export default function useAida(): AidaResponse {
           type: MessageType.TEXT,
           createdAt: message.createdAt
         })
+
+      if (onboarding.isOnboarding && message.user._id === currentUser.uid)
+        await handleTextInput(message)
     }
 
-    return [messages, addMessage, uploadPhoto, showLocationPrompt]
+    return [
+      messages,
+      addMessage,
+      { uploadPhoto, showLocationPrompt, setGender }
+    ]
   })
 }

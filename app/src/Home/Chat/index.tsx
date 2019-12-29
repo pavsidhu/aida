@@ -8,6 +8,8 @@ import useAida from '../../useAida'
 import colors from '../../colors'
 import onboardingStore from '../../onboarding/onboardingStore'
 import MessageButton from '../../common/MessageButton'
+import { useObservable } from 'mobx-react-lite'
+import MessageOptions from '../../common/MessageOptions'
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -21,13 +23,16 @@ const LoadingIndicator = styled.ActivityIndicator`
 
 export default function Chat() {
   const { currentUser } = auth()
-  if (!currentUser) return null
+  const onboarding = useObservable(onboardingStore)
+  const [messages, addMessage, addInput] = useAida()
 
-  const [messages, addMessage, uploadPhoto, showLocationPrompt] = useAida()
+  if (!currentUser) return null
 
   function onSend(messages: IMessage[]) {
     addMessage(messages[0])
   }
+
+  const { input } = onboarding.currentMessage
 
   return (
     <Container>
@@ -39,20 +44,36 @@ export default function Chat() {
           onSend={messages => onSend(messages)}
           user={{ _id: currentUser.uid }}
           renderInputToolbar={props => {
-            if (onboardingStore.currentMessage.input?.type === 'photo')
-              return (
-                <MessageButton text="Upload a Photo" onPress={uploadPhoto} />
-              )
+            switch (input?.type) {
+              case 'photo':
+                return (
+                  <MessageButton
+                    text="Upload a Photo"
+                    onPress={addInput.uploadPhoto}
+                  />
+                )
 
-            if (onboardingStore.currentMessage.input?.type === 'permission')
-              return (
-                <MessageButton
-                  text="Enable Location Access"
-                  onPress={showLocationPrompt}
-                />
-              )
+              case 'options':
+                return (
+                  input.values && (
+                    <MessageOptions
+                      options={input.values}
+                      onPress={addInput.setGender}
+                    />
+                  )
+                )
 
-            return <MessageInput {...props} />
+              case 'permission':
+                return (
+                  <MessageButton
+                    text="Enable Location Access"
+                    onPress={addInput.showLocationPrompt}
+                  />
+                )
+
+              default:
+                return <MessageInput {...props} />
+            }
           }}
           renderBubble={props => <MessageBubble {...props} />}
           renderAvatar={null}

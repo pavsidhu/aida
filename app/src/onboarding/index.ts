@@ -36,7 +36,34 @@ const onboardingMessages: { [key: string]: OnboardingMessage } = {
   },
   'name-prompt-success': {
     message: 'Nice to meet you {{name}}!',
+    route: { next: 'gender-prompt' }
+  },
+  'gender-prompt': {
+    message: "Next, what's your gender?",
+    input: {
+      name: 'gender',
+      type: 'options',
+      values: ['male', 'female']
+    },
+    route: {
+      next: 'gender-prompt-success',
+      failure: 'gender-prompt-failure'
+    }
+  },
+  'gender-prompt-success': {
+    message: 'Great!',
     route: { next: 'photo-prompt' }
+  },
+  'gender-prompt-failure': {
+    message: 'Please choose one of the options.',
+    input: {
+      name: 'gender',
+      type: 'options',
+      values: ['Male', 'Female']
+    },
+    route: {
+      next: 'gender-prompt-success'
+    }
   },
   'photo-prompt': {
     message:
