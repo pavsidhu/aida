@@ -17,7 +17,8 @@ const Photo = styled.Image`
   height: 72px;
   margin-right: 24px;
   border-radius: 36px;
-  border: 3px solid ${colors.purple};
+  border-width: 3px;
+  border-color: ${colors.purple};
 `
 
 const Details = styled.View`

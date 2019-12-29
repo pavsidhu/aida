@@ -19,7 +19,8 @@ const ProfilePicture = styled.Image`
   height: 180px;
   border-radius: 90px;
   margin-bottom: 24px;
-  border: 5px solid ${colors.purple};
+  border-width: 5px;
+  border-color: ${colors.purple};
 `
 
 const Name = styled.Text`
