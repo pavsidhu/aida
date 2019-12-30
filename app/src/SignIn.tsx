@@ -78,7 +78,9 @@ export default function SignIn() {
       authToken,
       authTokenSecret
     )
-    await auth().signInWithCredential(credential)
+    await auth()
+      .signInWithCredential(credential)
+      .catch(error => console.log(error))
   }
 
   return (

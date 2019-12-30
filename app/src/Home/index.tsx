@@ -10,7 +10,7 @@ import Chat from './Chat'
 import Matches from './Matches'
 import MatchChat from './Matches/MatchChat'
 import Profile from './Profile'
-import Settings from './Profile/Settings'
+import Settings from './Settings'
 import LeftHeader from './Header/LeftHeader'
 import RightHeader from './Header/RightHeader'
 import colors from '../colors'
@@ -30,8 +30,8 @@ const navigationOptions = (options?: {
     headerRight: <RightHeader navigation={navigation} />
   }),
   headerStyle: {
-    elevation: 3,
-    backgroundColor: colors.white
+    elevation: 1,
+    backgroundColor: colors.lilac
   },
   headerTitleStyle: {
     color: colors.black,
@@ -94,11 +94,11 @@ const Home = createStackNavigator({
   Tabs: { screen: Tabs, navigationOptions: { header: null } },
   Profile: {
     screen: Profile,
-    navigationOptions: {
+    navigationOptions: navigationOptions({
       title: 'Profile',
       headerLeft: false,
       headerRight: false
-    }
+    })
   },
   Settings: {
     screen: Settings,

@@ -42,7 +42,7 @@ function App(props: NavigationContainerProps) {
     initialised &&
     hydrated && (
       <>
-        <StatusBar backgroundColor={colors.white} barStyle="dark-content" />
+        <StatusBar backgroundColor={colors.lilac} barStyle="dark-content" />
         <Navigator navigation={props.navigation} />
       </>
     )

@@ -19,7 +19,7 @@ import {
 
 const Container = styled.SafeAreaView`
   flex: 1;
-  background: ${colors.white};
+  background: ${colors.lilac};
   justify-content: center;
 `
 
@@ -143,7 +143,7 @@ export default function MatchChat(props: NavigationStackScreenProps) {
           showAvatarForEveryMessage={false}
           renderAvatarOnTop={false}
           showUserAvatar={false}
-          minInputToolbarHeight={60}
+          minInputToolbarHeight={82}
         />
       )}
     </Container>

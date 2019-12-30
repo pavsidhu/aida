@@ -15,6 +15,7 @@ import colors from '../../colors'
 const Container = styled.View`
   flex: 1;
   justify-content: center;
+  background-color: ${colors.lilac};
 `
 
 interface MatchesListProps {

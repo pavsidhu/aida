@@ -3,16 +3,14 @@ import styled from 'styled-components/native'
 import auth from '@react-native-firebase/auth'
 import { NavigationScreenProp, NavigationState } from 'react-navigation'
 
-import colors from '../../colors'
+import colors from '../colors'
 
 const Container = styled.SafeAreaView`
   flex: 1;
-  background: ${colors.white};
+  background: ${colors.lilac};
 `
 
 const Setting = styled.TouchableOpacity`
-  flex: 1;
-  background: ${colors.white};
   padding: 20px;
 `
 

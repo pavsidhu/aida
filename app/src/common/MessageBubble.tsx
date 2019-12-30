@@ -11,7 +11,7 @@ interface PositionProps {
 
 const Container = styled.View<PositionProps>`
   flex: 1;
-  margin: 8px 8px 0;
+  margin: 16px 8px 0;
 
   ${props =>
     props.bubblePosition === 'left'
@@ -26,9 +26,10 @@ const Container = styled.View<PositionProps>`
 const AnimatableContainer = createAnimatableComponent(Container)
 
 const TextBubble = styled.Text<PositionProps>`
-  padding: 8px 12px;
-  border-radius: 12px;
+  padding: 12px 16px;
+  border-radius: 18px;
   font-size: 16px;
+  elevation: 1;
 
   ${props =>
     props.bubblePosition === 'left'
@@ -40,7 +41,7 @@ const TextBubble = styled.Text<PositionProps>`
         `
       : css`
           color: ${colors.black};
-          background-color: ${colors.lightGrey};
+          background-color: ${colors.white};
           border-top-right-radius: 0;
           margin-left: 8px;
         `};

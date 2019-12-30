@@ -3,16 +3,20 @@ import styled from 'styled-components/native'
 import { InputToolbar } from 'react-native-gifted-chat'
 
 import colors from '../colors'
+import { Dimensions } from 'react-native'
 
 const Container = styled.View`
   position: absolute;
   bottom: 0;
-  width: 100%;
+  left: 0;
+  margin: 16px;
+  width: ${Dimensions.get('window').width - 32}px;
+  border-radius: 18px;
+  elevation: 0.5;
   height: 60px;
   padding: 0 16px;
   background-color: ${colors.white};
   border-color: ${colors.lightGrey};
-  border-top-width: 2px;
   flex-direction: row;
   align-items: center;
 `
