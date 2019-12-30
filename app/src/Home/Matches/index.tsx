@@ -81,29 +81,27 @@ export default function MatchesTab(props: NavigationStackScreenProps) {
     return unsubscribe
   }, [])
 
-  if (loading) {
-    return (
-      <Container>
-        <LoadingIndicator size="large" color="#5C30D3" />
-      </Container>
-    )
-  }
-
   return (
-    <MatchesList hasMatches={matches.length > 0}>
-      {matches.length > 0 ? (
-        matches.map(match => (
-          <Match
-            match={match}
-            key={match.id}
-            onPress={() =>
-              props.navigation.navigate('MatchChat', { id: match.id })
-            }
-          />
-        ))
+    <Container>
+      {loading ? (
+        <LoadingIndicator size="large" color="#5C30D3" />
       ) : (
-        <TalkToAidaPrompt description="When Aida finds you a match they'll appear here" />
+        <MatchesList hasMatches={matches.length > 0}>
+          {matches.length > 0 ? (
+            matches.map(match => (
+              <Match
+                match={match}
+                key={match.id}
+                onPress={() =>
+                  props.navigation.navigate('MatchChat', { id: match.id })
+                }
+              />
+            ))
+          ) : (
+            <TalkToAidaPrompt description="When Aida finds you a match they'll appear here" />
+          )}
+        </MatchesList>
       )}
-    </MatchesList>
+    </Container>
   )
 }
