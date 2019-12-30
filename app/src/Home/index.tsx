@@ -70,7 +70,10 @@ const Tabs = createMaterialBottomTabNavigator(
         },
         MatchChat: {
           screen: MatchChat,
-          navigationOptions: navigationOptions()
+          navigationOptions: navigationOptions({
+            headerLeft: false,
+            headerRight: false
+          })
         }
       }),
       navigationOptions: {
