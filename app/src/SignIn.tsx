@@ -82,11 +82,7 @@ export default function SignIn() {
   }
 
   return (
-    <Container
-      colors={[colors.purpleDark, colors.purple, colors.purpleLight]}
-      start={{ x: 0.2, y: 0.2 }}
-      end={{ x: 0.8, y: 0.8 }}
-    >
+    <Container colors={[colors.purpleDark, colors.purple, colors.purpleLight]}>
       <StatusBar translucent={true} backgroundColor="transparent" />
 
       <TitleSection>

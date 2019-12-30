@@ -11,6 +11,8 @@ import { create } from 'mobx-persist'
 import Home from './Home'
 import SignIn from './SignIn'
 import onboardingStore from './onboarding/onboardingStore'
+import { StatusBar } from 'react-native'
+import colors from './colors'
 
 const hydrate = create({ storage: AsyncStorage })
 
@@ -36,7 +38,15 @@ function App(props: NavigationContainerProps) {
     []
   )
 
-  return initialised && hydrated && <Navigator navigation={props.navigation} />
+  return (
+    initialised &&
+    hydrated && (
+      <>
+        <StatusBar backgroundColor={colors.white} barStyle="dark-content" />
+        <Navigator navigation={props.navigation} />
+      </>
+    )
+  )
 }
 
 App.router = Navigator.router
