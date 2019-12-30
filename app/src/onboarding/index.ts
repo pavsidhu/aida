@@ -117,7 +117,7 @@ const onboardingMessages: { [key: string]: OnboardingMessage } = {
   },
   'app-explaination-4': {
     message:
-      'more we talk, the more I can learn about you and the better your matches will be',
+      'The more we talk, the more I can learn about you and the better your matches will be',
     route: { next: 'app-explaination-5' }
   },
   'app-explaination-5': {
