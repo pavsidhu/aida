@@ -45,7 +45,12 @@ function MessageInput(props: InputToolbar['props']) {
         value={message}
         onChangeText={value => setMessage(value)}
       />
-      <SendButton onPress={() => props.onSend({ text: message.trim() }, true)}>
+      <SendButton
+        onPress={() => {
+          props.onSend({ text: message.trim() }, true)
+          setMessage('')
+        }}
+      >
         <SendButtonText>{message.trim() ? 'Send' : ''}</SendButtonText>
       </SendButton>
     </Container>
