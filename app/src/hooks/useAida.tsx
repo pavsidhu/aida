@@ -69,15 +69,14 @@ export default function useAida(): AidaResponse {
       return unsubscribe
     }, [])
 
-    function nextOnboardingMessage(nextRoute: string) {
+    function nextOnboardingMessage(next: string) {
       if (!currentUser) return
 
       // Fetch the next onboarding message
-      const onboardingMessage = onboarding.getMessage(nextRoute)
+      const onboardingMessage = onboarding.nextMessage(next)
 
+      // If there's no message onboarding has finished
       if (!onboardingMessage) return
-
-      onboarding.nextMessage(nextRoute)
 
       const { message, route, input } = onboardingMessage
 

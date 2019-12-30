@@ -9,17 +9,7 @@ class OnboardingStore {
   context: { [key: string]: string } = {}
 
   get currentMessage() {
-    return onboardingMessages[this.step]
-  }
-
-  get hasNotStarted() {
-    return this.isOnboarding && this.step === startingStep
-  }
-
-  getMessage(route?: string) {
-    if (!route) return undefined
-
-    const onboardingMessage = onboardingMessages[route]
+    const onboardingMessage = onboardingMessages[this.step]
 
     // Replace message templates with data from the chatbot context
     const message = Object.keys(this.context).reduce(
@@ -30,9 +20,18 @@ class OnboardingStore {
     return { ...onboardingMessage, message }
   }
 
+  get hasNotStarted() {
+    return this.isOnboarding && this.step === startingStep
+  }
   nextMessage(next?: string) {
-    if (next) this.step = next
-    else this.isOnboarding = false
+    // If there's no route, assume onboarding has finished
+    if (!next) {
+      this.isOnboarding = false
+      return undefined
+    }
+
+    this.step = next
+    return this.currentMessage
   }
 }
 
