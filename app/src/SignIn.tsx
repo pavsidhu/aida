@@ -61,7 +61,7 @@ const ButtonText = styled.Text`
   flex: 1;
   font-size: 14px;
   font-weight: bold;
-  color: #360069;
+  color: ${colors.black};
   text-transform: uppercase;
   text-align: center;
 `

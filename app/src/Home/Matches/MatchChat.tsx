@@ -131,7 +131,7 @@ export default function MatchChat(props: NavigationStackScreenProps) {
   return (
     <Container>
       {loading ? (
-        <LoadingIndicator size="large" color="#5C30D3" />
+        <LoadingIndicator size="large" color={colors.purple} />
       ) : (
         <GiftedChat
           messages={messages}

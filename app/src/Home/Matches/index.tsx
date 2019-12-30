@@ -10,6 +10,7 @@ import { NavigationStackScreenProps } from 'react-navigation-stack'
 import Match from './Match'
 import { TalkToAidaPrompt } from '../../common'
 import { MatchDoc, UserDoc } from '../../types/firestore'
+import colors from '../../colors'
 
 const Container = styled.View`
   flex: 1;
@@ -84,7 +85,7 @@ export default function MatchesTab(props: NavigationStackScreenProps) {
   return (
     <Container>
       {loading ? (
-        <LoadingIndicator size="large" color="#5C30D3" />
+        <LoadingIndicator size="large" color={colors.purple} />
       ) : (
         <MatchesList hasMatches={matches.length > 0}>
           {matches.length > 0 ? (

@@ -15,7 +15,7 @@ const Container = styled.View`
 `
 
 const Text = styled.Text`
-  background-color: #eeeeee;
+  background-color: ${colors.lightGrey};
   border-radius: 20px;
   padding: 8px 16px;
   color: ${colors.black};

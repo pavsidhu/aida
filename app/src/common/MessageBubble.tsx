@@ -40,7 +40,7 @@ const TextBubble = styled.Text<PositionProps>`
         `
       : css`
           color: ${colors.black};
-          background-color: ${colors.ownMessageBubble};
+          background-color: ${colors.lightGrey};
           border-top-right-radius: 0;
           margin-left: 8px;
         `};
@@ -60,7 +60,7 @@ const PhotoBubble = styled.Image<PositionProps>`
           margin-right: 8px;
         `
       : css`
-          background-color: ${colors.ownMessageBubble};
+          background-color: ${colors.lightGrey};
           border-top-right-radius: 0;
           margin-left: 8px;
         `};

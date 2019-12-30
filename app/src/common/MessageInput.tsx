@@ -11,7 +11,7 @@ const Container = styled.View`
   height: 60px;
   padding: 0 16px;
   background-color: ${colors.white};
-  border-color: #eeeeee;
+  border-color: ${colors.lightGrey};
   border-top-width: 2px;
   flex-direction: row;
   align-items: center;
