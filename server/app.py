@@ -4,7 +4,6 @@ import firebase_admin
 from dotenv import load_dotenv
 from flask import Flask, request
 
-
 load_dotenv()
 firebase_admin.initialize_app()
 
