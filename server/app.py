@@ -1,14 +1,18 @@
+import logging
 
 import firebase_admin
-from firebase_admin import firestore
+from dotenv import load_dotenv
 from flask import Flask, request
 
-app = Flask(__name__)
 
+load_dotenv()
 firebase_admin.initialize_app()
-db = firestore.client()
 
+app = Flask(__name__)
+app.logger.setLevel(logging.ERROR)
 
-@app.route("/status")
-def status():
-    return {"status": "running"}, 200
+from src.questions import blueprint as questions
+
+app.register_blueprint(questions)
+
+app.run()
