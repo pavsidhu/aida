@@ -1,15 +1,15 @@
 import { observable, decorate, computed, action } from 'mobx'
 import { persist } from 'mobx-persist'
 
-import onboardingMessages, { startingStep } from '.'
+import onboardingFlow from './onboardingFlow'
 
 class OnboardingStore {
-  step = startingStep
+  step = onboardingFlow.start
   isOnboarding = true
   context: { [key: string]: string } = {}
 
   get currentMessage() {
-    const onboardingMessage = onboardingMessages[this.step]
+    const onboardingMessage = onboardingFlow.messages[this.step]
 
     // Replace message templates with data from the chatbot context
     const message = Object.keys(this.context).reduce(
@@ -21,7 +21,7 @@ class OnboardingStore {
   }
 
   get hasNotStarted() {
-    return this.isOnboarding && this.step === startingStep
+    return this.isOnboarding && this.step === onboardingFlow.start
   }
   nextMessage(next?: string) {
     // If there's no route, assume onboarding has finished
