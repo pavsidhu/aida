@@ -1,18 +1,19 @@
-import json
-
-from firebase_admin import auth
 from flask import request
+from firebase_admin import auth
 
 
 def auth_required(function):
     """Decorator to verify a user authenticated with Firebase"""
 
     def wrap_function(*args):
-        body = json.loads(request.data)
+        authorization = request.headers.get("Authorization")
 
-        # decoded_token = auth.verify_id_token(body["id_token"])
-        # user_id = decoded_token["uid"]
-        user_id = "Npu2xs1KiqVtQvGlKEBZ6iSLO0C3"
+        if not authorization:
+            return {"error": "No Authorization header provided"}, 401
+
+        token = authorization.split("Bearer ")[1]
+        decoded_token = auth.verify_id_token(token)
+        user_id = decoded_token["uid"]
 
         return function(user_id, *args)
 
