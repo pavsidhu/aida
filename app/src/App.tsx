@@ -13,6 +13,7 @@ import SignIn from './SignIn'
 import onboardingStore from './onboarding/onboardingStore'
 import { StatusBar } from 'react-native'
 import colors from './colors'
+import './questioning/scheduler'
 
 const hydrate = create({ storage: AsyncStorage })
 

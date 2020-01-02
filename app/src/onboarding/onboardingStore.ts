@@ -23,6 +23,7 @@ class OnboardingStore {
   get hasNotStarted() {
     return this.isOnboarding && this.step === onboardingFlow.start
   }
+
   nextMessage(next?: string) {
     // If there's no route, assume onboarding has finished
     if (!next) {
