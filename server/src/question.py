@@ -1,16 +1,32 @@
 import json
 import random
+import re
+from datetime import datetime
 
-from firebase_admin import firestore
 from flask import Blueprint
 
+from firebase_admin import firestore
 from src.decorators import auth_required
 
-blueprint = Blueprint("questions", __name__, url_prefix="/question")
+blueprint = Blueprint("question", __name__, url_prefix="/question")
 
 db = firestore.client()
+
 questions_ref = db.collection("questions")
 asked_questions_ref = db.collection("asked_questions")
+user_ref = db.collection("users")
+
+
+def parseMessage(message, user):
+    tags = re.findall("{{(.*?)}}", message)
+
+    for tag in tags:
+        data = user.get(tag)
+
+        if (data):
+            message.replace("{{tag}}", data)
+
+    return message
 
 
 @blueprint.route("/", methods=["GET"])
@@ -24,8 +40,12 @@ def get_question(user_id):
         for doc in asked_questions_ref.where("user_id", "==", user_id).stream()
     ]
 
+    user = user_ref.get(user_id).to_dict()
+    messages_ref = user_ref.document(user_id).collection('messages')
+
     # Fetch all the questions
-    questions = [{**doc.to_dict(), **{"id": doc.id}} for doc in questions_ref.stream()]
+    questions = [{**doc.to_dict(), **{"id": doc.id}}
+                 for doc in questions_ref.stream()]
 
     for question in questions:
         # Check if the question has been asked
@@ -33,7 +53,16 @@ def get_question(user_id):
             continue
 
         # Record the question as being asked
-        asked_questions_ref.add({"user_id": user_id, "question_id": question["id"]})
+        asked_questions_ref.add(
+            {"user_id": user_id, "question_id": question["id"]})
+
+        # Add the question to the user's messages
+        messages_ref.add({
+            "content": parseMessage(question["question"], user),
+            "type": 'text',
+            "sender": None,
+            "createdAt": datetime.now()
+        })
 
         return {"question": question["question"]}, 200
 
