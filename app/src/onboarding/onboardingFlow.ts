@@ -43,20 +43,39 @@ const onboardingFlow: OnboardingFlow = {
       message: "Next, what's your gender?",
       input: { name: 'gender', type: 'options', values: ['Male', 'Female'] },
       route: {
-        next: 'gender-prompt-success',
+        next: 'age-prompt',
         failure: 'gender-prompt-failure'
       }
-    },
-    'gender-prompt-success': {
-      message: 'Great!',
-      route: { next: 'photo-prompt' }
     },
     'gender-prompt-failure': {
       message: 'Please choose one of the options.',
       input: { name: 'gender', type: 'options', values: ['Male', 'Female'] },
+      route: { next: 'age-prompt' }
+    },
+    'age-prompt': {
+      message: 'And how old are you?',
+      input: { name: 'age', type: 'text' },
       route: {
-        next: 'gender-prompt-success'
+        next: 'age-prompt-success',
+        failure: 'age-prompt-failure',
+        tooYoung: 'age-too-young'
       }
+    },
+    'age-prompt-success': {
+      message: 'Great!',
+      route: { next: 'photo-prompt' }
+    },
+    'age-prompt-failure': {
+      message: 'Please choose one of the options.',
+      input: { name: 'age', type: 'text' },
+      route: {
+        next: 'age-prompt-success',
+        tooYoung: 'age-too-young'
+      }
+    },
+    'age-too-young': {
+      message: 'Unfortunately, you need to be at least 18 to use Aida.',
+      route: {}
     },
     'photo-prompt': {
       message:

@@ -204,6 +204,24 @@ export default function useAida(): AidaResponse {
               .update({ name: text })
           }
 
+          if (input.name === 'age') {
+            // Make sure text is a number
+            if (isNaN(Number(text))) {
+              nextOnboardingMessage(route.failure)
+              return
+            }
+
+            if (Number(text) < 18) {
+              nextOnboardingMessage(route.tooYoung)
+              return
+            }
+
+            await firestore()
+              .collection('users')
+              .doc(currentUser.uid)
+              .update({ age: text })
+          }
+
           onboarding.context[input.name] = text
           nextOnboardingMessage(route.next)
         } else {
