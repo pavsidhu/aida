@@ -55,6 +55,8 @@ export default function useAida(): AidaResponse {
                   text: data.type === MessageType.TEXT ? data.content : '',
                   image:
                     data.type === MessageType.PHOTO ? data.content : undefined,
+                  match:
+                    data.type === MessageType.MATCH ? data.content : undefined,
                   user: { _id: data.sender ? data.sender.id : 0 },
                   createdAt: new Date(data.createdAt._seconds * 1000)
                 }

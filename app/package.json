@@ -35,6 +35,7 @@
     "react-native-twitter-signin": "^1.1.1",
     "react-native-vector-icons": "^6.6.0",
     "react-navigation": "^4.0.10",
+    "react-navigation-hooks": "^1.1.0",
     "react-navigation-material-bottom-tabs": "^2.1.5",
     "react-navigation-stack": "^1.10.3",
     "styled-components": "^4.4.1"

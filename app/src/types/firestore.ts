@@ -8,6 +8,7 @@ interface FirestoreTimestamp {
 export interface UserDoc {
   id: string
   name: string
+  age: string
   photo: string
   location: {
     _latitude: number
@@ -41,5 +42,6 @@ export interface MessageDoc {
 
 export enum MessageType {
   'TEXT' = 'text',
-  'PHOTO' = 'photo'
+  'PHOTO' = 'photo',
+  'MATCH' = 'match'
 }

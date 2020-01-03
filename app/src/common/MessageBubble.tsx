@@ -4,6 +4,8 @@ import { createAnimatableComponent } from 'react-native-animatable'
 import GFBubble from 'react-native-gifted-chat/lib/Bubble'
 
 import colors from '../colors'
+import MatchBubble from './MatchBubble'
+import CustomIMessage from '../types/CustomIMessage'
 
 interface PositionProps {
   bubblePosition: 'left' | 'right'
@@ -29,7 +31,6 @@ const TextBubble = styled.Text<PositionProps>`
   padding: 12px 16px;
   border-radius: 18px;
   font-size: 16px;
-  elevation: 1;
 
   ${props =>
     props.bubblePosition === 'left'
@@ -69,19 +70,24 @@ const PhotoBubble = styled.Image<PositionProps>`
 
 export default function MessageBubble(props: GFBubble['props']) {
   function renderBubble() {
-    if (props.currentMessage?.image) {
+    const message = props.currentMessage as CustomIMessage
+
+    if (!message) return null
+
+    if (message.image) {
       return (
         <PhotoBubble
           bubblePosition={props.position}
-          source={{ uri: props.currentMessage?.image }}
+          source={{ uri: message.image }}
         />
       )
     }
+    if (message.match) {
+      return <MatchBubble id={message.match} />
+    }
 
     return (
-      <TextBubble bubblePosition={props.position}>
-        {props.currentMessage?.text}
-      </TextBubble>
+      <TextBubble bubblePosition={props.position}>{message.text}</TextBubble>
     )
   }
 
