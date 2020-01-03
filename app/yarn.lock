@@ -7156,6 +7156,14 @@ react-native-maps@~0.25.0:
   resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.25.0.tgz#81bc51eb50e33811a9e1c345cc48869413ead67d"
   integrity sha512-PFJuW1pt+HnnnN0m0OGk29RSvICFVkK/DScX6cUk0SuCSN2DAHx0y6y57lZyYXcYqU4J4usNpfxgp/ccjASDiw==
 
+react-native-notifications@^2.0.6:
+  version "2.1.7"
+  resolved "https://registry.yarnpkg.com/react-native-notifications/-/react-native-notifications-2.1.7.tgz#ef836f6f8c12bdc5103598035590347811426a70"
+  integrity sha512-m9jfpobP1BpqG2w6pN2kKzKJt2bqrLIRS3QAuH0MU0dpRwib/4ehaAUKOiFj+xVCtuKHALpceb97FHuA0i4dkw==
+  dependencies:
+    core-js "^1.0.0"
+    uuid "^2.0.3"
+
 react-native-paper@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/react-native-paper/-/react-native-paper-3.1.1.tgz#971f3097eecb4c061bf10768182b8985442a45ab"
@@ -8598,6 +8606,11 @@ uuid@3.3.3, uuid@^3.3.2:
   version "3.3.3"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.3.tgz#4568f0216e78760ee1dbf3a4d2cf53e224112866"
   integrity sha512-pW0No1RGHgzlpHJO1nsVrHKpOEIxkGg1xB+v0ZmdNH5OAeAwzAVrCnI2/6Mtx+Uys6iaylxa+D3g4j63IKKjSQ==
+
+uuid@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-2.0.3.tgz#67e2e863797215530dff318e5bf9dcebfd47b21a"
+  integrity sha1-Z+LoY3lyFVMN/zGOW/nc6/1Hsho=
 
 validate-npm-package-license@^3.0.1:
   version "3.0.4"
