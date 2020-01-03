@@ -9,7 +9,7 @@ class QuestioningStore {
 
   generateNextQuestionTime() {
     this.nextQuestionTime =
-      new Date().getTime() / 1000 +
+      new Date().getTime() +
       MINIMUM_QUESTION_TIME +
       Math.random() * QUESTION_TIME_RANGE
   }

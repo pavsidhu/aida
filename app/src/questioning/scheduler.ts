@@ -1,5 +1,4 @@
 import auth from '@react-native-firebase/auth'
-import { firebase } from '@react-native-firebase/messaging'
 import BackgroundTimer from 'react-native-background-timer'
 import config from '../../config'
 import onboardingStore from '../onboarding/onboardingStore'
@@ -14,9 +13,7 @@ BackgroundTimer.setInterval(async () => {
     return
   }
 
-  questioningStore.generateNextQuestionTime()
-
-  const unixTimestamp = new Date().getTime() / 1000
+  const unixTimestamp = new Date().getTime()
 
   // Check is message time in past
   if (questioningStore.nextQuestionTime <= unixTimestamp) {
