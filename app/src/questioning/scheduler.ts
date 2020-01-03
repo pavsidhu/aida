@@ -1,4 +1,5 @@
 import auth from '@react-native-firebase/auth'
+import { NotificationsAndroid } from 'react-native-notifications'
 import BackgroundTimer from 'react-native-background-timer'
 import config from '../../config'
 import onboardingStore from '../onboarding/onboardingStore'
@@ -25,15 +26,13 @@ BackgroundTimer.setInterval(async () => {
       headers: { Authorization: 'Bearer ' + idToken }
     })
 
+    const data = await response.json()
+
     if (response.status === 200) {
-      const notification = new firebase.notifications.Notification()
-        .setNotificationId('notificationId')
-        .setTitle('My notification title')
-        .setBody('My notification body')
-        .setData({
-          key1: 'value1',
-          key2: 'value2'
-        })
+      NotificationsAndroid.localNotification({
+        title: 'Aida',
+        body: data.question
+      })
 
       questioningStore.generateNextQuestionTime()
     }
