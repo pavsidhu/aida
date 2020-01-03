@@ -40,7 +40,7 @@ def get_question(user_id):
         for doc in asked_questions_ref.where("user_id", "==", user_id).stream()
     ]
 
-    user = user_ref.get(user_id).to_dict()
+    user = user_ref.document(user_id).stream().to_dict()
     messages_ref = user_ref.document(user_id).collection('messages')
 
     # Fetch all the questions
