@@ -2,7 +2,6 @@ import React from 'react'
 import { NativeModules, StatusBar } from 'react-native'
 import styled from 'styled-components/native'
 import auth from '@react-native-firebase/auth'
-import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 
 import config from '../config'
@@ -11,9 +10,10 @@ import logo from './images/logo.png'
 
 const { RNTwitterSignIn } = NativeModules
 
-const Container = styled(LinearGradient)`
+const Container = styled.View`
   flex: 1;
   padding: 24px;
+  background-color: ${colors.purple};
 `
 
 const TitleSection = styled.View`
@@ -46,10 +46,10 @@ const Subtitle = styled.Text`
 const Button = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
-  background: rgba(255, 255, 255, 0.4);
+  background: ${colors.white};
   padding: 20px;
   align-items: center;
-  border-radius: 15px;
+  border-radius: 18px;
 `
 
 const TwitterIcon = styled(Icon)`
@@ -84,7 +84,7 @@ export default function SignIn() {
   }
 
   return (
-    <Container colors={[colors.purpleDark, colors.purple, colors.purpleLight]}>
+    <Container>
       <StatusBar translucent={true} backgroundColor="transparent" />
 
       <TitleSection>
