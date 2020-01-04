@@ -50,6 +50,7 @@ const Button = styled.TouchableOpacity`
   padding: 20px;
   align-items: center;
   border-radius: 18px;
+  elevation: 10;
 `
 
 const TwitterIcon = styled(Icon)`
