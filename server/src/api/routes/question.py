@@ -3,10 +3,10 @@ import random
 import re
 from datetime import datetime
 
+from firebase_admin import firestore
 from flask import Blueprint
 
-from firebase_admin import firestore
-from src.decorators import auth_required
+from src.api.decorators import auth_required
 
 blueprint = Blueprint("question", __name__, url_prefix="/question")
 
@@ -23,7 +23,7 @@ def parseMessage(message, user):
     for tag in tags:
         data = user.get(tag)
 
-        if (data):
+        if data:
             message.replace("{{tag}}", data)
 
     return message
@@ -41,11 +41,10 @@ def get_question(user_id):
     ]
 
     user = user_ref.document(user_id).stream().to_dict()
-    messages_ref = user_ref.document(user_id).collection('messages')
+    messages_ref = user_ref.document(user_id).collection("messages")
 
     # Fetch all the questions
-    questions = [{**doc.to_dict(), **{"id": doc.id}}
-                 for doc in questions_ref.stream()]
+    questions = [{**doc.to_dict(), **{"id": doc.id}} for doc in questions_ref.stream()]
 
     for question in questions:
         # Check if the question has been asked
@@ -53,16 +52,17 @@ def get_question(user_id):
             continue
 
         # Record the question as being asked
-        asked_questions_ref.add(
-            {"user_id": user_id, "question_id": question["id"]})
+        asked_questions_ref.add({"user_id": user_id, "question_id": question["id"]})
 
         # Add the question to the user's messages
-        messages_ref.add({
-            "content": parseMessage(question["question"], user),
-            "type": 'text',
-            "sender": None,
-            "createdAt": datetime.now()
-        })
+        messages_ref.add(
+            {
+                "content": parseMessage(question["question"], user),
+                "type": "text",
+                "sender": None,
+                "createdAt": datetime.now(),
+            }
+        )
 
         return {"question": question["question"]}, 200
 

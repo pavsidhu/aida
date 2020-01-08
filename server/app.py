@@ -11,8 +11,9 @@ firebase_admin.initialize_app()
 app = Flask(__name__)
 app.logger.setLevel(logging.ERROR)
 
-from src.question import blueprint as question
+from src.api.routes.question
 
 app.register_blueprint(question)
 
-app.run(host='0.0.0.0')
+if __name__ == "__main__":
+    app.run(host="0.0.0.0")
