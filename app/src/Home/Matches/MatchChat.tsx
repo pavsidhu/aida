@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components/native'
+import { useNavigation } from 'react-navigation-hooks'
+import { NavigationStackProp } from 'react-navigation-stack'
 import firestore, {
   FirebaseFirestoreTypes
 } from '@react-native-firebase/firestore'
 import auth from '@react-native-firebase/auth'
 import storage from '@react-native-firebase/storage'
-import { NavigationStackScreenProps } from 'react-navigation-stack'
 import { GiftedChat, IMessage } from 'react-native-gifted-chat'
 
 import { MessageBubble, MessageInput } from '../../common'
@@ -27,12 +28,12 @@ const LoadingIndicator = styled.ActivityIndicator`
   align-self: center;
 `
 
-export default function MatchChat(props: NavigationStackScreenProps) {
-  const id = props.navigation.getParam('id')
-
-  const [loading, setLoading] = useState(true)
+export default function MatchChat() {
+  const navigation = useNavigation()
+  const id = navigation.getParam('id')
   const [match, setMatch] = useState<MatchDoc>()
   const [messages, setMessages] = useState<IMessage[]>()
+  const [loading, setLoading] = useState(true)
   const { currentUser } = auth()
 
   if (!currentUser) return null
@@ -82,7 +83,7 @@ export default function MatchChat(props: NavigationStackScreenProps) {
       user => user.id !== currentUser.uid
     )
 
-    props.navigation.setParams({ title: matchedUser?.name })
+    navigation.setParams({ title: matchedUser?.name })
 
     const unsubscribe = firestore()
       .collection('matches')
@@ -150,6 +151,10 @@ export default function MatchChat(props: NavigationStackScreenProps) {
   )
 }
 
-MatchChat.navigationOptions = ({ navigation }) => ({
+MatchChat.navigationOptions = ({
+  navigation
+}: {
+  navigation: NavigationStackProp
+}) => ({
   title: navigation.getParam('title')
 })

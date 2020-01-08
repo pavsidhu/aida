@@ -77,7 +77,7 @@ interface Props {
 export default function MatchBubble(props: Props) {
   const { navigate } = useNavigation()
 
-  const [loading, setLoading] = useState<boolean>(true)
+  const [loading, setLoading] = useState(true)
   const [match, setMatch] = useState<MatchDoc>()
 
   const { currentUser } = auth()
