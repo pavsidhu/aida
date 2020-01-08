@@ -16,7 +16,7 @@ export interface UserDoc {
   }
   interests: string[]
   personality: {
-    extraversion: number
+    extroversion: number
     agreeableness: number
     openness: number
     conscientiousness: number
