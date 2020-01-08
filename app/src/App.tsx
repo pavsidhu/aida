@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { StatusBar, Alert } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 import Geolocation from 'react-native-geolocation-service'
 import {
@@ -9,12 +10,13 @@ import {
 import auth from '@react-native-firebase/auth'
 import firestore from '@react-native-firebase/firestore'
 import { create } from 'mobx-persist'
+import { Dialogflow_V2 } from 'react-native-dialogflow'
 
 import Home from './Home'
 import SignIn from './SignIn'
 import onboardingStore from './onboarding/onboardingStore'
-import { StatusBar, Alert } from 'react-native'
 import colors from './colors'
+import config from '../config'
 import './questioning/scheduler'
 
 const hydrate = create({ storage: AsyncStorage })
@@ -31,6 +33,13 @@ function App(props: NavigationContainerProps) {
 
   useEffect(() => {
     hydrate('onboarding', onboardingStore).then(() => setHydrated(true))
+
+    Dialogflow_V2.setConfiguration(
+      config.dialogflow.serviceAccount,
+      config.dialogflow.privateKey,
+      Dialogflow_V2.LANG_ENGLISH_GB,
+      config.dialogflow.projectId
+    )
   }, [])
 
   useEffect(

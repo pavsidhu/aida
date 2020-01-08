@@ -9,6 +9,7 @@ import { IMessage } from 'react-native-gifted-chat'
 
 import onboardingStore from '../onboarding/onboardingStore'
 import { MessageDoc, MessageType } from '../types/firestore'
+import { Dialogflow_V2 } from 'react-native-dialogflow'
 
 const WORDS_PER_MINUTE = 200
 const MESSAGE_DELAY = 1500
@@ -191,45 +192,71 @@ export default function useAida(): AidaResponse {
       if (!currentUser) return
 
       const text = message.text.trim()
+
+      const messages_ref = firestore()
+        .collection('users')
+        .doc(currentUser.uid)
+        .collection('messages')
+
+      Dialogflow_V2.requestQuery(
+        text,
+        result =>
+          messages_ref.add({
+            content: (result as any).queryResult.fulfillmentText,
+            sender: null,
+            type: MessageType.TEXT,
+            createdAt: new Date()
+          }),
+        error =>
+          messages_ref.add({
+            content:
+              "Sorry I can't connect to the internet right now, please try again soon 😢",
+            sender: null,
+            type: MessageType.TEXT,
+            createdAt: new Date()
+          })
+      )
+    }
+
+    async function handleOnboardingTextInput(message: IMessage) {
+      const text = message.text.trim()
       const { route, input } = onboarding.currentMessage
 
-      if (input && route.next && route.failure) {
-        if (text !== '') {
-          if (input.name === 'name') {
-            await currentUser.updateProfile({
-              displayName: text
-            })
+      if (text === '') nextOnboardingMessage(route.failure)
 
-            await firestore()
-              .collection('users')
-              .doc(currentUser.uid)
-              .update({ name: text })
-          }
+      if (!currentUser || !input) return
 
-          if (input.name === 'age') {
-            // Make sure text is a number
-            if (isNaN(Number(text))) {
-              nextOnboardingMessage(route.failure)
-              return
-            }
+      if (input.name === 'name') {
+        await currentUser.updateProfile({
+          displayName: text
+        })
 
-            if (Number(text) < 18) {
-              nextOnboardingMessage(route.tooYoung)
-              return
-            }
-
-            await firestore()
-              .collection('users')
-              .doc(currentUser.uid)
-              .update({ age: text })
-          }
-
-          onboarding.context[input.name] = text
-          nextOnboardingMessage(route.next)
-        } else {
-          nextOnboardingMessage(route.failure)
-        }
+        await firestore()
+          .collection('users')
+          .doc(currentUser.uid)
+          .update({ name: text })
       }
+
+      if (input.name === 'age') {
+        // Make sure text is a number
+        if (isNaN(Number(text))) {
+          nextOnboardingMessage(route.failure)
+          return
+        }
+
+        if (Number(text) < 18) {
+          nextOnboardingMessage(route.tooYoung)
+          return
+        }
+
+        await firestore()
+          .collection('users')
+          .doc(currentUser.uid)
+          .update({ age: text })
+      }
+
+      onboarding.context[input.name] = text
+      nextOnboardingMessage(route.next)
     }
 
     async function addMessage(message: IMessage) {
@@ -250,8 +277,10 @@ export default function useAida(): AidaResponse {
           createdAt: message.createdAt
         })
 
-      if (onboarding.isOnboarding && message.user._id === currentUser.uid)
-        await handleTextInput(message)
+      if (message.user._id === currentUser.uid)
+        onboarding.isOnboarding
+          ? handleOnboardingTextInput(message)
+          : handleTextInput(message)
     }
 
     return [
