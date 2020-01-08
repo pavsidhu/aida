@@ -10,6 +10,9 @@ const config = {
     serviceAccount: '',
     privateKey: '',
     projectId: ''
+  },
+  googleMaps: {
+    apiKey: ''
   }
 }
 

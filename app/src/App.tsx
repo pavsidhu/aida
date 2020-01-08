@@ -11,6 +11,7 @@ import auth from '@react-native-firebase/auth'
 import firestore from '@react-native-firebase/firestore'
 import { create } from 'mobx-persist'
 import { Dialogflow_V2 } from 'react-native-dialogflow'
+import Geocoder from 'react-native-geocoding'
 
 import Home from './Home'
 import SignIn from './SignIn'
@@ -25,6 +26,8 @@ const Navigator = createSwitchNavigator({
   Home: { screen: Home },
   SignIn: { screen: SignIn }
 })
+
+Geocoder.init(config.googleMaps.apiKey)
 
 function App(props: NavigationContainerProps) {
   const [initialised, setInitialised] = useState(false)
