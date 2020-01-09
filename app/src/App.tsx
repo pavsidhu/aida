@@ -17,7 +17,6 @@ import SignIn from './SignIn'
 import onboardingStore from './onboarding/onboardingStore'
 import colors from './colors'
 import config from '../config'
-import './questioning/scheduler'
 
 const hydrate = create({ storage: AsyncStorage })
 
