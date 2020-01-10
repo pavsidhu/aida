@@ -2,6 +2,9 @@ const config = {
   server: {
     url: ''
   },
+  firebase: {
+    senderId: ''
+  },
   twitter: {
     consumerKey: '',
     consumerSecret: ''
