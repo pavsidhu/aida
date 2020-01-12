@@ -6,6 +6,7 @@ from datetime import datetime
 from flask import Blueprint
 
 from aida.api.decorators import auth_required
+from aida.scheduler.questions import start_question_scheduler
 
 blueprint = Blueprint("routes", __name__, url_prefix="/")
 
@@ -14,6 +15,7 @@ blueprint = Blueprint("routes", __name__, url_prefix="/")
 @auth_required
 def start_questions(user_id):
     """Start scheduling questions to ask the user"""
+    start_question_scheduler(user_id)
     return {}, 200
 
 
