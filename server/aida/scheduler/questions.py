@@ -20,7 +20,7 @@ QUESTION_TIME_RANGE = 300
 def start_question_scheduler(user_id):
     """Schedules sending a question to the user"""
     minutes = random.randint(MIN_QUESTION_TIME, MIN_QUESTION_TIME + QUESTION_TIME_RANGE)
-    scheduler.enqueue_in(timedelta(seconds=10), send_question, user_id)
+    scheduler.enqueue_in(timedelta(minutes=minutes), send_question, user_id)
 
 
 def send_question(user_id):
