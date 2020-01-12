@@ -1519,13 +1519,6 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/geolocation/-/geolocation-1.4.2.tgz#7228c6d37c2f55017af9c49c2b9ad586d9bcb9f8"
   integrity sha512-9x9dHDeUXnh2larA4zTT3y/tXPmRnysh5o9fsNbGcnUKPj1BUCIHnGGPxEIDnwP1DNIMP2DN9DmuMHImtTbX6A==
 
-"@react-native-community/push-notification-ios@^1.0.1":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@react-native-community/push-notification-ios/-/push-notification-ios-1.0.3.tgz#cd2c7f29aeeb431942eda0bd729738fd2b444ae9"
-  integrity sha512-f+Y3lFLt5OBWHDtGHE+PiZH4aLeS8w2D47c0G/S5XpzeGoEeggOiALtou/r6raiVLP+D5CrLkIBMs2U2+LGJhw==
-  dependencies:
-    invariant "^2.2.4"
-
 "@react-native-firebase/app-types@6.2.0":
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/app-types/-/app-types-6.2.0.tgz#4d3c0e7fa4e4f00061c52b1a32d76e85e5db9f2c"
@@ -1690,11 +1683,6 @@
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/@types/react-native-dialogflow/-/react-native-dialogflow-3.2.1.tgz#546824afb4f43ed17fbb5a4b2de87394129a83eb"
   integrity sha512-P3yc5uvRTlaeHlKob/Bv3ugcanvSXJ/dYgZfDSTWK5WUxWSDcokCxMnE+393enA7KBjlchM78Ro5WFYwp3GDuw==
-
-"@types/react-native-push-notification@^3.0.7":
-  version "3.0.7"
-  resolved "https://registry.yarnpkg.com/@types/react-native-push-notification/-/react-native-push-notification-3.0.7.tgz#eeced67f709918c237698ce261f296f469236a4d"
-  integrity sha512-7UNlO635Lew05Os/Ex+wzMTDI7XpDYbuGNGwFDfIXvZOGUVoUcyKC6GNy28hfViM9iAT3rQ3K9fDTcW2fqVRnQ==
 
 "@types/react-native-vector-icons@^6.4.4":
   version "6.4.4"
@@ -7199,13 +7187,6 @@ react-native-paper@^3.1.1:
   resolved "https://github.com/EvanBacon/react-native-parsed-text.git#f55c4713c62961f13a2eec99cbc1ec619615ee72"
   dependencies:
     prop-types "^15.5.10"
-
-react-native-push-notification@^3.1.9:
-  version "3.1.9"
-  resolved "https://registry.yarnpkg.com/react-native-push-notification/-/react-native-push-notification-3.1.9.tgz#760ee06e743fef74fc9fcb672dac40794fdc4c47"
-  integrity sha512-YpEg9AYBjNgJtHRgHKR0xPB7kk3Gj0uSjUxd0feOIvd7wrfR+zeiBM4NZonGmjlAG6thaE37dfAG5qcsONFM7w==
-  dependencies:
-    "@react-native-community/push-notification-ios" "^1.0.1"
 
 react-native-reanimated@^1.3.2:
   version "1.3.2"
