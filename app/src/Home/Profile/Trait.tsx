@@ -5,7 +5,6 @@ import colors from '../../colors'
 const Container = styled.View`
   align-items: center;
   justify-content: center;
-  background: ${colors.lilac};
   margin-bottom: 16px;
 `
 
