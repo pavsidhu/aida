@@ -3,7 +3,7 @@ import random
 from datetime import datetime, timedelta
 
 import firebase_admin
-from firebase_admin import firestore
+from firebase_admin import firestore, messaging
 from redis import Redis
 from rq import Queue
 from rq_scheduler import Scheduler
@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 redis = Redis()
 scheduler = Scheduler(connection=redis)
 
-MINIMUM_QUESTION_TIME = 30
+MIN_QUESTION_TIME = 30
 QUESTION_TIME_RANGE = 300
 
 
@@ -32,8 +32,14 @@ def send_question(user_id):
     question = fetch_random_question(db, user_id)
 
     if question:
+        # Get user
+        user = db.collection("users").document(user_id).get().to_dict()
+
         # Add question to messages with Aida
-        add_question_to_messages(db, user_id, question)
+        add_question_to_messages(db, user, user_id, question)
+
+        # Send a notification to the user's device
+        send_notification(db, user, question)
 
         # Schedule the next question
         start_question_scheduler(user_id)
@@ -72,10 +78,7 @@ def fetch_random_question(db, user_id):
     return None
 
 
-def add_question_to_messages(db, user_id, question):
-    # Get user
-    user = db.collection("users").document(user_id).get().to_dict()
-
+def add_question_to_messages(db, user, user_id, question):
     """Add the question to the user's messages"""
     db.collection("users").document(user_id).collection("messages").add(
         {
@@ -87,13 +90,25 @@ def add_question_to_messages(db, user_id, question):
     )
 
 
+def send_notification(db, user, question):
+    """Sends a notification to the user's device"""
+    messaging.send(
+        messaging.Message(
+            notification=messaging.Notification(title="Aida", body=question),
+            token=user["notificationToken"],
+        )
+    )
+
+
 def parseMessage(message, user):
+    """Replace entities in a message"""
+    print(message, user.get("name"))
     tags = re.findall("{{(.*?)}}", message)
 
     for tag in tags:
         data = user.get(tag)
 
         if data:
-            message.replace("{{tag}}", data)
+            message = message.replace("{{" + tag + "}}", data)
 
     return message
