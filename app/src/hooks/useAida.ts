@@ -4,12 +4,14 @@ import ImagePicker, { Image } from 'react-native-image-crop-picker'
 import auth from '@react-native-firebase/auth'
 import storage from '@react-native-firebase/storage'
 import firestore from '@react-native-firebase/firestore'
+import messaging from '@react-native-firebase/messaging'
 import { useObserver, useObservable } from 'mobx-react-lite'
+import { Dialogflow_V2 } from 'react-native-dialogflow'
 import { IMessage } from 'react-native-gifted-chat'
 
 import onboardingStore from '../onboarding/onboardingStore'
 import { MessageDoc, MessageType } from '../types/firestore'
-import { Dialogflow_V2 } from 'react-native-dialogflow'
+import config from '../../config'
 
 const WORDS_PER_MINUTE = 200
 const MESSAGE_DELAY = 1500
@@ -72,7 +74,13 @@ export default function useAida(): AidaResponse {
       return unsubscribe
     }, [])
 
-    function nextOnboardingMessage(next: string) {
+    function nextOnboardingMessage(next?: string) {
+      // If no next onboarding has finished
+      if (!next) {
+        finishOnboarding()
+        return
+      }
+
       if (!currentUser) return
 
       // Fetch the next onboarding message
@@ -99,6 +107,20 @@ export default function useAida(): AidaResponse {
       setTimeout(() => {
         if (!input) nextOnboardingMessage(route.next)
       }, calculateReadingTime(message))
+    }
+
+    async function finishOnboarding() {
+      onboarding.isOnboarding = false
+
+      const idToken = await auth().currentUser?.getIdToken()
+
+      if (idToken) {
+        await fetch(`${config.server.url}/questions/start`, {
+          headers: { Authorization: 'Bearer ' + idToken }
+        })
+
+        if (!messaging().hasPermission()) messaging().requestPermission()
+      }
     }
 
     async function setGender(gender: string) {

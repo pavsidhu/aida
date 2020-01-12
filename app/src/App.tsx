@@ -9,15 +9,16 @@ import {
 } from 'react-navigation'
 import auth from '@react-native-firebase/auth'
 import firestore from '@react-native-firebase/firestore'
-import { create } from 'mobx-persist'
+import messaging from '@react-native-firebase/messaging'
 import { Dialogflow_V2 } from 'react-native-dialogflow'
+import { create } from 'mobx-persist'
+import { useObservable } from 'mobx-react-lite'
 
 import Home from './Home'
 import SignIn from './SignIn'
-import onboardingStore from './onboarding/onboardingStore'
 import colors from './colors'
 import config from '../config'
-import './notifications'
+import onboardingStore from './onboarding/onboardingStore'
 
 const hydrate = create({ storage: AsyncStorage })
 
@@ -30,6 +31,7 @@ function App(props: NavigationContainerProps) {
   const [initialised, setInitialised] = useState(false)
   const [hydrated, setHydrated] = useState(false)
   const { currentUser } = auth()
+  const onboarding = useObservable(onboardingStore)
 
   useEffect(() => {
     hydrate('onboarding', onboardingStore).then(() => setHydrated(true))
@@ -51,10 +53,20 @@ function App(props: NavigationContainerProps) {
     []
   )
 
-  // Update user's location everytime the app is launched
   useEffect(() => {
-    if (!currentUser) return
+    if (!currentUser || onboarding.isOnboarding) return
 
+    // Update FCM token on launch
+    messaging()
+      .getToken()
+      .then(token => {
+        firestore()
+          .collection('users')
+          .doc(currentUser.uid)
+          .update({ notificationToken: token })
+      })
+
+    // Update user's location on launch
     Geolocation.getCurrentPosition(
       position =>
         firestore()
@@ -73,7 +85,7 @@ function App(props: NavigationContainerProps) {
         ),
       { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
     )
-  }, [currentUser])
+  }, [currentUser, onboarding.isOnboarding])
 
   return (
     initialised &&

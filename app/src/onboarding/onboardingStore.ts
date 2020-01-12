@@ -24,13 +24,7 @@ class OnboardingStore {
     return this.isOnboarding && this.step === onboardingFlow.start
   }
 
-  nextMessage(next?: string) {
-    // If there's no route, assume onboarding has finished
-    if (!next) {
-      this.isOnboarding = false
-      return undefined
-    }
-
+  nextMessage(next: string) {
     this.step = next
     return this.currentMessage
   }
