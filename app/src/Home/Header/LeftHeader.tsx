@@ -7,11 +7,14 @@ import { NavigationStackScreenProps } from 'react-navigation-stack'
 import { useObservable, useObserver } from 'mobx-react-lite'
 
 import onboardingStore from '../../onboarding/onboardingStore'
+import colors from '../../colors'
 
 const ProfileIcon = styled.Image`
   width: 32px;
   height: 32px;
   border-radius: 32px;
+  border-width: 1px;
+  border-color: ${colors.purple};
 `
 
 export default function LeftHeader(props: NavigationStackScreenProps) {
