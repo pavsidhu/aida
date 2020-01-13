@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { NativeModules, StatusBar } from 'react-native'
 import styled from 'styled-components/native'
 import auth from '@react-native-firebase/auth'
@@ -68,12 +68,14 @@ const ButtonText = styled.Text`
 `
 
 export default function SignIn() {
-  async function continueWithTwitter() {
+  useEffect(() => {
     RNTwitterSignIn.init(
       config.twitter.consumerKey,
       config.twitter.consumerSecret
     )
+  }, [])
 
+  async function continueWithTwitter() {
     const { authToken, authTokenSecret } = await RNTwitterSignIn.logIn()
     const credential = auth.TwitterAuthProvider.credential(
       authToken,
