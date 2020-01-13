@@ -52,30 +52,36 @@ const generateTabBarIcon = (name: string, focused: boolean) => (
 const Tabs = createMaterialBottomTabNavigator(
   {
     Aida: {
-      screen: createStackNavigator({
-        Chat: {
-          screen: Chat,
-          navigationOptions: navigationOptions({ title: 'Aida' })
-        }
-      }),
+      screen: createStackNavigator(
+        {
+          Chat: {
+            screen: Chat,
+            navigationOptions: navigationOptions({ title: 'Aida' })
+          }
+        },
+        { headerLayoutPreset: 'center' }
+      ),
       navigationOptions: {
         tabBarIcon: props => generateTabBarIcon('chat-bubble', props.focused)
       }
     },
     Matches: {
-      screen: createStackNavigator({
-        Matches: {
-          screen: Matches,
-          navigationOptions: navigationOptions({ title: 'Matches' })
+      screen: createStackNavigator(
+        {
+          Matches: {
+            screen: Matches,
+            navigationOptions: navigationOptions({ title: 'Matches' })
+          },
+          MatchChat: {
+            screen: MatchChat,
+            navigationOptions: navigationOptions({
+              headerLeft: false,
+              headerRight: false
+            })
+          }
         },
-        MatchChat: {
-          screen: MatchChat,
-          navigationOptions: navigationOptions({
-            headerLeft: false,
-            headerRight: false
-          })
-        }
-      }),
+        { headerLayoutPreset: 'center' }
+      ),
       navigationOptions: {
         tabBarIcon: props => generateTabBarIcon('people', props.focused)
       }
