@@ -1,8 +1,9 @@
 black
-pylint
-Flask==1.1.1
-python-dotenv==0.10.1
 firebase-admin==3.1.0
-rq==1.2.0
-rq-scheduler==0.9.1
+Flask==1.1.1
+pylint
+python-dotenv==0.10.1
 redis==3.3.11
+rq-scheduler==0.9.1
+rq==1.2.0
+twitter-scraper==0.3.0
