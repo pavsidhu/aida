@@ -5,10 +5,9 @@ import auth from '@react-native-firebase/auth'
 import firestore from '@react-native-firebase/firestore'
 import storage from '@react-native-firebase/storage'
 
-import Trait from './Trait'
-import colors from '../../colors'
-import getCity from '../../util/getCity'
-import { UserDoc } from '../../types/firestore'
+import colors from '../colors'
+import getCity from '../util/getCity'
+import { UserDoc } from '../types/firestore'
 
 const Container = styled.View`
   flex: 1;
@@ -65,11 +64,19 @@ const AnalysisTitle = styled.Text`
   font-size: 22px;
   font-weight: bold;
   color: ${colors.black};
-  margin: 24px 0;
+  margin-top: 24px;
 `
 
-const Traits = styled.View`
-  margin-bottom: 16px;
+const TraitTitle = styled.Text`
+  font-size: 18px;
+  font-weight: bold;
+  color: ${colors.black};
+  margin-top: 16px;
+`
+
+const TraitDescription = styled.Text`
+  font-size: 16px;
+  color: ${colors.black};
 `
 
 export default function Profile() {
@@ -118,38 +125,26 @@ export default function Profile() {
             <AnalysisTitle>Your Analysis</AnalysisTitle>
 
             {user.personality && (
-              <Traits>
-                <Trait
-                  name="Extroversion"
-                  leftName="Introverted"
-                  rightName="Extroverted"
-                  value={user.personality.extroversion}
-                />
-                <Trait
-                  name="Agreeableness"
-                  leftName="Disagreeable"
-                  rightName="Agreeable"
-                  value={user.personality.agreeableness}
-                />
-                <Trait
-                  name="Openness"
-                  leftName="Close-Minded"
-                  rightName="Open-Minded"
-                  value={user.personality.openness}
-                />
-                <Trait
-                  name="Conscientiousness"
-                  leftName="Disorganised"
-                  rightName="Organised"
-                  value={user.personality.conscientiousness}
-                />
-                <Trait
-                  name="Neuroticism"
-                  leftName="Relaxed"
-                  rightName="Nervous"
-                  value={user.personality.neuroticism}
-                />
-              </Traits>
+              <>
+                <TraitTitle>Extroversion</TraitTitle>
+                <TraitDescription>
+                  {user.personality.extroversion}
+                </TraitDescription>
+                <TraitTitle>Agreeableness</TraitTitle>
+                <TraitDescription>
+                  {user.personality.agreeableness}
+                </TraitDescription>
+                <TraitTitle>Openness</TraitTitle>
+                <TraitDescription>{user.personality.openness}</TraitDescription>
+                <TraitTitle>Conscientiousness</TraitTitle>
+                <TraitDescription>
+                  {user.personality.conscientiousness}
+                </TraitDescription>
+                <TraitTitle>Neuroticism</TraitTitle>
+                <TraitDescription>
+                  {user.personality.neuroticism}
+                </TraitDescription>
+              </>
             )}
           </Analysis>
         </>
