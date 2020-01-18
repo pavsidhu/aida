@@ -9,9 +9,9 @@ from copy import deepcopy
 import numpy as np
 from sklearn.model_selection import train_test_split
 
-from aida.personality_analysis.deepmoji.create_vocab import extend_vocab, VocabBuilder
-from aida.personality_analysis.deepmoji.global_variables import SPECIAL_TOKENS
-from aida.personality_analysis.deepmoji.word_generator import WordGenerator
+from deepmoji.create_vocab import extend_vocab, VocabBuilder
+from deepmoji.global_variables import SPECIAL_TOKENS
+from deepmoji.word_generator import WordGenerator
 
 
 class SentenceTokenizer():

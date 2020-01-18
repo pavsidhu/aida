@@ -13,12 +13,12 @@ from keras.optimizers import Adam
 from keras.utils.np_utils import to_categorical
 from sklearn.metrics import f1_score
 
-from aida.personality_analysis.deepmoji.global_variables import (
+from deepmoji.global_variables import (
     FINETUNING_METHODS,
     FINETUNING_METRICS,
     WEIGHTS_DIR)
-from aida.personality_analysis.deepmoji.sentence_tokenizer import SentenceTokenizer
-from aida.personality_analysis.deepmoji.tokenizer import tokenize
+from deepmoji.sentence_tokenizer import SentenceTokenizer
+from deepmoji.tokenizer import tokenize
 
 
 def load_benchmark(path, vocab, extend_with=0):

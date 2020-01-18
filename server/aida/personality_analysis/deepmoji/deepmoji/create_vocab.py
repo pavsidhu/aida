@@ -6,9 +6,9 @@ from copy import deepcopy
 
 import numpy as np
 
-from aida.personality_analysis.deepmoji.filter_utils import is_special_token
-from aida.personality_analysis.deepmoji.global_variables import SPECIAL_TOKENS, VOCAB_PATH
-from aida.personality_analysis.deepmoji.word_generator import WordGenerator
+from deepmoji.filter_utils import is_special_token
+from deepmoji.global_variables import SPECIAL_TOKENS, VOCAB_PATH
+from deepmoji.word_generator import WordGenerator
 
 
 class VocabBuilder():

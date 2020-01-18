@@ -12,8 +12,8 @@ from keras.layers.merge import concatenate
 from keras.models import Model
 from keras.regularizers import L1L2
 
-from aida.personality_analysis.deepmoji.attlayer import AttentionWeightedAverage
-from aida.personality_analysis.deepmoji.global_variables import NB_TOKENS, NB_EMOJI_CLASSES
+from deepmoji.attlayer import AttentionWeightedAverage
+from deepmoji.global_variables import NB_TOKENS, NB_EMOJI_CLASSES
 
 
 def deepmoji_feature_encoding(maxlen, weight_path, return_attention=False):

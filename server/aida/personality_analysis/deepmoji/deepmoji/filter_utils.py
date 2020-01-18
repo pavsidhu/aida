@@ -6,8 +6,8 @@ from itertools import groupby
 import emoji
 import numpy as np
 
-from aida.personality_analysis.deepmoji.global_variables import SPECIAL_TOKENS
-from aida.personality_analysis.deepmoji.tokenizer import RE_MENTION, RE_URL
+from deepmoji.global_variables import SPECIAL_TOKENS
+from deepmoji.tokenizer import RE_MENTION, RE_URL
 
 AtMentionRegex = re.compile(RE_MENTION)
 urlRegex = re.compile(RE_URL)

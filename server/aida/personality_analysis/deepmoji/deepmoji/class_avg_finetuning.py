@@ -8,13 +8,13 @@ from time import sleep
 import numpy as np
 from keras.optimizers import Adam
 
-from aida.personality_analysis.deepmoji.finetuning import (
+from deepmoji.finetuning import (
     freeze_layers,
     sampling_generator,
     finetuning_callbacks,
     train_by_chain_thaw,
     find_f1_threshold)
-from aida.personality_analysis.deepmoji.global_variables import (
+from deepmoji.global_variables import (
     FINETUNING_METHODS,
     WEIGHTS_DIR)
 
