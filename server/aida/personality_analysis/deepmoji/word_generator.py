@@ -10,7 +10,7 @@ import unicodedata
 import numpy as np
 from text_unidecode import unidecode
 
-from deepmoji.filter_utils import (
+from aida.personality_analysis.deepmoji.filter_utils import (
     convert_linebreaks,
     correct_length,
     extract_emojis,
@@ -20,7 +20,7 @@ from deepmoji.filter_utils import (
     punct_word,
     remove_variation_selectors,
     separate_emojis_and_text)
-from deepmoji.tokenizer import RE_MENTION, tokenize
+from aida.personality_analysis.deepmoji.tokenizer import RE_MENTION, tokenize
 
 # Only catch retweets in the beginning of the tweet as those are the
 # automatically added ones.
