@@ -1,17 +1,15 @@
-import re
 import random
+import re
 from datetime import datetime, timedelta
 
 import firebase_admin
+from dotenv import load_dotenv
 from firebase_admin import firestore, messaging
 from redis import Redis
 from rq import Queue
 from rq_scheduler import Scheduler
 
-from dotenv import load_dotenv
-
-redis = Redis()
-scheduler = Scheduler(connection=redis)
+from aida.scheduler import scheduler
 
 MIN_QUESTION_TIME = 30
 QUESTION_TIME_RANGE = 300
