@@ -27,7 +27,7 @@ TEST_SPLIT_SIZE = 0.2
 VALIDATION_SPLIT_SIZE = 0.1
 
 # Max length of each piece of text in the dataset
-MAX_LENGTH = 1
+MAX_LENGTH = 280
 
 # Size of batches
 BATCH_SIZE = 100
@@ -53,7 +53,7 @@ def pipeline(trait):
     ) = prepare_dataset(dataset["STATUS"], dataset[trait])
 
     # Define model parameters
-    number_of_classes = 2
+    number_of_classes = 1
     number_of_tokens = len(vocabulary)
 
     # Build the pretrained model
