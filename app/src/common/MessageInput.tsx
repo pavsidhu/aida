@@ -12,7 +12,7 @@ const Container = styled.View`
   margin: 16px;
   width: ${Dimensions.get('window').width - 32}px;
   border-radius: 18px;
-  elevation: 0.5;
+  elevation: 1;
   height: 60px;
   padding: 0 16px;
   background-color: ${colors.white};

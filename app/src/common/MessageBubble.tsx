@@ -54,7 +54,6 @@ const PhotoBubble = styled.Image<PositionProps>`
   border-radius: 12px;
   width: 200px;
   height: 200px;
-  elevation: 2;
 
   ${props =>
     props.bubblePosition === 'left'
