@@ -5,14 +5,16 @@ import auth from '@react-native-firebase/auth'
 import firestore from '@react-native-firebase/firestore'
 import storage from '@react-native-firebase/storage'
 
-import colors from '../colors'
-import getCity from '../util/getCity'
-import { UserDoc } from '../types/firestore'
+import Trait from './Trait'
+import colors from '../../colors'
+import getCity from '../../util/getCity'
+import { UserDoc } from '../../types/firestore'
 
-const Container = styled.View`
+const Container = styled.ScrollView.attrs({
+  justifyContent: 'flex-start',
+  alignItems: 'center'
+})`
   flex: 1;
-  align-items: center;
-  justify-content: center;
   background: ${colors.lilac};
 `
 
@@ -48,35 +50,14 @@ const Location = styled.Text`
   color: ${colors.black};
 `
 
-const Analysis = styled.ScrollView.attrs({
-  justifyContent: 'flex-start'
-})`
+const Analysis = styled.View`
   background-color: ${colors.white};
   elevation: 10;
-  width: ${Dimensions.get('window').width - 32}px;
+  margin: 0 16px;
   flex: 1;
   border-top-left-radius: 24px;
   border-top-right-radius: 24px;
   padding: 0 24px;
-`
-
-const AnalysisTitle = styled.Text`
-  font-size: 22px;
-  font-weight: bold;
-  color: ${colors.black};
-  margin-top: 24px;
-`
-
-const TraitTitle = styled.Text`
-  font-size: 18px;
-  font-weight: bold;
-  color: ${colors.black};
-  margin-top: 16px;
-`
-
-const TraitDescription = styled.Text`
-  font-size: 16px;
-  color: ${colors.black};
 `
 
 export default function Profile() {
@@ -121,31 +102,12 @@ export default function Profile() {
             </Name>
             <Location>{user.location}</Location>
           </Details>
-          <Analysis>
-            <AnalysisTitle>Your Analysis</AnalysisTitle>
 
-            {user.personality && (
-              <>
-                <TraitTitle>Extroversion</TraitTitle>
-                <TraitDescription>
-                  {user.personality.extroversion}
-                </TraitDescription>
-                <TraitTitle>Agreeableness</TraitTitle>
-                <TraitDescription>
-                  {user.personality.agreeableness}
-                </TraitDescription>
-                <TraitTitle>Openness</TraitTitle>
-                <TraitDescription>{user.personality.openness}</TraitDescription>
-                <TraitTitle>Conscientiousness</TraitTitle>
-                <TraitDescription>
-                  {user.personality.conscientiousness}
-                </TraitDescription>
-                <TraitTitle>Neuroticism</TraitTitle>
-                <TraitDescription>
-                  {user.personality.neuroticism}
-                </TraitDescription>
-              </>
-            )}
+          <Analysis>
+            {user.personality &&
+              Object.entries(user.personality).map(([type, value]) => (
+                <Trait type={type} value={value} divider={true} key={type} />
+              ))}
           </Analysis>
         </>
       ) : (

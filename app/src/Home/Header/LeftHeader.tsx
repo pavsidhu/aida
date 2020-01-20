@@ -15,6 +15,7 @@ const ProfileIcon = styled.Image`
   border-radius: 32px;
   border-width: 1px;
   border-color: ${colors.purple};
+  background-color: ${colors.purple};
 `
 
 export default function LeftHeader(props: NavigationStackScreenProps) {

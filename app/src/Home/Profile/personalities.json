@@ -1,0 +1,55 @@
+{
+  "openness": {
+    "low": {
+      "title": "close-minded",
+      "description": [
+        "You gain fulfillment through perseverance",
+        "You're generally pragmatic",
+        "You're perhaps data-driven",
+        "You may be perceived as dogmatic and closed-minded"
+      ]
+    },
+    "high": {
+      "title": "open-minded",
+      "description": [
+        "You're more willing to try new things",
+        "You're creative and curious of new things",
+        "You're generally more aware of your feelings",
+        "You're more likely to hold unconventional beliefs",
+        "You're more likely to be unpredictable and engage in risky behaviour "
+      ]
+    }
+  },
+  "conscientiousness": {
+    "low": {
+      "title": "disorganised",
+      "description": [
+        "You're flexible and spontaneous but can sometimes appear unreliabile",
+        "You're not stobborn and are more compliant",
+        "You dislikes structure and schedules",
+        "You procrastinates important tasks"
+      ]
+    },
+    "high": {
+      "title": "organised",
+      "description": [
+        "You have a preference to plan things rather than being spontaneous",
+        "You have a tendency to display self-discipline, act dutifully, and strive for achievement against measures or outside expectations",
+        "You're more stubborn and pay attention to detail",
+        "You finish important tasks right away"
+      ]
+    }
+  },
+  "extroversion": {
+    "low": { "title": "introverted", "description": [] },
+    "high": { "title": "extroverted", "description": [] }
+  },
+  "agreeableness": {
+    "low": { "title": "disagreeable", "description": [] },
+    "high": { "title": "agreeable", "description": [] }
+  },
+  "neuroticism": {
+    "low": { "title": "relaxed", "description": [] },
+    "high": { "title": "nervous", "description": [] }
+  }
+}
