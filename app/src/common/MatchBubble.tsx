@@ -14,7 +14,7 @@ import { MatchDoc, UserDoc } from '../types/firestore'
 const Container = styled.View`
   border-radius: 18px;
   font-size: 16px;
-  elevation: 1;
+  elevation: 2;
   border-top-left-radius: 0;
   border-radius: 18px;
   margin-right: 8px;
@@ -71,7 +71,6 @@ const MessageButtonText = styled.Text`
 
 interface Props {
   id: string
-  onPress: () => void
 }
 
 export default function MatchBubble(props: Props) {

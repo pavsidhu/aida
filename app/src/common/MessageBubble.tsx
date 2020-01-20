@@ -31,6 +31,7 @@ const TextBubble = styled.Text<PositionProps>`
   padding: 12px 16px;
   border-radius: 18px;
   font-size: 16px;
+  elevation: 2;
 
   ${props =>
     props.bubblePosition === 'left'
@@ -53,6 +54,7 @@ const PhotoBubble = styled.Image<PositionProps>`
   border-radius: 12px;
   width: 200px;
   height: 200px;
+  elevation: 2;
 
   ${props =>
     props.bubblePosition === 'left'
