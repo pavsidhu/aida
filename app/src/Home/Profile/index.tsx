@@ -106,7 +106,7 @@ export default function Profile() {
           <Analysis>
             {user.personality &&
               Object.entries(user.personality).map(([type, value]) => (
-                <Trait type={type} value={value} divider={true} key={type} />
+                <Trait type={type} value={value} key={type} />
               ))}
           </Analysis>
         </>

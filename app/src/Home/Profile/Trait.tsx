@@ -83,30 +83,39 @@ const Description = styled.Text`
 interface Props {
   type: string
   value: number
-  divider: boolean
+}
+
+function percentAsString(value: number) {
+  return (value * 100).toFixed(0) + '%'
+}
+
+function generateLocation(percent: number) {
+  if (percent >= 0.8) return [0, 0.8, 0.8, 1]
+  if (percent <= 0.2) return [0, 0.2, 0.2, 1]
+  return [0, percent, percent, 1]
 }
 
 export default function Trait(props: Props) {
   const type = props.type as keyof typeof personalities
-
-  const detail =
-    props.value > 0 ? personalities[type].high : personalities[type].low
+  const personality = personalities[type]
 
   // Normalize values from -1-1 to 0-1
-  const percent = props.value / 2 + 0.5
-  const locations = [0, percent, percent, 1]
-  const lowPercent = (props.value < 0 ? 1 - percent : percent) * 100
-  const highPercent = (props.value > 0 ? 1 - percent : percent) * 100
+  const percent = (props.value + 1) / 2
 
-  const isHigh = props.value > 0
+  // If higher in a trait
+  const isHigh = percent > 0.5
+
+  const lowPercent = percentAsString(1 - percent)
+  const highPercent = percentAsString(percent)
+  const { description } = isHigh ? personality.high : personality.low
+
+  const location = generateLocation(percent)
 
   return (
     <Container>
       <Title>{type}</Title>
       <BarContainer>
-        <BarLowValue shouldHighlight={isHigh}>
-          {lowPercent.toFixed(0) + '%'}
-        </BarLowValue>
+        <BarLowValue shouldHighlight={!isHigh}>{lowPercent}</BarLowValue>
         <Bar
           colors={[
             colors.purple,
@@ -117,22 +126,18 @@ export default function Trait(props: Props) {
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
           useAngle={true}
-          angle={isHigh ? 90 : -90}
-          locations={locations}
+          angle={isHigh ? -90 : 90}
+          locations={location}
         />
-        <BarHighValue shouldHighlight={!isHigh}>
-          {highPercent.toFixed(0) + '%'}
-        </BarHighValue>
+        <BarHighValue shouldHighlight={isHigh}>{highPercent}</BarHighValue>
       </BarContainer>
+
       <BarNames>
-        <BarName shouldHighlight={isHigh}>
-          {personalities[type].low.title}
-        </BarName>
-        <BarName shouldHighlight={!isHigh}>
-          {personalities[type].high.title}
-        </BarName>
+        <BarName shouldHighlight={!isHigh}>{personality.low.title}</BarName>
+        <BarName shouldHighlight={isHigh}>{personality.high.title}</BarName>
       </BarNames>
-      {detail.description.map((description, index) => (
+
+      {description.map((description, index) => (
         <Description key={index}>{'\u2022  ' + description}</Description>
       ))}
     </Container>
