@@ -90,7 +90,7 @@ def pipeline(trait):
         """
         )
 
-    model.save(f"{ROOT_PATH}/model/model.h5")
+    model.save(f"{ROOT_PATH}/models/{trait}.h5")
 
 
 def load_my_personality_dataset(path, trait):
