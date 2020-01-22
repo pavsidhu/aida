@@ -143,4 +143,5 @@ def prepare_dataset(text, labels):
 
 
 if __name__ == "__main__":
-    pipeline(TRAITS[0])
+    for trait in TRAITS:
+        pipeline(trait)
