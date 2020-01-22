@@ -1,12 +1,17 @@
 import json
 import sys
+import warnings
+
+# Ignore Tensorflow warnings
+warnings.filterwarnings("ignore")
 
 import numpy as np
 import pandas
 import tensorflow
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 from sklearn.model_selection import train_test_split
 
+# Use deepmoji like a package
 ROOT_PATH = "aida/personality_analysis"
 sys.path.append(f"{ROOT_PATH}/deepmoji")
 
