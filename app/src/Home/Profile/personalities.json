@@ -3,7 +3,7 @@
     "low": {
       "title": "close-minded",
       "description": [
-        "You gain fulfillment through perseverance",
+        "You gain fulfilment through perseverance",
         "You're generally pragmatic",
         "You're perhaps data-driven",
         "You may be perceived as dogmatic and closed-minded"
@@ -16,7 +16,7 @@
         "You're creative and curious of new things",
         "You're generally more aware of your feelings",
         "You're more likely to hold unconventional beliefs",
-        "You're more likely to be unpredictable and engage in risky behaviour "
+        "You're more likely to be unpredictable and engage in risky behaviour"
       ]
     }
   },
@@ -24,8 +24,8 @@
     "low": {
       "title": "disorganised",
       "description": [
-        "You're flexible and spontaneous but can sometimes appear unreliabile",
-        "You're not stobborn and are more compliant",
+        "You're flexible and spontaneous but can sometimes appear unreliable",
+        "You're not stubborn and are more compliant",
         "You dislikes structure and schedules",
         "You procrastinates important tasks"
       ]
@@ -41,15 +41,63 @@
     }
   },
   "extroversion": {
-    "low": { "title": "introverted", "description": [] },
-    "high": { "title": "extroverted", "description": [] }
+    "low": {
+      "title": "introverted",
+      "description": [
+        "You prefer spending time alone",
+        "You feel exhausted after socialising a lot",
+        "You dislike small talk and prefer deep conversations",
+        "You carefully think things through before speaking",
+        "You dislike being the center of attention"
+      ]
+    },
+    "high": {
+      "title": "extroverted",
+      "description": [
+        "You enjoy being the center of attention",
+        "You like to meet new people and start conversations",
+        "You find it easy to make friends",
+        "You feel energised when you're around people",
+        "You say things without thinking about them"
+      ]
+    }
   },
   "agreeableness": {
-    "low": { "title": "disagreeable", "description": [] },
-    "high": { "title": "agreeable", "description": [] }
+    "low": {
+      "title": "disagreeable",
+      "description": [
+        "You don't take as much interest in other people's problems",
+        "You are very competitive, even if that means cooperating less with others",
+        "You're less likely to abide to cultural norms"
+      ]
+    },
+    "high": {
+      "title": "agreeable",
+      "description": [
+        "You take a great deal of interest in other people",
+        "You're empathetic and concern for others",
+        "You enjoy assisting people when they need help"
+      ]
+    }
   },
   "neuroticism": {
-    "low": { "title": "relaxed", "description": [] },
-    "high": { "title": "nervous", "description": [] }
+    "low": {
+      "title": "relaxed",
+      "description": [
+        "You're generally emotionally stable",
+        "You deal well with stress",
+        "You are very relaxed and worry very little",
+        "You rarely feel sad or depressed"
+      ]
+    },
+    "high": {
+      "title": "nervous",
+      "description": [
+        "You tend to experience a lot of stress",
+        "You may feel anxious a lot of the time",
+        "You worry about many different things",
+        "You may have dramatic shifts in mood"
+      ]
+    }
   }
 }

@@ -1,11 +1,12 @@
 import React from 'react'
-import styled from 'styled-components/native'
+import styled, { css } from 'styled-components/native'
 import LinearGradient from 'react-native-linear-gradient'
+
 import colors from '../../colors'
 import personalities from './personalities.json'
 
 const Container = styled.View`
-  padding-vertical: 16px;
+  padding-vertical: 32px;
   border-bottom-width: 1px;
   border-bottom-color: ${colors.lightGrey};
 `
@@ -27,10 +28,44 @@ const BarContainer = styled.View`
 
 const BarLowValue = styled.Text`
   margin-right: 8px;
+  font-size: 14px;
+  font-weight: bold;
+
+  ${(props: { shouldHighlight: boolean }) =>
+    props.shouldHighlight &&
+    css`
+      color: ${colors.purple};
+    `}
 `
 
 const BarHighValue = styled.Text`
   margin-left: 8px;
+  font-size: 14px;
+  font-weight: bold;
+
+  ${(props: { shouldHighlight: boolean }) =>
+    props.shouldHighlight &&
+    css`
+      color: ${colors.purple};
+    `}
+`
+
+const BarNames = styled.View`
+  margin-top: 4px;
+  flex-direction: row;
+  justify-content: space-between;
+`
+
+const BarName = styled.Text`
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: capitalize;
+
+  ${(props: { shouldHighlight: boolean }) =>
+    props.shouldHighlight &&
+    css`
+      color: ${colors.purple};
+    `}
 `
 
 const Bar = styled(LinearGradient)`
@@ -63,21 +98,40 @@ export default function Trait(props: Props) {
   const lowPercent = (props.value < 0 ? 1 - percent : percent) * 100
   const highPercent = (props.value > 0 ? 1 - percent : percent) * 100
 
+  const isHigh = props.value > 0
+
   return (
     <Container>
       <Title>{type}</Title>
       <BarContainer>
-        <BarLowValue>{lowPercent.toFixed(0) + '%'}</BarLowValue>
+        <BarLowValue shouldHighlight={isHigh}>
+          {lowPercent.toFixed(0) + '%'}
+        </BarLowValue>
         <Bar
-          colors={[colors.purple, colors.purple, 'transparent', 'transparent']}
+          colors={[
+            colors.purple,
+            colors.purple,
+            colors.lightGrey,
+            colors.lightGrey
+          ]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
           useAngle={true}
-          angle={props.value > 0 ? 90 : -90}
+          angle={isHigh ? 90 : -90}
           locations={locations}
         />
-        <BarHighValue>{highPercent.toFixed(0) + '%'}</BarHighValue>
+        <BarHighValue shouldHighlight={!isHigh}>
+          {highPercent.toFixed(0) + '%'}
+        </BarHighValue>
       </BarContainer>
+      <BarNames>
+        <BarName shouldHighlight={isHigh}>
+          {personalities[type].low.title}
+        </BarName>
+        <BarName shouldHighlight={!isHigh}>
+          {personalities[type].high.title}
+        </BarName>
+      </BarNames>
       {detail.description.map((description, index) => (
         <Description key={index}>{'\u2022  ' + description}</Description>
       ))}
