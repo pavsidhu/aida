@@ -64,7 +64,7 @@ function App(props: NavigationContainerProps) {
         firestore()
           .collection('users')
           .doc(currentUser.uid)
-          .update({ notificationToken: token })
+          .update({ "notification_token": token })
       })
 
     // Update user's location on launch

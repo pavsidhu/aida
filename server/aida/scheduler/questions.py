@@ -93,7 +93,7 @@ def send_notification(db, user, question):
     messaging.send(
         messaging.Message(
             notification=messaging.Notification(title="Aida", body=question),
-            token=user["notificationToken"],
+            token=user["notification_token"],
         )
     )
 
