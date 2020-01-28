@@ -6,6 +6,7 @@ h5py==2.10.0
 Keras==2.2.5
 numpy==1.17.2
 pandas==0.25.3
+pygeohash==1.2.0
 pylint
 python-dotenv==0.10.1
 redis==3.3.11
