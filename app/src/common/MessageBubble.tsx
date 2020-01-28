@@ -84,7 +84,7 @@ export default function MessageBubble(props: GFBubble['props']) {
       )
     }
     if (message.match) {
-      return <MatchBubble id={message.match} />
+      return <MatchBubble id={message.match.id} />
     }
 
     return (

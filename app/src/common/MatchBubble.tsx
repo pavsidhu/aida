@@ -7,9 +7,11 @@ import auth from '@react-native-firebase/auth'
 import storage from '@react-native-firebase/storage'
 import { useNavigation } from 'react-navigation-hooks'
 import LinearGradient from 'react-native-linear-gradient'
+import geohash from 'ngeohash'
 
 import colors from '../colors'
 import { MatchDoc, UserDoc } from '../types/firestore'
+import getCity from '../util/getCity'
 
 const Container = styled.View`
   border-radius: 18px;
@@ -78,6 +80,7 @@ export default function MatchBubble(props: Props) {
 
   const [loading, setLoading] = useState(true)
   const [match, setMatch] = useState<MatchDoc>()
+  const [location, setLocation] = useState<string>()
 
   const { currentUser } = auth()
 
@@ -127,6 +130,12 @@ export default function MatchBubble(props: Props) {
     ? (match.users as UserDoc[]).find(user => user.id !== currentUser.uid)
     : undefined
 
+  useEffect(() => {
+    if (!matchedUser) return
+    const { latitude, longitude } = geohash.decode(matchedUser.location)
+    getCity(latitude, longitude).then(location => setLocation(location))
+  }, [matchedUser])
+
   if (!matchedUser) return null
 
   return (
@@ -138,7 +147,7 @@ export default function MatchBubble(props: Props) {
         <Name numberOfLines={1}>
           {`${matchedUser.name}, ${matchedUser.age}`}
         </Name>
-        <Location numberOfLines={1}>Cardiff</Location>
+        <Location numberOfLines={1}>{location}</Location>
       </Description>
 
       <MessageButton onPress={() => navigate('MatchChat', { id: props.id })}>
