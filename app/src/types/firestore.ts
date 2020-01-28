@@ -10,10 +10,7 @@ export interface UserDoc {
   name: string
   age: string
   photo: string
-  location: {
-    _latitude: number
-    _longitude: number
-  }
+  location: string
   interests: string[]
   personality: {
     extroversion: number

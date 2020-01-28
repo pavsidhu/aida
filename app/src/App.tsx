@@ -13,6 +13,7 @@ import messaging from '@react-native-firebase/messaging'
 import { Dialogflow_V2 } from 'react-native-dialogflow'
 import { create } from 'mobx-persist'
 import { useObservable } from 'mobx-react-lite'
+import geohash from 'ngeohash'
 
 import Home from './Home'
 import SignIn from './SignIn'
@@ -73,7 +74,7 @@ function App(props: NavigationContainerProps) {
           .collection('users')
           .doc(currentUser.uid)
           .update({
-            location: new firestore.GeoPoint(
+            location: geohash.encode(
               position.coords.latitude,
               position.coords.longitude
             )

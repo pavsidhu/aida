@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { Dimensions } from 'react-native'
 import styled from 'styled-components/native'
 import auth from '@react-native-firebase/auth'
 import firestore from '@react-native-firebase/firestore'
 import storage from '@react-native-firebase/storage'
+import geohash from 'ngeohash'
 
 import Trait from './Trait'
 import colors from '../../colors'
@@ -73,10 +73,8 @@ export default function Profile() {
       .onSnapshot(async snapshot => {
         const data = snapshot.data() as UserDoc
 
-        const location = await getCity(
-          data.location._latitude,
-          data.location._longitude
-        )
+        const { latitude, longitude } = geohash.decode(data.location)
+        const location = await getCity(latitude, longitude)
 
         const photo = await storage()
           .ref(`${currentUser.uid}/photo.jpeg`)
