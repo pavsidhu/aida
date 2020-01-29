@@ -87,7 +87,7 @@ def select_match(user, nearby_users):
 
 
 def random_gumbel(location=0.12, scale=0.1, min=0, max=1):
-    """Pick a random integer using a Gumbel distribution in the given range """
+    """Pick a random integer using a Gumbel distribution in the given range"""
 
     random = -1
 
