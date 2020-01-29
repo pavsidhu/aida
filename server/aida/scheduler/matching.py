@@ -14,26 +14,23 @@ MATCH_TIME_RANGE = 300
 def start_matching_scheduler(user_id):
     """Schedules finding a match for a user"""
 
-    find_match(user_id)
-    # minutes = random.randint(MIN_MATCH_TIME, MIN_MATCH_TIME + MATCH_TIME_RANGE)
-    # scheduler.enqueue_in(timedelta(minutes=minutes), find_match, user_id)
-
-
-db = firestore.client()
+    minutes = random.randint(MIN_MATCH_TIME, MIN_MATCH_TIME + MATCH_TIME_RANGE)
+    scheduler.enqueue_in(timedelta(minutes=minutes), find_match, user_id)
 
 
 def find_match(user_id):
     """Finds a match for a user"""
 
-    # load_dotenv()
-    # firebase_admin.initialize_app()
+    load_dotenv()
+    firebase_admin.initialize_app()
+    db = firestore.client()
 
     # Get user's personality
     user = db.collection("users").document(user_id).get().to_dict()
     user["id"] = user_id
 
     # Find potential matches near the user
-    nearby_users = find_nearby_unmatched_users(user)
+    nearby_users = find_nearby_unmatched_users(db, user)
 
     # There are no matches available to the user
     if not nearby_users:
@@ -43,10 +40,10 @@ def find_match(user_id):
     match = select_match(user, nearby_users)
 
     # Setup the match
-    create_match(user, match)
+    create_match(db, user, match)
 
 
-def find_nearby_unmatched_users(user):
+def find_nearby_unmatched_users(db, user):
     """Finds nearby non-matched users based on the user's location and gender preference"""
 
     lowerGeohash, upperGeohash = calculate_match_range(user["location"])
@@ -62,7 +59,7 @@ def find_nearby_unmatched_users(user):
     ]
 
     # Remove users that the user has already matched with
-    match_user_ids = get_match_user_ids(user["id"])
+    match_user_ids = get_match_user_ids(db, user["id"])
     unmatched_users = [
         nearby_user
         for nearby_user in nearby_users
@@ -103,7 +100,7 @@ DEG_LATITUDE_PER_KM = 0.008983152771
 DEG_LONGITUDE_PER_KM = 0.008998231173
 
 
-def create_match(user, matching_user):
+def create_match(db, user, matching_user):
     """Does all the setup for creating a new match"""
 
     # Create a new match
@@ -182,7 +179,7 @@ def calculate_personality_similarity(personality_one, personality_two):
     return np.mean(similarity_vector)
 
 
-def get_match_user_ids(user_id):
+def get_match_user_ids(db, user_id):
     """Returns a list of user ids that a user has matched with"""
 
     user_ref = db.collection("users").document(user_id)
