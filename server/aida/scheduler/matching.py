@@ -170,16 +170,19 @@ def calculate_personality_similarity(personality_one, personality_two):
 def get_match_user_ids(user_id):
     """Returns a list of user ids that a user has matched with"""
 
+    user_ref = db.collection("users").document(user_id)
+
     matches = (
-        db.collection("matches").where("users", "array_contains", [user_id]).stream()
+        db.collection("matches").where("users", "array_contains", user_ref).stream()
     )
+
     ids = []
 
     for doc in matches:
         match = doc.to_dict()
 
-        for user in match["users"]:
-            if user["id"] != user_id:
-                ids.append(user["id"])
+        for match_user_ref in match["users"]:
+            if match_user_ref != user_ref:
+                ids.append(match_user_ref.id)
 
     return ids
