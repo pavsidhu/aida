@@ -17,6 +17,7 @@ import {
   MessageDoc,
   MessageType
 } from '../../types/firestore'
+import config from '../../../config'
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -113,7 +114,7 @@ export default function MatchChat() {
   }, [match])
 
   function onSend(messages: IMessage[]) {
-    if (!currentUser) return
+    if (!currentUser || !match) return
 
     const message = messages[0]
 
@@ -127,6 +128,27 @@ export default function MatchChat() {
         sender: firestore().doc(`user/${currentUser.uid}`),
         createdAt: message.createdAt
       })
+
+    const users = match.users as UserDoc[]
+    const me = users.find(({ id }) => id === currentUser.uid)
+
+    // Send notification to other user
+    if (me) {
+      fetch(config.firebase.messaging.url, {
+        method: 'POST',
+        headers: {
+          Authorization: `key=${config.firebase.messaging.serverKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          to: `/topics/match-${match.id}`,
+          notification: {
+            title: me.name,
+            body: message.text
+          }
+        })
+      })
+    }
   }
 
   return (

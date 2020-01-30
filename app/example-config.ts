@@ -3,7 +3,10 @@ const config = {
     url: ''
   },
   firebase: {
-    senderId: ''
+    messaging: {
+      url: '',
+      serverKey: ''
+    }
   },
   twitter: {
     consumerKey: '',
