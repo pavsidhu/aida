@@ -99,17 +99,14 @@ export default function Trait(props: Props) {
   const type = props.type as keyof typeof personalities
   const personality = personalities[type]
 
-  // Normalize values from -1-1 to 0-1
-  const percent = (props.value + 1) / 2
-
   // If higher in a trait
   const isHigh = percent > 0.5
 
-  const lowPercent = percentAsString(1 - percent)
-  const highPercent = percentAsString(percent)
+  const lowPercent = percentAsString(1 - props.value)
+  const highPercent = percentAsString(props.value)
   const { description } = isHigh ? personality.high : personality.low
 
-  const location = generateLocation(percent)
+  const location = generateLocation(props.value)
 
   return (
     <Container>
