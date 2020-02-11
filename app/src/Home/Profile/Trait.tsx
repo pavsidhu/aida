@@ -100,7 +100,7 @@ export default function Trait(props: Props) {
   const personality = personalities[type]
 
   // If higher in a trait
-  const isHigh = percent > 0.5
+  const isHigh = props.value > 0.5
 
   const lowPercent = percentAsString(1 - props.value)
   const highPercent = percentAsString(props.value)
