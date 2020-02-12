@@ -25,7 +25,7 @@ export default function LeftHeader(props: NavigationStackScreenProps) {
     const { currentUser } = auth()
 
     useEffect(() => {
-      if (!currentUser) return
+      if (!currentUser || onboarding.isOnboarding) return
 
       storage()
         .ref(`${currentUser.uid}/photo.jpeg`)
