@@ -82,18 +82,23 @@ export default function SignIn() {
       authToken,
       authTokenSecret
     )
+
     await auth()
       .signInWithCredential(credential)
       .then(userCredential => {
-        const username = userCredential.additionalUserInfo?.username
+        const { additionalUserInfo } = userCredential
 
-        if (username)
-          firestore()
-            .collection('users')
-            .doc(userCredential.user.uid)
-            .update({ twitter: { username } })
+        if (additionalUserInfo?.isNewUser) {
+          const username = userCredential.additionalUserInfo?.username
+
+          if (username) {
+            firestore()
+              .collection('users')
+              .doc(userCredential.user.uid)
+              .set({ twitter: { username } })
+          }
+        }
       })
-      .catch(error => console.log(error))
   }
 
   return (
