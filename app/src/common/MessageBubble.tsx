@@ -31,6 +31,7 @@ const TextBubble = styled.Text<PositionProps>`
   padding: 12px 16px;
   border-radius: 18px;
   font-size: 16px;
+  line-height: 22px;
   elevation: 2;
 
   ${props =>
