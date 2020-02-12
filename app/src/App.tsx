@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { StatusBar, Alert } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
+import SplashScreen from 'react-native-splash-screen'
 import Geolocation from 'react-native-geolocation-service'
 import {
   createAppContainer,
@@ -48,7 +49,10 @@ function App(props: NavigationContainerProps) {
   useEffect(
     () =>
       auth().onAuthStateChanged(user => {
-        if (!initialised) setInitialised(true)
+        if (!initialised) {
+          SplashScreen.hide()
+          setInitialised(true)
+        }
         props.navigation?.navigate(user ? 'Home' : 'SignIn')
       }),
     []
