@@ -28,6 +28,12 @@ class OnboardingStore {
     this.step = next
     return this.currentMessage
   }
+
+  reset() {
+    this.step = onboardingFlow.start
+    this.isOnboarding = true
+    this.context = {}
+  }
 }
 
 // @ts-ignore
@@ -37,7 +43,8 @@ decorate(OnboardingStore, {
   context: [persist('object'), observable],
   currentMessage: [computed],
   hasNotStarted: [computed],
-  nextMessage: [action]
+  nextMessage: [action],
+  reset: [action]
 })
 
 const onboardingStore = new OnboardingStore()

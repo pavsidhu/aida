@@ -4,6 +4,8 @@ import auth from '@react-native-firebase/auth'
 import { NavigationScreenProp, NavigationState } from 'react-navigation'
 
 import colors from '../colors'
+import { useObservable } from 'mobx-react-lite'
+import onboardingStore from '../onboarding/onboardingStore'
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -24,13 +26,12 @@ const SettingSubtitle = styled.Text`
   color: ${colors.secondaryText};
 `
 
-interface Props {
-  navigation: NavigationScreenProp<NavigationState>
-}
+export default function Settings() {
+  const onboarding = useObservable(onboardingStore)
 
-export default function Settings(props: Props) {
   function handleSignOut() {
     auth().signOut()
+    onboarding.reset()
   }
 
   const user = auth().currentUser
