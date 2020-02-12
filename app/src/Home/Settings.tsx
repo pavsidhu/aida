@@ -1,11 +1,8 @@
 import React from 'react'
 import styled from 'styled-components/native'
 import auth from '@react-native-firebase/auth'
-import { NavigationScreenProp, NavigationState } from 'react-navigation'
 
 import colors from '../colors'
-import { useObservable } from 'mobx-react-lite'
-import onboardingStore from '../onboarding/onboardingStore'
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -27,25 +24,22 @@ const SettingSubtitle = styled.Text`
 `
 
 export default function Settings() {
-  const onboarding = useObservable(onboardingStore)
-
   function handleSignOut() {
     auth().signOut()
-    onboarding.reset()
   }
 
   const user = auth().currentUser
 
-  if (!user) return null
-
   return (
-    <Container>
-      <Setting onPress={handleSignOut}>
-        <SettingTitle>Sign Out</SettingTitle>
-        <SettingSubtitle>
-          You are signed in as {user.displayName}
-        </SettingSubtitle>
-      </Setting>
-    </Container>
+    user && (
+      <Container>
+        <Setting onPress={handleSignOut}>
+          <SettingTitle>Sign Out</SettingTitle>
+          <SettingSubtitle>
+            You are signed in as {user.displayName}
+          </SettingSubtitle>
+        </Setting>
+      </Container>
+    )
   )
 }
