@@ -9,12 +9,19 @@ import Trait from './Trait'
 import colors from '../../colors'
 import getCity from '../../util/getCity'
 import { UserDoc } from '../../types/firestore'
+import { TalkToAidaPrompt } from '../../common'
 
-const Container = styled.ScrollView.attrs({
+const ScrollContainer = styled.ScrollView.attrs({
   justifyContent: 'flex-start',
   alignItems: 'center'
 })`
   flex: 1;
+  background: ${colors.lilac};
+`
+
+const Container = styled.View`
+  flex: 1;
+  justify-content: center;
   background: ${colors.lilac};
 `
 
@@ -89,28 +96,45 @@ export default function Profile() {
       })
   }, [])
 
-  return (
-    <Container>
-      {user ? (
-        <>
-          <Details>
-            <ProfilePicture source={{ uri: user.photo }} />
-            <Name>
-              {user.name}, {user.age}
-            </Name>
-            <Location>{user.location}</Location>
-          </Details>
+  function renderDetails() {
+    if (!user) return null
 
-          <Analysis>
-            {user.personality &&
-              Object.entries(user.personality).map(([type, value]) => (
-                <Trait type={type} value={value} key={type} />
-              ))}
-          </Analysis>
-        </>
-      ) : (
+    return (
+      <Details>
+        <ProfilePicture source={{ uri: user.photo }} />
+        <Name>
+          {user.name}, {user.age}
+        </Name>
+        <Location>{user.location}</Location>
+      </Details>
+    )
+  }
+
+  if (!user) {
+    return (
+      <Container>
         <LoadingIndicator size="large" color={colors.purple} />
-      )}
+      </Container>
+    )
+  }
+
+  return user.personality ? (
+    <ScrollContainer>
+      {renderDetails()}
+
+      <Analysis>
+        {Object.entries(user.personality).map(([type, value]) => (
+          <Trait type={type} value={value} key={type} />
+        ))}
+      </Analysis>
+    </ScrollContainer>
+  ) : (
+    <Container>
+      {renderDetails()}
+
+      <Analysis>
+        <TalkToAidaPrompt />
+      </Analysis>
     </Container>
   )
 }

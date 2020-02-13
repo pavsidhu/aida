@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components/native'
 import { AnimatedCircularProgress } from 'react-native-circular-progress'
 
@@ -35,17 +35,15 @@ const Description = styled.Text`
   color: ${colors.black};
 `
 
-interface Props {
-  progress: number
-}
+export default function TalkToAidaPrompt() {
+  const [progress, setProgress] = useState(0)
 
-export default function TalkToAidaPrompt(props: Props) {
   return (
     <Container>
       <ProgressCircle
         size={180}
         width={25}
-        fill={props.progress}
+        fill={progress}
         rotation={0}
         tintColor={colors.purple}
         backgroundColor={colors.lightGrey}

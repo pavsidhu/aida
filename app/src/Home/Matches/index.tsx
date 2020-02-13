@@ -85,7 +85,7 @@ export default function MatchesTab(props: NavigationStackScreenProps) {
 
   function renderMatchesList() {
     if (matches.length <= 0) {
-      return <TalkToAidaPrompt progress={50} />
+      return <TalkToAidaPrompt />
     }
 
     return (
