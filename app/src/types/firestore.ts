@@ -16,6 +16,7 @@ export interface UserDoc {
     isOnboarding: boolean
     step: string
   }
+  progress: number
   personality: {
     extroversion: number
     agreeableness: number

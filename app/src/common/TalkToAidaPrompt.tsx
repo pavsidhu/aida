@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
-import styled from 'styled-components/native'
+import React, { useState, useEffect } from 'react'
 import { AnimatedCircularProgress } from 'react-native-circular-progress'
+import styled from 'styled-components/native'
+import auth from '@react-native-firebase/auth'
+import firestore from '@react-native-firebase/firestore'
 
 import colors from '../colors'
+import { UserDoc } from '../types/firestore'
 
 const Container = styled.View`
   flex: 1;
@@ -37,6 +40,20 @@ const Description = styled.Text`
 
 export default function TalkToAidaPrompt() {
   const [progress, setProgress] = useState(0)
+  const { currentUser } = auth()
+
+  useEffect(() => {
+    if (!currentUser) return
+
+    firestore()
+      .collection('users')
+      .doc(currentUser.uid)
+      .get()
+      .then(doc => {
+        const user = doc.data() as UserDoc
+        setProgress(user.progress ? user.progress : 0)
+      })
+  }, [currentUser])
 
   return (
     <Container>
