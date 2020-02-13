@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/native'
 import auth from '@react-native-firebase/auth'
+import firestore from '@react-native-firebase/firestore'
 import storage from '@react-native-firebase/storage'
 import { TouchableRipple } from 'react-native-paper'
 import { NavigationStackScreenProps } from 'react-navigation-stack'
-import { useObservable, useObserver } from 'mobx-react-lite'
 
-import onboardingStore from '../../onboarding/onboardingStore'
 import colors from '../../colors'
+import { UserDoc } from '../../types/firestore'
 
 const ProfileIcon = styled.Image`
   width: 32px;
@@ -19,31 +19,42 @@ const ProfileIcon = styled.Image`
 `
 
 export default function LeftHeader(props: NavigationStackScreenProps) {
-  return useObserver(() => {
-    const onboarding = useObservable(onboardingStore)
-    const [photoUrl, setPhotoUrl] = useState<string>()
-    const { currentUser } = auth()
+  const [photoUrl, setPhotoUrl] = useState<string>()
+  const [user, setUser] = useState<UserDoc>()
+  const { currentUser } = auth()
 
-    useEffect(() => {
-      if (!currentUser || onboarding.isOnboarding) return
+  const isOnboarding = user?.onboarding.isOnboarding
 
+  useEffect(() => {
+    if (!currentUser) return
+
+    firestore()
+      .collection('users')
+      .doc(currentUser.uid)
+      .onSnapshot(snapshot => {
+        setUser(snapshot.data() as UserDoc)
+      })
+  }, [currentUser])
+
+  useEffect(() => {
+    if (currentUser && isOnboarding === false) {
       storage()
         .ref(`${currentUser.uid}/photo.jpeg`)
         .getDownloadURL()
         .then(url => setPhotoUrl(url))
-    }, [onboarding.isOnboarding])
+    }
+  }, [isOnboarding])
 
-    return (
-      !onboarding.isOnboarding && (
-        <TouchableRipple
-          onPress={() => {
-            props.navigation.navigate('Profile')
-          }}
-          style={{ padding: 16 }}
-        >
-          <ProfileIcon source={{ uri: photoUrl }} />
-        </TouchableRipple>
-      )
+  return (
+    isOnboarding === false && (
+      <TouchableRipple
+        onPress={() => {
+          props.navigation.navigate('Profile')
+        }}
+        style={{ padding: 16 }}
+      >
+        <ProfileIcon source={{ uri: photoUrl }} />
+      </TouchableRipple>
     )
-  })
+  )
 }

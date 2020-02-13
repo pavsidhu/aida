@@ -5,12 +5,12 @@ import auth from '@react-native-firebase/auth'
 import storage from '@react-native-firebase/storage'
 import firestore from '@react-native-firebase/firestore'
 import messaging from '@react-native-firebase/messaging'
-import { useObserver, useObservable } from 'mobx-react-lite'
 import { Dialogflow_V2 } from 'react-native-dialogflow'
 import { IMessage } from 'react-native-gifted-chat'
 
-import onboardingStore from '../onboarding/onboardingStore'
-import { MessageDoc, MessageType } from '../types/firestore'
+import onboardingFlow from '../onboardingFlow'
+import OnboardingMessage from '../types/OnboardingMessage'
+import { MessageDoc, MessageType, UserDoc } from '../types/firestore'
 import config from '../../config'
 
 const WORDS_PER_MINUTE = 200
@@ -23,6 +23,7 @@ function calculateReadingTime(content: string) {
 
 type AidaResponse = [
   IMessage[] | undefined,
+  OnboardingMessage['input'] | undefined,
   (message: IMessage) => void,
   {
     setGender: (gender: string) => void
@@ -32,283 +33,356 @@ type AidaResponse = [
 ]
 
 export default function useAida(): AidaResponse {
-  return useObserver(() => {
-    const onboarding = useObservable(onboardingStore)
+  const [messages, setMessages] = useState<IMessage[]>()
+  const [user, setUser] = useState<UserDoc>()
+  const { currentUser } = auth()
 
-    const [messages, setMessages] = useState<IMessage[]>()
-    const { currentUser } = auth()
+  const onboarding = user?.onboarding
 
-    // Restore messages from firebase on initial load
-    useEffect(() => {
-      if (!currentUser) return
+  // Restore messages from firebase on initial load
+  useEffect(() => {
+    if (!currentUser) return
 
-      const unsubscribe = firestore()
-        .collection('users')
-        .doc(currentUser.uid)
-        .collection('messages')
-        .orderBy('createdAt', 'desc')
-        .onSnapshot(async snapshot => {
-          setMessages(
-            await Promise.all(
-              snapshot.docs.map(async doc => {
-                const data = doc.data() as MessageDoc
+    return firestore()
+      .collection('users')
+      .doc(currentUser.uid)
+      .collection('messages')
+      .orderBy('createdAt', 'desc')
+      .onSnapshot(async snapshot => {
+        setMessages(
+          await Promise.all(
+            snapshot.docs.map(async doc => {
+              const data = doc.data() as MessageDoc
 
-                return {
-                  _id: doc.id,
-                  text: data.type === MessageType.TEXT ? data.content : '',
-                  image:
-                    data.type === MessageType.PHOTO ? data.content : undefined,
-                  match:
-                    data.type === MessageType.MATCH ? data.content : undefined,
-                  user: { _id: data.sender ? data.sender.id : 0 },
-                  createdAt: new Date(data.createdAt._seconds * 1000)
-                }
-              })
-            )
+              return {
+                _id: doc.id,
+                text: data.type === MessageType.TEXT ? data.content : '',
+                image:
+                  data.type === MessageType.PHOTO ? data.content : undefined,
+                match:
+                  data.type === MessageType.MATCH ? data.content : undefined,
+                user: { _id: data.sender ? data.sender.id : 0 },
+                createdAt: new Date(data.createdAt._seconds * 1000)
+              }
+            })
           )
-        })
+        )
+      })
+  }, [])
 
-      // Handle onboarding if the user is new
-      if (onboarding.hasNotStarted) nextOnboardingMessage(onboarding.step)
+  // Get user
+  useEffect(() => {
+    if (!currentUser) return
 
-      return unsubscribe
-    }, [])
+    return firestore()
+      .collection('users')
+      .doc(currentUser.uid)
+      .onSnapshot(async snapshot => {
+        setUser(snapshot.data() as UserDoc)
+      })
+  }, [])
 
-    function nextOnboardingMessage(next?: string) {
-      // If no next onboarding has finished
-      if (!next) {
-        finishOnboarding()
-        return
-      }
-
-      if (!currentUser) return
-
-      // Fetch the next onboarding message
-      const onboardingMessage = onboarding.nextMessage(next)
-
-      // If there's no message onboarding has finished
-      if (!onboardingMessage) return
-
-      const { message, route, input } = onboardingMessage
-
-      // Store the onboarding message
+  // Handle onboarding if the user is new
+  useEffect(() => {
+    if (currentUser && onboarding?.isOnboarding) {
       firestore()
         .collection('users')
         .doc(currentUser.uid)
         .collection('messages')
-        .add({
-          content: message,
-          type: MessageType.TEXT,
-          sender: null,
-          createdAt: new Date()
+        .where('step', '==', onboarding.step)
+        .get()
+        .then(doc => {
+          if (doc.size === 0) nextOnboardingMessage(onboarding.step)
         })
-
-      // Schedule the next message/action after the current message
-      setTimeout(() => {
-        if (!input) nextOnboardingMessage(route.next)
-      }, calculateReadingTime(message))
     }
+  }, [onboarding?.isOnboarding])
 
-    async function finishOnboarding() {
-      onboarding.isOnboarding = false
+  async function getMessage(step: string) {
+    if (!currentUser) return
 
-      const idToken = await auth().currentUser?.getIdToken()
-
-      if (idToken) {
-        await fetch(`${config.server.url}/questions/start`, {
-          headers: { Authorization: 'Bearer ' + idToken }
-        })
-
-        if (!messaging().hasPermission()) messaging().requestPermission()
-      }
-    }
-
-    async function setGender(gender: string) {
-      if (!currentUser) return
-
-      const { route, input } = onboarding.currentMessage
-
-      if (input?.values && !input.values.includes(gender)) {
-        nextOnboardingMessage(route.failure)
-        return
-      }
-
-      await firestore()
+    const onboardingMessage = onboardingFlow.messages[step]
+    const context: { [key: string]: any } =
+      (await firestore()
         .collection('users')
         .doc(currentUser.uid)
-        .update({ gender })
+        .get()
+        .then(doc => doc.data())) || {}
 
-      await firestore()
-        .collection('users')
-        .doc(currentUser.uid)
-        .collection('messages')
-        .add({
-          content: gender,
-          type: MessageType.TEXT,
-          sender: firestore().doc(`user/${currentUser.uid}`),
-          createdAt: new Date()
-        })
+    // Replace message templates with data from the chatbot context
+    const message = Object.keys(context).reduce(
+      (newMessage, key) =>
+        context[key]
+          ? newMessage.replace(`{{${key}}}`, context[key])
+          : newMessage,
+      onboardingMessage.message
+    )
 
-      nextOnboardingMessage(route.next)
+    return { ...onboardingMessage, message }
+  }
+
+  function nextOnboardingMessage(next?: string) {
+    // If no next onboarding has finished
+    if (!next) {
+      finishOnboarding()
+      return
     }
 
-    async function uploadPhoto() {
-      const { route } = onboarding.currentMessage
+    if (!currentUser) return
 
-      try {
-        const image = await ImagePicker.openPicker({
-          width: 1000,
-          height: 1000,
-          cropping: true,
-          includeBase64: true
-        })
+    // Fetch the next onboarding message
+    firestore()
+      .collection('users')
+      .doc(currentUser.uid)
+      .update({ onboarding: { ...onboarding, step: next } })
+      .then(async () => {
+        const onboardingMessage = await getMessage(next)
 
-        const { data, mime } = image as Image
+        // If there's no message onboarding has finished
+        if (!onboardingMessage) return
 
-        if (currentUser && data) {
-          const fileType = mime.split('/')[1]
+        const { message, route, input } = onboardingMessage
 
-          const ref = storage().ref(`${currentUser.uid}/photo.${fileType}`)
-          await ref.putString(data, 'base64')
-
-          await firestore()
-            .collection('users')
-            .doc(currentUser.uid)
-            .collection('messages')
-            .add({
-              content: await ref.getDownloadURL(),
-              type: MessageType.PHOTO,
-              sender: firestore().doc(`user/${currentUser.uid}`),
-              createdAt: new Date()
-            })
-
-          nextOnboardingMessage(route.next)
-        }
-      } catch (error) {
-        nextOnboardingMessage(route.failure)
-      }
-    }
-
-    async function showLocationPrompt() {
-      const { route } = onboarding.currentMessage
-
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
-      ).catch(() => nextOnboardingMessage(route.failure))
-
-      switch (granted) {
-        case PermissionsAndroid.RESULTS.GRANTED:
-          nextOnboardingMessage(route.next)
-          break
-
-        case PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN:
-          nextOnboardingMessage(route.deny)
-          break
-
-        default:
-          nextOnboardingMessage(route.failure)
-      }
-    }
-
-    async function handleTextInput(message: IMessage) {
-      if (!currentUser) return
-
-      const text = message.text.trim()
-
-      const messages_ref = firestore()
-        .collection('users')
-        .doc(currentUser.uid)
-        .collection('messages')
-
-      Dialogflow_V2.requestQuery(
-        text,
-        result =>
-          messages_ref.add({
-            content: (result as any).queryResult.fulfillmentText,
-            sender: null,
+        // Store the onboarding message
+        firestore()
+          .collection('users')
+          .doc(currentUser.uid)
+          .collection('messages')
+          .add({
+            content: message,
             type: MessageType.TEXT,
-            createdAt: new Date()
-          }),
-        error =>
-          messages_ref.add({
-            content:
-              "Sorry I can't connect to the internet right now, please try again soon 😢",
             sender: null,
-            type: MessageType.TEXT,
+            step: next,
             createdAt: new Date()
           })
-      )
+
+        // Schedule the next message/action after the current message
+        setTimeout(() => {
+          if (!input) nextOnboardingMessage(route.next)
+        }, calculateReadingTime(message))
+      })
+  }
+
+  async function finishOnboarding() {
+    if (!currentUser) return
+
+    firestore()
+      .collection('users')
+      .doc(currentUser.uid)
+      .update({
+        onboarding: { isOnboarding: false }
+      })
+
+    const idToken = await currentUser.getIdToken()
+
+    if (idToken) {
+      await fetch(`${config.server.url}/questions/start`, {
+        headers: { Authorization: 'Bearer ' + idToken }
+      })
+
+      if (!messaging().hasPermission()) messaging().requestPermission()
+    }
+  }
+
+  async function setGender(gender: string) {
+    if (!currentUser || !user) return
+
+    const onboardingMessage = await getMessage(user.onboarding.step)
+    if (!onboardingMessage) return
+    const { route, input } = onboardingMessage
+
+    if (input?.values && !input.values.includes(gender)) {
+      nextOnboardingMessage(route.failure)
+      return
     }
 
-    async function handleOnboardingTextInput(message: IMessage) {
-      const text = message.text.trim()
-      const { route, input } = onboarding.currentMessage
+    await firestore()
+      .collection('users')
+      .doc(currentUser.uid)
+      .update({ gender })
 
-      if (text === '') nextOnboardingMessage(route.failure)
+    await firestore()
+      .collection('users')
+      .doc(currentUser.uid)
+      .collection('messages')
+      .add({
+        content: gender,
+        type: MessageType.TEXT,
+        sender: firestore().doc(`user/${currentUser.uid}`),
+        createdAt: new Date()
+      })
 
-      if (!currentUser || !input) return
+    nextOnboardingMessage(route.next)
+  }
 
-      if (input.name === 'name') {
-        await currentUser.updateProfile({
-          displayName: text
+  async function uploadPhoto() {
+    if (!user) return
+
+    const onboardingMessage = await getMessage(user.onboarding.step)
+    if (!onboardingMessage) return
+    const { route } = onboardingMessage
+
+    try {
+      const image = await ImagePicker.openPicker({
+        width: 1000,
+        height: 1000,
+        cropping: true,
+        includeBase64: true
+      })
+
+      const { data, mime } = image as Image
+
+      if (currentUser && data) {
+        const fileType = mime.split('/')[1]
+
+        const ref = storage().ref(`${currentUser.uid}/photo.${fileType}`)
+        await ref.putString(data, 'base64')
+
+        await firestore()
+          .collection('users')
+          .doc(currentUser.uid)
+          .collection('messages')
+          .add({
+            content: await ref.getDownloadURL(),
+            type: MessageType.PHOTO,
+            sender: firestore().doc(`user/${currentUser.uid}`),
+            createdAt: new Date()
+          })
+
+        nextOnboardingMessage(route.next)
+      }
+    } catch (error) {
+      nextOnboardingMessage(route.failure)
+    }
+  }
+
+  async function showLocationPrompt() {
+    if (!user) return
+
+    const onboardingMessage = await getMessage(user.onboarding.step)
+    if (!onboardingMessage) return
+    const { route } = onboardingMessage
+
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+    ).catch(() => nextOnboardingMessage(route.failure))
+
+    switch (granted) {
+      case PermissionsAndroid.RESULTS.GRANTED:
+        nextOnboardingMessage(route.next)
+        break
+
+      case PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN:
+        nextOnboardingMessage(route.deny)
+        break
+
+      default:
+        nextOnboardingMessage(route.failure)
+    }
+  }
+
+  async function handleTextInput(message: IMessage) {
+    if (!currentUser) return
+
+    const text = message.text.trim()
+
+    const messages_ref = firestore()
+      .collection('users')
+      .doc(currentUser.uid)
+      .collection('messages')
+
+    Dialogflow_V2.requestQuery(
+      text,
+      result =>
+        messages_ref.add({
+          content: (result as any).queryResult.fulfillmentText,
+          sender: null,
+          type: MessageType.TEXT,
+          createdAt: new Date()
+        }),
+      () =>
+        messages_ref.add({
+          content:
+            "Sorry I can't connect to the internet right now, please try again soon 😢",
+          sender: null,
+          type: MessageType.TEXT,
+          createdAt: new Date()
         })
+    )
+  }
 
-        await firestore()
-          .collection('users')
-          .doc(currentUser.uid)
-          .update({ name: text })
-      }
+  async function handleOnboardingTextInput(message: IMessage) {
+    const text = message.text.trim()
 
-      if (input.name === 'age') {
-        // Make sure text is a number
-        if (isNaN(Number(text))) {
-          nextOnboardingMessage(route.failure)
-          return
-        }
+    if (!user) return
 
-        if (Number(text) < 18) {
-          nextOnboardingMessage(route.tooYoung)
-          return
-        }
+    const onboardingMessage = await getMessage(user.onboarding.step)
+    if (!onboardingMessage) return
+    const { route, input } = onboardingMessage
 
-        await firestore()
-          .collection('users')
-          .doc(currentUser.uid)
-          .update({ age: text })
-      }
+    if (text === '') nextOnboardingMessage(route.failure)
 
-      onboarding.context[input.name] = text
-      nextOnboardingMessage(route.next)
-    }
+    if (!currentUser || !input) return
 
-    async function addMessage(message: IMessage) {
-      if (!currentUser) return
+    if (input.name === 'name') {
+      await currentUser.updateProfile({
+        displayName: text
+      })
 
-      // Store the message
-      firestore()
+      await firestore()
         .collection('users')
         .doc(currentUser.uid)
-        .collection('messages')
-        .add({
-          content: message.text,
-          sender:
-            message.user._id !== 0
-              ? firestore().doc(`user/${message.user._id}`)
-              : null,
-          type: MessageType.TEXT,
-          createdAt: message.createdAt
-        })
-
-      if (message.user._id === currentUser.uid)
-        onboarding.isOnboarding
-          ? handleOnboardingTextInput(message)
-          : handleTextInput(message)
+        .update({ name: text })
     }
 
-    return [
-      messages,
-      addMessage,
-      { uploadPhoto, showLocationPrompt, setGender }
-    ]
-  })
+    if (input.name === 'age') {
+      // Make sure text is a number
+      if (isNaN(Number(text))) {
+        nextOnboardingMessage(route.failure)
+        return
+      }
+
+      if (Number(text) < 18) {
+        nextOnboardingMessage(route.tooYoung)
+        return
+      }
+
+      await firestore()
+        .collection('users')
+        .doc(currentUser.uid)
+        .update({ age: text })
+    }
+
+    nextOnboardingMessage(route.next)
+  }
+
+  async function addMessage(message: IMessage) {
+    if (!currentUser) return
+
+    // Store the message
+    firestore()
+      .collection('users')
+      .doc(currentUser.uid)
+      .collection('messages')
+      .add({
+        content: message.text,
+        sender:
+          message.user._id !== 0
+            ? firestore().doc(`user/${message.user._id}`)
+            : null,
+        type: MessageType.TEXT,
+        createdAt: message.createdAt
+      })
+
+    if (message.user._id === currentUser.uid)
+      onboarding?.isOnboarding
+        ? handleOnboardingTextInput(message)
+        : handleTextInput(message)
+  }
+
+  return [
+    messages,
+    onboarding ? onboardingFlow.messages[onboarding.step]?.input : undefined,
+    addMessage,
+    { uploadPhoto, showLocationPrompt, setGender }
+  ]
 }

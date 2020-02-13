@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components/native'
 import auth from '@react-native-firebase/auth'
-import { useObservable } from 'mobx-react-lite'
 import { GiftedChat, IMessage } from 'react-native-gifted-chat'
 
 import {
@@ -12,7 +11,6 @@ import {
 } from '../../common'
 import useAida from '../../hooks/useAida'
 import colors from '../../colors'
-import onboardingStore from '../../onboarding/onboardingStore'
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -26,16 +24,13 @@ const LoadingIndicator = styled.ActivityIndicator`
 
 export default function Chat() {
   const { currentUser } = auth()
-  const onboarding = useObservable(onboardingStore)
-  const [messages, addMessage, addInput] = useAida()
+  const [messages, input, addMessage, addInput] = useAida()
 
   if (!currentUser) return null
 
   function onSend(messages: IMessage[]) {
     addMessage(messages[0])
   }
-
-  const { input } = onboarding.currentMessage
 
   return (
     <Container>

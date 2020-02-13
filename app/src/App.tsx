@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { StatusBar, Alert } from 'react-native'
-import AsyncStorage from '@react-native-community/async-storage'
 import SplashScreen from 'react-native-splash-screen'
 import Geolocation from 'react-native-geolocation-service'
 import {
@@ -12,17 +11,13 @@ import auth from '@react-native-firebase/auth'
 import firestore from '@react-native-firebase/firestore'
 import messaging from '@react-native-firebase/messaging'
 import { Dialogflow_V2 } from 'react-native-dialogflow'
-import { create } from 'mobx-persist'
-import { useObservable } from 'mobx-react-lite'
 import geohash from 'ngeohash'
 
 import Home from './Home'
 import SignIn from './SignIn'
 import colors from './colors'
 import config from '../config'
-import onboardingStore from './onboarding/onboardingStore'
-
-const hydrate = create({ storage: AsyncStorage })
+import { UserDoc } from './types/firestore'
 
 const Navigator = createSwitchNavigator({
   Home: { screen: Home },
@@ -31,13 +26,10 @@ const Navigator = createSwitchNavigator({
 
 function App(props: NavigationContainerProps) {
   const [initialised, setInitialised] = useState(false)
-  const [hydrated, setHydrated] = useState(false)
+  const [user, setUser] = useState<UserDoc>()
   const { currentUser } = auth()
-  const onboarding = useObservable(onboardingStore)
 
   useEffect(() => {
-    hydrate('onboarding', onboardingStore).then(() => setHydrated(true))
-
     Dialogflow_V2.setConfiguration(
       config.dialogflow.serviceAccount,
       config.dialogflow.privateKey,
@@ -59,7 +51,18 @@ function App(props: NavigationContainerProps) {
   )
 
   useEffect(() => {
-    if (!currentUser || onboarding.isOnboarding) return
+    if (!currentUser) return
+
+    firestore()
+      .collection('users')
+      .doc(currentUser.uid)
+      .onSnapshot(snapshot => {
+        setUser(snapshot.data() as UserDoc)
+      })
+  }, [currentUser])
+
+  useEffect(() => {
+    if (!currentUser || user?.onboarding.isOnboarding) return
 
     // Update FCM token on launch
     messaging()
@@ -68,7 +71,7 @@ function App(props: NavigationContainerProps) {
         firestore()
           .collection('users')
           .doc(currentUser.uid)
-          .update({ "notification_token": token })
+          .update({ notification_token: token })
       })
 
     // Update user's location on launch
@@ -90,11 +93,10 @@ function App(props: NavigationContainerProps) {
         ),
       { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
     )
-  }, [currentUser, onboarding.isOnboarding])
+  }, [currentUser, user?.onboarding.isOnboarding])
 
   return (
-    initialised &&
-    hydrated && (
+    initialised && (
       <>
         <StatusBar backgroundColor={colors.lilac} barStyle="dark-content" />
         <Navigator navigation={props.navigation} />

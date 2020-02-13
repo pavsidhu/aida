@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5'
 import config from '../config'
 import colors from './colors'
 import logo from './images/logo.png'
+import onboardingFlow from './onboardingFlow'
 
 const { RNTwitterSignIn } = NativeModules
 
@@ -95,7 +96,13 @@ export default function SignIn() {
             firestore()
               .collection('users')
               .doc(userCredential.user.uid)
-              .set({ twitter: { username } })
+              .set({
+                onboarding: {
+                  isOnboarding: true,
+                  step: onboardingFlow.start,
+                },
+                twitter: { username }
+              })
           }
         }
       })

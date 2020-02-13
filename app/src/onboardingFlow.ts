@@ -1,4 +1,4 @@
-import OnboardingMessage from '../types/OnboardingMessage'
+import OnboardingMessage from './types/OnboardingMessage'
 
 interface OnboardingFlow {
   start: string
@@ -19,7 +19,7 @@ const onboardingFlow: OnboardingFlow = {
     },
     'name-prompt-1': {
       message:
-        'In order to find people I think you’ll get along with, It’d be great to get to know each other',
+        'In order to find people I think you’ll get along with, it’d be great to get to know each other',
       route: { next: 'name-prompt-2' }
     },
     'name-prompt-2': {

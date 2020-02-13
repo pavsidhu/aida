@@ -9,9 +9,13 @@ export interface UserDoc {
   id: string
   name: string
   age: string
+  gender: string
   photo: string
   location: string
-  interests: string[]
+  onboarding: {
+    isOnboarding: boolean
+    step: string
+  }
   personality: {
     extroversion: number
     agreeableness: number
