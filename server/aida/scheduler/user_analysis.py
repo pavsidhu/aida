@@ -10,10 +10,13 @@ from firebase_admin import firestore
 
 from aida.scheduler import scheduler
 from aida.personality_analysis.model.LstmModel import LstmModel
-from aida.personality_analysis.model.tokenizer import tokenize
+from aida.personality_analysis.model.tokenizer import tokenize, number_of_tokens
 from twitter_scraper import get_tweets
 
 ANALYSE_USER_HOURS = 24
+
+MIN_TWITTER_TOKENS_REQUIRED = 5000
+MIN_MESSAGE_TOKENS_REQUIRED = 10000
 
 TRAITS = [
     "extroversion",
@@ -56,9 +59,16 @@ def user_analysis(user_id):
     # Get a user's messages through interacting with Aida
     messages = get_messages(user_ref)
 
+    # Calculate the user's progress until they're ready for personality analysis
+    progress = calculate_user_progress(tweets, messages)
+
+    if progress != 1.0:
+        user_ref.update({"progress": progress})
+        return
+
     # Predict the user's personality
     personality = predict_personality(tweets + messages)
-    print(personality)
+
     # Save the user's analysed personality
     user_ref.update({"personality": personality})
 
@@ -123,3 +133,13 @@ def get_messages(user_ref):
             messages.append(message["content"])
 
     return messages
+
+
+def calculate_user_progress(tweets, messages):
+    """Calculate percentage of data available until ready for personality analysis"""
+
+    tweet_progress = number_of_tokens(tweets) / MIN_TWITTER_TOKENS_REQUIRED
+    message_progress = number_of_tokens(messages) / MIN_MESSAGE_TOKENS_REQUIRED
+
+    # Limit tweets to only being only half of the data, messages are more important
+    progress = max(min(tweet_progress, 0.5) + message_progress, 1.0)
