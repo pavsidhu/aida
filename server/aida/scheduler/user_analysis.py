@@ -9,8 +9,8 @@ import numpy as np
 from firebase_admin import firestore
 
 from aida.scheduler import scheduler
-from aida.personality_analysis.model.LstmModel import LstmModel
-from aida.personality_analysis.model.tokenizer import tokenize, number_of_tokens
+from aida.user_analysis.model.LstmModel import LstmModel
+from aida.user_analysis.model.tokenizer import tokenize, number_of_tokens
 from twitter_scraper import get_tweets
 
 ANALYSE_USER_HOURS = 24
@@ -32,7 +32,7 @@ for trait in TRAITS:
     model = LstmModel()
     model.load_state_dict(
         torch.load(
-            f"aida/personality_analysis/model/pretrained/{trait}.pth",
+            f"aida/user_analysis/model/pretrained/{trait}.pth",
             map_location="cpu",
         )
     )

@@ -1,7 +1,7 @@
 from torch import nn
 from transformers import BertModel
 
-from aida.personality_analysis.model.Attention import Attention
+from aida.user_analysis.model.Attention import Attention
 
 device = "cpu"
 
