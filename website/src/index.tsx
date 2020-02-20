@@ -4,7 +4,7 @@ import { createGlobalStyle } from "styled-components"
 import firebase from "firebase"
 
 import App from "./App"
-import config from "../config"
+import config from "./config"
 import * as serviceWorker from "./serviceWorker"
 
 const GlobalStyle = createGlobalStyle`
