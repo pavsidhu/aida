@@ -1,8 +1,10 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import { createGlobalStyle } from "styled-components"
+import firebase from "firebase"
 
 import App from "./App"
+import config from "../config"
 import * as serviceWorker from "./serviceWorker"
 
 const GlobalStyle = createGlobalStyle`
@@ -25,6 +27,8 @@ const GlobalStyle = createGlobalStyle`
     text-decoration: none;
   }
 `
+
+firebase.initializeApp(config.firebase)
 
 ReactDOM.render(
   <>
