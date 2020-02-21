@@ -8,6 +8,9 @@ const Container = styled.nav`
   background-color: #8e92f4;
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
   padding: 40px;
+  height: 100vh;
+  position: sticky;
+  top: 0;
 `
 
 const FullLogo = styled.div`
