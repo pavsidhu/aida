@@ -1,6 +1,6 @@
 import React from "react"
-import styled from "styled-components"
-import { NavLink } from "react-router-dom"
+import styled, { css } from "styled-components"
+import { NavLink, useLocation } from "react-router-dom"
 
 import { ReactComponent as LogoSvg } from "../images/logo.svg"
 
@@ -47,17 +47,24 @@ const ListItem = styled.li`
   border-radius: 10px;
 
   &:hover {
-    background-color: #fefefe;
-    color: #8e92f4;
+    background-color: rgba(255, 255, 255, 0.2);
   }
 
-  &:active {
-    background-color: #fefefe;
-    color: #8e92f4;
-  }
+  ${(props: { active: boolean }) =>
+    props.active &&
+    css`
+      background-color: #fefefe;
+      color: #8e92f4;
+
+      &:hover {
+        background-color: #fefefe;
+      }
+    `}
 `
 
 export default function Sidebar() {
+  const location = useLocation()
+
   return (
     <Container>
       <FullLogo>
@@ -66,13 +73,13 @@ export default function Sidebar() {
       </FullLogo>
       <List>
         <NavLink to="/users">
-          <ListItem>Users</ListItem>
+          <ListItem active={location.pathname === "/users"}>Users</ListItem>
         </NavLink>
         <NavLink to="/matches">
-          <ListItem>Matches</ListItem>
+          <ListItem active={location.pathname === "/matches"}>Matches</ListItem>
         </NavLink>
         <NavLink to="/demo">
-          <ListItem>Demo</ListItem>
+          <ListItem active={location.pathname === "/demo"}>Demo</ListItem>
         </NavLink>
       </List>
     </Container>
