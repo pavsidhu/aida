@@ -29,6 +29,7 @@ const GlobalStyle = createGlobalStyle`
 `
 
 firebase.initializeApp(config.firebase)
+firebase.firestore().enablePersistence()
 
 ReactDOM.render(
   <>
