@@ -69,7 +69,11 @@ export default function UsersTab() {
               <RowItem>{user.name}</RowItem>
               <RowItem>{user.age}</RowItem>
               <RowItem>{user.gender}</RowItem>
-              <RowItem>{JSON.stringify(user.personality, null, 2)}</RowItem>
+              <RowItem>
+                {Object.entries(user.personality).map(trait => (
+                  <div>{`${trait[0]}: ${trait[1]}`}</div>
+                ))}
+              </RowItem>
             </Row>
           ))}
         </tbody>
