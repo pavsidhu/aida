@@ -20,11 +20,11 @@ const Container = styled.div`
 `
 
 const Content = styled.div`
-  margin: 24px;
+  margin: 32px;
   padding: 32px;
   background-color: white;
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
-  border-radius: 12px;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
 `
 
 export default function App() {
