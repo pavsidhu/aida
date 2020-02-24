@@ -49,33 +49,33 @@ export default function MatchesTab(props: NavigationStackScreenProps) {
       .collection('matches')
       .where('users', 'array-contains', currentUserRef)
       .onSnapshot(async snapshot => {
-        const matches = await Promise.all(
-          snapshot.docs.map(async doc => {
-            const data = doc.data() as MatchDoc
+        setMatches(
+          await Promise.all(
+            snapshot.docs.map(async doc => {
+              const data = doc.data() as MatchDoc
 
-            const userRefs = data.users as FirebaseFirestoreTypes.DocumentReference[]
-            const users = await Promise.all(
-              userRefs.map(
-                async userRef =>
-                  ({
-                    ...(await userRef.get()).data(),
-                    id: userRef.id,
-                    photo: await storage()
-                      .ref(`${userRef.id}/photo.jpeg`)
-                      .getDownloadURL()
-                  } as UserDoc)
+              const userRefs = data.users as FirebaseFirestoreTypes.DocumentReference[]
+              const users = await Promise.all(
+                userRefs.map(
+                  async userRef =>
+                    ({
+                      ...(await userRef.get()).data(),
+                      id: userRef.id,
+                      photo: await storage()
+                        .ref(`${userRef.id}/photo.jpeg`)
+                        .getDownloadURL()
+                    } as UserDoc)
+                )
               )
-            )
 
-            return {
-              ...data,
-              id: doc.id,
-              users
-            } as MatchDoc
-          })
+              return {
+                ...data,
+                id: doc.id,
+                users
+              } as MatchDoc
+            })
+          )
         )
-
-        setMatches(matches)
 
         if (loading) setLoading(false)
       })
