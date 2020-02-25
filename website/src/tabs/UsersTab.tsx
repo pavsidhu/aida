@@ -60,8 +60,8 @@ export default function UsersTab() {
               <RowItem>{user.age}</RowItem>
               <RowItem>{user.gender}</RowItem>
               <RowItem>
-                {Object.entries(user.personality).map(trait => (
-                  <div>{`${trait[0]}: ${trait[1]}`}</div>
+                {Object.entries(user.personality).map((trait: any) => (
+                  <div>{`${trait[0]}: ${(trait[1] * 100).toFixed(2)}%`}</div>
                 ))}
               </RowItem>
             </tr>

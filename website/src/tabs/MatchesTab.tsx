@@ -80,7 +80,7 @@ export default function MatchesTab() {
               <tr>
                 <RowItem>{user1.name}</RowItem>
                 <RowItem>{user2.name}</RowItem>
-                <RowItem>{matchSimilarity.toFixed(4)}</RowItem>
+                <RowItem>{(matchSimilarity * 100).toFixed(2) + "%"}</RowItem>
               </tr>
             )
           })}
