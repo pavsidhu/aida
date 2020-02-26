@@ -29,32 +29,34 @@ const RowItem = styled.td`
 export default function MatchesTab() {
   const [matches, setMatches] = useState<any[]>([])
 
-  useEffect(() =>
-    firestore()
-      .collection("matches")
-      .onSnapshot(async snapshot =>
-        setMatches(
-          await Promise.all(
-            snapshot.docs.map(async doc => {
-              const data = doc.data()
+  useEffect(
+    () =>
+      firestore()
+        .collection("matches")
+        .onSnapshot(async snapshot =>
+          setMatches(
+            await Promise.all(
+              snapshot.docs.map(async doc => {
+                const data = doc.data()
 
-              const userRefs = data.users
-              const users = await Promise.all(
-                userRefs.map(async (userRef: any) => ({
-                  ...(await userRef.get()).data(),
-                  id: userRef.id
-                }))
-              )
+                const userRefs = data.users
+                const users = await Promise.all(
+                  userRefs.map(async (userRef: any) => ({
+                    ...(await userRef.get()).data(),
+                    id: userRef.id
+                  }))
+                )
 
-              return {
-                ...data,
-                id: doc.id,
-                users
-              }
-            })
+                return {
+                  ...data,
+                  id: doc.id,
+                  users
+                }
+              })
+            )
           )
-        )
-      )
+        ),
+    []
   )
 
   return (
@@ -77,7 +79,7 @@ export default function MatchesTab() {
               Object.values(user2.personality)
             )
             return (
-              <tr>
+              <tr key={match.id}>
                 <RowItem>{user1.name}</RowItem>
                 <RowItem>{user2.name}</RowItem>
                 <RowItem>{(matchSimilarity * 100).toFixed(2) + "%"}</RowItem>

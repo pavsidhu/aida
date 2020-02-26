@@ -28,17 +28,19 @@ const RowItem = styled.td`
 export default function UsersTab() {
   const [users, setUsers] = useState<any[]>([])
 
-  useEffect(() =>
-    firestore()
-      .collection("users")
-      .onSnapshot(snapshot =>
-        setUsers(
-          snapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
-          }))
-        )
-      )
+  useEffect(
+    () =>
+      firestore()
+        .collection("users")
+        .onSnapshot(snapshot =>
+          setUsers(
+            snapshot.docs.map(doc => ({
+              id: doc.id,
+              ...doc.data()
+            }))
+          )
+        ),
+    []
   )
 
   return (
@@ -55,14 +57,19 @@ export default function UsersTab() {
         </thead>
         <tbody>
           {users.map((user: any) => (
-            <tr>
+            <tr key={user.id}>
               <RowItem>{user.name}</RowItem>
               <RowItem>{user.age}</RowItem>
               <RowItem>{user.gender}</RowItem>
               <RowItem>
-                {Object.entries(user.personality).map((trait: any) => (
-                  <div>{`${trait[0]}: ${(trait[1] * 100).toFixed(2)}%`}</div>
-                ))}
+                {user.personality &&
+                  Object.entries(
+                    user.personality
+                  ).map(([trait, value]: any) => (
+                    <div key={trait}>{`${trait}: ${(value * 100).toFixed(
+                      2
+                    )}%`}</div>
+                  ))}
               </RowItem>
             </tr>
           ))}
