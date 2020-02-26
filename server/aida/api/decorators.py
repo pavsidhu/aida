@@ -9,8 +9,6 @@ def auth_required(function):
 
     @wraps(function)
     def wrapper(*args, **kwargs):
-        return function("Npu2xs1KiqVtQvGlKEBZ6iSLO0C3", *args, **kwargs)
-
         authorization = request.headers.get("Authorization")
 
         if not authorization:
