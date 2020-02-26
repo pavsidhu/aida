@@ -49,6 +49,7 @@ export default function UsersTab() {
       <Table>
         <thead>
           <tr>
+            <HeaderTitle>ID</HeaderTitle>
             <HeaderTitle>Name</HeaderTitle>
             <HeaderTitle>Age</HeaderTitle>
             <HeaderTitle>Gender</HeaderTitle>
@@ -58,6 +59,7 @@ export default function UsersTab() {
         <tbody>
           {users.map((user: any) => (
             <tr key={user.id}>
+              <RowItem>{user.id}</RowItem>
               <RowItem>{user.name}</RowItem>
               <RowItem>{user.age}</RowItem>
               <RowItem>{user.gender}</RowItem>

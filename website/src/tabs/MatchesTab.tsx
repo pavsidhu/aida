@@ -65,6 +65,7 @@ export default function MatchesTab() {
       <Table>
         <thead>
           <tr>
+            <HeaderTitle>ID</HeaderTitle>
             <HeaderTitle>User 1</HeaderTitle>
             <HeaderTitle>User 2</HeaderTitle>
             <HeaderTitle>Similarity</HeaderTitle>
@@ -80,6 +81,7 @@ export default function MatchesTab() {
             )
             return (
               <tr key={match.id}>
+                <RowItem>{match.id}</RowItem>
                 <RowItem>{user1.name}</RowItem>
                 <RowItem>{user2.name}</RowItem>
                 <RowItem>{(matchSimilarity * 100).toFixed(2) + "%"}</RowItem>
