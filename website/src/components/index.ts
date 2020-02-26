@@ -1,3 +1,4 @@
 import Sidebar from "./Sidebar"
+import Tab from "./Tab"
 
-export { Sidebar }
+export { Sidebar, Tab }

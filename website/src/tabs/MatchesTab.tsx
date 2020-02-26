@@ -1,14 +1,9 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import styled from "styled-components"
 import { firestore } from "firebase"
 import similarity from "compute-cosine-similarity"
-
-const Title = styled.h1`
-  font-size: 48px;
-  font-weight: bold;
-  color: #353535;
-  margin-bottom: 24px;
-`
+import { Tab } from "../components"
+import { AppContext } from "../App"
 
 const Table = styled.table`
   width: 100%;
@@ -27,41 +22,52 @@ const RowItem = styled.td`
 `
 
 export default function MatchesTab() {
-  const [matches, setMatches] = useState<any[]>([])
+  const context = useContext(AppContext)
+  const [searchValue, setSearchValue] = useState("")
 
   useEffect(
     () =>
       firestore()
         .collection("matches")
-        .onSnapshot(async snapshot =>
-          setMatches(
-            await Promise.all(
-              snapshot.docs.map(async doc => {
-                const data = doc.data()
+        .onSnapshot(async snapshot => {
+          const newMatches = await Promise.all(
+            snapshot.docs.map(async doc => {
+              const data = doc.data()
 
-                const userRefs = data.users
-                const users = await Promise.all(
-                  userRefs.map(async (userRef: any) => ({
-                    ...(await userRef.get()).data(),
-                    id: userRef.id
-                  }))
-                )
+              const userRefs = data.users
+              const users = await Promise.all(
+                userRefs.map(async (userRef: any) => ({
+                  ...(await userRef.get()).data(),
+                  id: userRef.id
+                }))
+              )
 
-                return {
-                  ...data,
-                  id: doc.id,
-                  users
-                }
-              })
+              return {
+                ...data,
+                id: doc.id,
+                users
+              }
+            })
+          )
+
+          context.setMatches(
+            newMatches.filter(
+              (match: any) =>
+                searchValue === "" ||
+                match.users[0].name
+                  .toLowerCase()
+                  .includes(searchValue.toLowerCase()) ||
+                match.users[1].name
+                  .toLowerCase()
+                  .includes(searchValue.toLowerCase())
             )
           )
-        ),
-    []
+        }),
+    [context, searchValue]
   )
 
   return (
-    <>
-      <Title>Matches</Title>
+    <Tab title="Matches" onSearchValueChange={value => setSearchValue(value)}>
       <Table>
         <thead>
           <tr>
@@ -72,7 +78,7 @@ export default function MatchesTab() {
           </tr>
         </thead>
         <tbody>
-          {matches.map((match: any) => {
+          {context.matches.map((match: any) => {
             const user1 = match.users[0]
             const user2 = match.users[1]
             const matchSimilarity = similarity(
@@ -90,6 +96,6 @@ export default function MatchesTab() {
           })}
         </tbody>
       </Table>
-    </>
+    </Tab>
   )
 }

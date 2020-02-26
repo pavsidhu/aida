@@ -1,4 +1,4 @@
-import React from "react"
+import React, { createContext, useState } from "react"
 import styled from "styled-components"
 import {
   BrowserRouter as Router,
@@ -27,28 +27,49 @@ const Content = styled.div`
   border-radius: 4px;
 `
 
+interface IAppContext {
+  users: any[]
+  matches: any[]
+  setUsers: (users: any[]) => void
+  setMatches: (users: any[]) => void
+}
+
+const AppContext = createContext<IAppContext>({
+  users: [],
+  matches: [],
+  setUsers: () => undefined,
+  setMatches: () => undefined
+})
+
 export default function App() {
+  const [users, setUsers] = useState<any[]>([])
+  const [matches, setMatches] = useState<any[]>([])
+
   return (
     <Router>
       <Container>
         <Sidebar />
         <Content>
-          <Switch>
-            <Route path="/users">
-              <UsersTab />
-            </Route>
-            <Route path="/matches">
-              <MatchesTab />
-            </Route>
-            <Route path="/demo">
-              <DemoTab />
-            </Route>
-            <Route path="/">
-              <Redirect to="/users" />
-            </Route>
-          </Switch>
+          <AppContext.Provider value={{ users, setUsers, matches, setMatches }}>
+            <Switch>
+              <Route path="/users">
+                <UsersTab />
+              </Route>
+              <Route path="/matches">
+                <MatchesTab />
+              </Route>
+              <Route path="/demo">
+                <DemoTab />
+              </Route>
+              <Route path="/">
+                <Redirect to="/users" />
+              </Route>
+            </Switch>
+          </AppContext.Provider>
         </Content>
       </Container>
     </Router>
   )
 }
+
+export { AppContext }

@@ -1,13 +1,8 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import styled from "styled-components"
 import { firestore } from "firebase"
-
-const Title = styled.h1`
-  font-size: 48px;
-  font-weight: bold;
-  color: #353535;
-  margin-bottom: 24px;
-`
+import { AppContext } from "../App"
+import { Tab } from "../components"
 
 const Table = styled.table`
   width: 100%;
@@ -26,26 +21,32 @@ const RowItem = styled.td`
 `
 
 export default function UsersTab() {
-  const [users, setUsers] = useState<any[]>([])
+  const context = useContext(AppContext)
+  const [searchValue, setSearchValue] = useState("")
 
   useEffect(
     () =>
       firestore()
         .collection("users")
         .onSnapshot(snapshot =>
-          setUsers(
-            snapshot.docs.map(doc => ({
-              id: doc.id,
-              ...doc.data()
-            }))
+          context.setUsers(
+            snapshot.docs
+              .map(doc => ({
+                id: doc.id,
+                ...doc.data()
+              }))
+              .filter(
+                (user: any) =>
+                  searchValue === "" ||
+                  user.name.toLowerCase().includes(searchValue.toLowerCase())
+              )
           )
         ),
-    []
+    [context, searchValue]
   )
 
   return (
-    <>
-      <Title>Users</Title>
+    <Tab title="Users" onSearchValueChange={value => setSearchValue(value)}>
       <Table>
         <thead>
           <tr>
@@ -57,7 +58,7 @@ export default function UsersTab() {
           </tr>
         </thead>
         <tbody>
-          {users.map((user: any) => (
+          {context.users.map((user: any) => (
             <tr key={user.id}>
               <RowItem>{user.id}</RowItem>
               <RowItem>{user.name}</RowItem>
@@ -77,6 +78,6 @@ export default function UsersTab() {
           ))}
         </tbody>
       </Table>
-    </>
+    </Tab>
   )
 }
