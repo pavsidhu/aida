@@ -1,6 +1,7 @@
 import logging
 
 from flask import Flask, request
+from flask_cors import CORS
 
 import firebase_admin
 from dotenv import load_dotenv
@@ -10,6 +11,7 @@ firebase_admin.initialize_app()
 
 app = Flask(__name__)
 app.logger.setLevel(logging.ERROR)
+CORS(app)
 
 from aida.api.routes import blueprint as routes
 
