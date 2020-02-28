@@ -29,12 +29,11 @@ const Form = styled.form`
 `
 
 const TextInput = styled.input`
-  border: none;
+  border: 1px solid #afafaf;
   border-radius: 4px;
   padding: 16px 18px;
   color: #353535;
   font-size: 16px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   margin-right: 4px;
   width: 350px;
 `
