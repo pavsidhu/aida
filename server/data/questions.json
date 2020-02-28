@@ -179,7 +179,7 @@
     { "question": "What’s the worst movie you’ve ever seen?" },
     { "question": "What’s the best road trip you’ve been on?" },
     {
-      "question": "If you found a briefcase filled with 1 million in 100$ bills in front of your door, what would you do with it?"
+      "question": "If you found a briefcase filled with £1,000,000 in front of your door, what would you do with it?"
     },
     { "question": "What’s the worst advice someone has given you?" },
     {
@@ -224,7 +224,7 @@
     },
     { "question": "How many other countries have you visited?" },
     {
-      "question": "What’s your favorite band NAME (not necessarily your favorite band)?"
+      "question": "What’s your favorite band and why?"
     },
     { "question": "What do you miss about life 10 or 20 years ago?" },
     { "question": "What’s your favorite holiday?" },
@@ -298,7 +298,7 @@
     { "question": "Where’s the last place you’d ever go?" },
     { "question": "What fact floored you when you heard it?" },
     {
-      "question": "If you unexpectedly won 10,000$, what would you spend it on?"
+      "question": "If you unexpectedly won £10,000, what would you spend it on?"
     },
     { "question": "Who is the best role model a person could have" }
   ]
