@@ -39,20 +39,20 @@ def start_matching(user_id):
 
 @blueprint.route("/questions/demo/<string:user_id>", methods=["GET"])
 def demo_questions(user_id):
-    """Start scheduling questions to ask the user"""
-    send_question(user_id)
+    """Send a demo question to the user"""
+    send_question(user_id, is_queued=False)
     return {}, 200
 
 
 @blueprint.route("/user_analysis/demo/<string:user_id>", methods=["GET"])
 def demo_user_analysis(user_id):
-    """Start user analysis"""
-    find_match(user_id)
+    """Demo inferring a user's personality"""
+    user_analysis(user_id, is_queued=False)
     return {}, 200
 
 
 @blueprint.route("/matching/demo/<string:user_id>", methods=["GET"])
 def demo_matching(user_id):
-    """Start scheduling questions to ask the user"""
-    user_analysis(user_id)
+    """Demo finding a match for a user"""
+    find_match(user_id, is_queued=False)
     return {}, 200

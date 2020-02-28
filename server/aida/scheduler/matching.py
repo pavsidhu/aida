@@ -1,11 +1,15 @@
+import random
 from datetime import datetime, timedelta
 
 import firebase_admin
+from dotenv import load_dotenv
 import numpy as np
 import pygeohash
 from firebase_admin import firestore, messaging
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+
+from aida.scheduler import scheduler
 
 MIN_MATCH_TIME = 30
 MATCH_TIME_RANGE = 300
@@ -18,11 +22,13 @@ def start_matching_scheduler(user_id):
     scheduler.enqueue_in(timedelta(minutes=minutes), find_match, user_id)
 
 
-def find_match(user_id):
+def find_match(user_id, is_queued=True):
     """Finds a match for a user"""
 
-    load_dotenv()
-    firebase_admin.initialize_app()
+    if is_queued:
+        load_dotenv()
+        firebase_admin.initialize_app()
+
     db = firestore.client()
 
     # Get user's personality

@@ -4,14 +4,16 @@ import re
 import sys
 from datetime import datetime, timedelta
 
-import torch
+import firebase_admin
 import numpy as np
+import torch
+from dotenv import load_dotenv
 from firebase_admin import firestore
+from twitter_scraper import get_tweets
 
 from aida.scheduler import scheduler
 from aida.user_analysis.model.LstmModel import LstmModel
-from aida.user_analysis.model.tokenizer import tokenize, number_of_tokens
-from twitter_scraper import get_tweets
+from aida.user_analysis.model.tokenizer import number_of_tokens, tokenize
 
 ANALYSE_USER_HOURS = 24
 
@@ -28,17 +30,17 @@ TRAITS = [
 
 models = {}
 
-for trait in TRAITS:
-    model = LstmModel()
-    model.load_state_dict(
-        torch.load(
-            f"aida/user_analysis/model/pretrained/{trait}.pth",
-            map_location="cpu",
-        )
-    )
-    model.eval()
+# for trait in TRAITS:
+#     model = LstmModel()
+#     model.load_state_dict(
+#         torch.load(
+#             f"aida/user_analysis/model/pretrained/{trait}.pth",
+#             map_location="cpu",
+#         )
+#     )
+#     model.eval()
 
-    models[trait] = model
+#     models[trait] = model
 
 
 def start_user_analysis_scheduler(user_id):
@@ -46,8 +48,13 @@ def start_user_analysis_scheduler(user_id):
     scheduler.enqueue_in(timedelta(hours=ANALYSE_USER_HOURS), user_analysis, user_id)
 
 
-def user_analysis(user_id):
+def user_analysis(user_id, is_queued=True):
     """Analyses a user's personality using chat data and tweets"""
+
+    if is_queued:
+        load_dotenv()
+        firebase_admin.initialize_app()
+
     db = firestore.client()
 
     # Get the user's reference from Firestore

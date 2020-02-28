@@ -21,9 +21,13 @@ def start_question_scheduler(user_id):
     scheduler.enqueue_in(timedelta(minutes=minutes), send_question, user_id)
 
 
-def send_question(user_id):
-    load_dotenv()
-    firebase_admin.initialize_app()
+def send_question(user_id, is_queued=True):
+    """Sends a question to the user along with a notification"""
+
+    if is_queued:
+        load_dotenv()
+        firebase_admin.initialize_app()
+
     db = firestore.client()
 
     # Get a question from Firestore
