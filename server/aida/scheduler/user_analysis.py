@@ -13,7 +13,7 @@ from twitter_scraper import get_tweets
 
 from aida.scheduler import scheduler
 from aida.user_analysis.model.LstmModel import LstmModel
-from aida.user_analysis.model.tokenizer import number_of_tokens, tokenize
+from aida.user_analysis.model.tokenizer import tokenize
 
 ANALYSE_USER_HOURS = 24
 MIN_TEXTS_REQUIRED = 40

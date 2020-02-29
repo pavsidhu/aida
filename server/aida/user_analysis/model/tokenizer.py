@@ -15,13 +15,3 @@ def tokenize(texts):
     padded_tokens = pad_sequence(tokens, batch_first=True, padding_value=0)
 
     return padded_tokens
-
-
-def number_of_tokens(texts):
-    count = 0
-
-    for text in texts:
-        tokens = tokenizer.encode(text.lower(), add_special_tokens=True)
-        count += len(tokens)
-
-    return count
