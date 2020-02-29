@@ -1,5 +1,7 @@
 import React from "react"
 import styled, { css } from "styled-components"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faUser, faHeart, faLaptop } from "@fortawesome/free-solid-svg-icons"
 import { NavLink, useLocation } from "react-router-dom"
 
 import { ReactComponent as LogoSvg } from "../images/logo.svg"
@@ -62,6 +64,10 @@ const ListItem = styled.li`
     `}
 `
 
+const Icon = styled(FontAwesomeIcon)`
+  margin-right: 8px;
+`
+
 export default function Sidebar() {
   const location = useLocation()
 
@@ -73,13 +79,22 @@ export default function Sidebar() {
       </FullLogo>
       <List>
         <NavLink to="/users">
-          <ListItem active={location.pathname === "/users"}>Users</ListItem>
+          <ListItem active={location.pathname === "/users"}>
+            <Icon icon={faUser} fixedWidth={true} />
+            Users
+          </ListItem>
         </NavLink>
         <NavLink to="/matches">
-          <ListItem active={location.pathname === "/matches"}>Matches</ListItem>
+          <ListItem active={location.pathname === "/matches"}>
+            <Icon icon={faHeart} fixedWidth={true} />
+            Matches
+          </ListItem>
         </NavLink>
         <NavLink to="/demo">
-          <ListItem active={location.pathname === "/demo"}>Demo</ListItem>
+          <ListItem active={location.pathname === "/demo"}>
+            <Icon icon={faLaptop} fixedWidth={true} />
+            Demo
+          </ListItem>
         </NavLink>
       </List>
     </Container>
