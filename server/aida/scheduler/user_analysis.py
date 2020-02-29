@@ -16,9 +16,7 @@ from aida.user_analysis.model.LstmModel import LstmModel
 from aida.user_analysis.model.tokenizer import number_of_tokens, tokenize
 
 ANALYSE_USER_HOURS = 24
-
-MIN_TWITTER_TOKENS_REQUIRED = 5000
-MIN_MESSAGE_TOKENS_REQUIRED = 10000
+MIN_TEXTS_REQUIRED = 40
 
 TRAITS = [
     "extroversion",
@@ -145,8 +143,5 @@ def get_messages(user_ref):
 def calculate_user_progress(tweets, messages):
     """Calculate percentage of data available until ready for personality analysis"""
 
-    tweet_progress = number_of_tokens(tweets) / MIN_TWITTER_TOKENS_REQUIRED
-    message_progress = number_of_tokens(messages) / MIN_MESSAGE_TOKENS_REQUIRED
-
-    # Limit tweets to only being only half of the data, messages are more important
-    progress = max(min(tweet_progress, 0.5) + message_progress, 1.0)
+    number_of_texts = max(len(tweets), 20) + len(messages)
+    return number_of_texts / MIN_TEXTS_REQUIRED
