@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react"
 import styled from "styled-components"
 import { firestore } from "firebase"
+
 import { AppContext } from "../App"
-import { Tab } from "../components"
+import { Tab, Trait } from "../components"
 
 const Table = styled.table`
   width: 100%;
@@ -69,9 +70,7 @@ export default function UsersTab() {
                   Object.entries(
                     user.personality
                   ).map(([trait, value]: any) => (
-                    <div key={trait}>{`${trait}: ${(value * 100).toFixed(
-                      2
-                    )}%`}</div>
+                    <Trait name={trait} value={value} key={trait} />
                   ))}
               </RowItem>
             </tr>
