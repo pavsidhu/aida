@@ -2,7 +2,8 @@ import React, { useState, useEffect, useContext } from "react"
 import styled from "styled-components"
 import { firestore } from "firebase"
 import similarity from "compute-cosine-similarity"
-import { Tab } from "../components"
+
+import { Tab, Bar } from "../components"
 import { AppContext } from "../App"
 
 const Table = styled.table`
@@ -85,12 +86,16 @@ export default function MatchesTab() {
               Object.values(user1.personality),
               Object.values(user2.personality)
             )
+            const percent = (matchSimilarity * 100).toFixed(2) + "%"
             return (
               <tr key={match.id}>
                 <RowItem>{match.id}</RowItem>
                 <RowItem>{user1.name}</RowItem>
                 <RowItem>{user2.name}</RowItem>
-                <RowItem>{(matchSimilarity * 100).toFixed(2) + "%"}</RowItem>
+                <RowItem>
+                  {percent}
+                  <Bar percent={percent} />
+                </RowItem>
               </tr>
             )
           })}
