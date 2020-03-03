@@ -87,23 +87,8 @@ def select_match(user, nearby_users):
         ),
     )
 
-    # Pick a random user using a Gumbel distribution
-    index = random_gumbel(min=0, max=len(ranked_users))
-
-    return ranked_users[index]
-
-
-def random_gumbel(location=0.12, scale=0.1, min=0, max=1):
-    """Pick a random integer using a Gumbel distribution in the given range"""
-
-    random = -1
-
-    # Make sure random index is a valid index
-    while random < min or random > max:
-        gumbel = np.random.gumbel(location, scale, 1)[0]
-        random = int(max - (max * gumbel))
-
-    return round(random)
+    # Return the highest ranked individual
+    return ranked_users[0]
 
 
 DEG_LATITUDE_PER_KM = 0.008983152771
