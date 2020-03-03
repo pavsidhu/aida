@@ -35,6 +35,10 @@ def find_match(user_id, is_queued=True):
     user = db.collection("users").document(user_id).get().to_dict()
     user["id"] = user_id
 
+    # If a user does not have enough data, don't find matches
+    if user["progress"] < 1.0:
+        return
+
     # Find potential matches near the user
     nearby_users = find_nearby_unmatched_users(db, user)
 
