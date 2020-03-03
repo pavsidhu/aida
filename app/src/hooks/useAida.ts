@@ -175,7 +175,7 @@ export default function useAida(): AidaResponse {
     const idToken = await currentUser.getIdToken()
 
     if (idToken) {
-      await fetch(`${config.server.url}/finished-onboarding`, {
+      await fetch(`${config.server.url}/onboarding/complete`, {
         headers: { Authorization: 'Bearer ' + idToken }
       })
 
