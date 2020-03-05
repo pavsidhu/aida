@@ -99,7 +99,7 @@ export default function SignIn() {
               .set({
                 onboarding: {
                   isOnboarding: true,
-                  step: onboardingFlow.start,
+                  step: onboardingFlow.start
                 },
                 twitter: { username }
               })
