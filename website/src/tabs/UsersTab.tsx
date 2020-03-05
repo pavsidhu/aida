@@ -43,7 +43,7 @@ export default function UsersTab() {
               )
           )
         ),
-    [context, searchValue]
+    [searchValue]
   )
 
   return (

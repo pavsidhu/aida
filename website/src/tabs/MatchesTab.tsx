@@ -64,7 +64,7 @@ export default function MatchesTab() {
             )
           )
         }),
-    [context, searchValue]
+    [searchValue]
   )
 
   return (
