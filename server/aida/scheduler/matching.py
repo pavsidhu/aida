@@ -125,10 +125,21 @@ def create_match(db, user, matching_user):
         message
     )
 
+    tokens = []
+
+    if user.get("notification_token"):
+        tokens.append(user["notification_token"])
+    
+    if matching_user.get("notification_token"):
+        tokens.append(matching_user["notification_token"])
+
+    if not tokens:
+        return
+
     # Setup notifications for messages between users
     topic = f"/topics/match-{match.id}"
     messaging.subscribe_to_topic(
-        tokens=[user["notification_token"], matching_user["notification_token"]],
+        tokens=[tokens],
         topic=topic,
     )
 

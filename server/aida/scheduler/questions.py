@@ -95,12 +95,13 @@ def add_question_to_messages(db, user, user_id, question):
 
 def send_notification(db, user, question):
     """Sends a notification to the user's device"""
-    messaging.send(
-        messaging.Message(
-            notification=messaging.Notification(title="Aida", body=question),
-            token=user["notification_token"],
+    if user.get("notification_token"):
+        messaging.send(
+            messaging.Message(
+                notification=messaging.Notification(title="Aida", body=question),
+                token=user["notification_token"],
+            )
         )
-    )
 
 
 def parseMessage(message, user):
