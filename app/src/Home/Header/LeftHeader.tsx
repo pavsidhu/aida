@@ -51,7 +51,12 @@ export default function LeftHeader(props: NavigationStackScreenProps) {
         onPress={() => {
           props.navigation.navigate('Profile')
         }}
-        style={{ padding: 16 }}
+        style={{
+          width: 48,
+          height: 48,
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
       >
         <ProfileIcon source={{ uri: photoUrl }} />
       </TouchableRipple>

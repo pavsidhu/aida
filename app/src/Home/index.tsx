@@ -14,6 +14,7 @@ import Settings from './Settings'
 import LeftHeader from './Header/LeftHeader'
 import RightHeader from './Header/RightHeader'
 import colors from '../colors'
+import { Platform } from 'react-native'
 
 const navigationOptions = (options?: {
   title?: string
@@ -33,6 +34,10 @@ const navigationOptions = (options?: {
     elevation: 1,
     backgroundColor: colors.lilac
   },
+  headerTintColor: Platform.select({
+    ios: colors.purple,
+    android: colors.black
+  }),
   headerTitleStyle: {
     color: colors.black,
     fontWeight: 'bold',

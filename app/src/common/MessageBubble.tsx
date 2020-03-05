@@ -27,26 +27,37 @@ const Container = styled.View<PositionProps>`
 
 const AnimatableContainer = createAnimatableComponent(Container)
 
-const TextBubble = styled.Text<PositionProps>`
+const TextBubble = styled.View<PositionProps>`
   padding: 12px 16px;
   border-radius: 18px;
-  font-size: 16px;
-  line-height: 22px;
   elevation: 2;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
 
   ${props =>
     props.bubblePosition === 'left'
       ? css`
-          color: ${colors.white};
           background-color: ${colors.purple};
           border-top-left-radius: 0;
           margin-right: 8px;
         `
       : css`
-          color: ${colors.black};
           background-color: ${colors.white};
           border-top-right-radius: 0;
           margin-left: 8px;
+        `};
+`
+
+const TextBubbleContent = styled.Text<PositionProps>`
+  font-size: 16px;
+  line-height: 22px;
+
+  ${props =>
+    props.bubblePosition === 'left'
+      ? css`
+          color: ${colors.white};
+        `
+      : css`
+          color: ${colors.black};
         `};
 `
 
@@ -89,7 +100,11 @@ export default function MessageBubble(props: GFBubble['props']) {
     }
 
     return (
-      <TextBubble bubblePosition={props.position}>{message.text}</TextBubble>
+      <TextBubble bubblePosition={props.position}>
+        <TextBubbleContent bubblePosition={props.position}>
+          {message.text}
+        </TextBubbleContent>
+      </TextBubble>
     )
   }
 

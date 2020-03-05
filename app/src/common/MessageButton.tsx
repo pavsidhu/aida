@@ -13,10 +13,13 @@ const Container = styled.TouchableOpacity`
   justify-content: center;
 `
 
-const Text = styled.Text`
+const Button = styled.View`
   background-color: ${colors.lightGrey};
   border-radius: 20px;
   padding: 8px 16px;
+`
+
+const Text = styled.Text`
   color: ${colors.black};
   font-size: 16px;
   font-weight: bold;
@@ -31,7 +34,9 @@ interface Props {
 export default function MessageButton(props: Props) {
   return (
     <Container onPress={props.onPress}>
-      <Text>{props.text}</Text>
+      <Button>
+        <Text>{props.text}</Text>
+      </Button>
     </Container>
   )
 }

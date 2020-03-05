@@ -14,15 +14,18 @@ const Container = styled.View`
   flex-direction: row;
 `
 
-const Text = styled.Text`
+const Option = styled.View`
   background-color: ${colors.lightGrey};
   border-radius: 20px;
   padding: 8px 16px;
+  margin: 0 8px;
+`
+
+const Text = styled.Text`
   color: ${colors.black};
   font-size: 16px;
   font-weight: bold;
   text-align: center;
-  margin: 0 8px;
 `
 
 interface Props {
@@ -34,9 +37,9 @@ export default function MessageOptions(props: Props) {
   return (
     <Container>
       {props.options.map(option => (
-        <Text key={option} onPress={() => props.onPress(option)}>
-          {option}
-        </Text>
+        <Option key={option}>
+          <Text onPress={() => props.onPress(option)}>{option}</Text>
+        </Option>
       ))}
     </Container>
   )

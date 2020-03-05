@@ -75,7 +75,10 @@ const onboardingFlow: OnboardingFlow = {
     },
     'age-too-young': {
       message: 'Unfortunately, you need to be at least 18 to use Aida.',
-      route: {}
+      route: {
+        next: 'age-prompt-success',
+        tooYoung: 'age-too-young'
+      }
     },
     'photo-prompt': {
       message:

@@ -86,11 +86,7 @@ function App(props: NavigationContainerProps) {
               position.coords.longitude
             )
           }),
-      () =>
-        Alert.alert(
-          'Location Access',
-          'Please enable location permissions to use Aida'
-        ),
+      () => null,
       { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
     )
   }, [currentUser, user?.onboarding.isOnboarding])

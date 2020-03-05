@@ -11,7 +11,12 @@ export default function RightHeader(props: NavigationStackScreenProps) {
       onPress={() => {
         props.navigation.navigate('Settings')
       }}
-      style={{ padding: 16 }}
+      style={{
+        width: 48,
+        height: 48,
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}
     >
       <MaterialIcon name="settings" size={24} color={colors.black} />
     </TouchableRipple>
