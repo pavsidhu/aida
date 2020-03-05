@@ -37,6 +37,10 @@ target 'Matcher' do
   pod 'react-native-twitter-signin', :path => '../node_modules/react-native-twitter-signin'
 
   pod 'react-native-dialogflow', :path => '../node_modules/react-native-dialogflow'
+  
+  # MANUALLY ADDED
+  pod 'react-native-geolocation', path: '../node_modules/@react-native-community/geolocation'
+  pod 'react-native-voice', :path => '../node_modules/react-native-voice'
 
   target 'MatcherTests' do
     inherit! :search_paths
