@@ -1,16 +1,14 @@
-import React, { useEffect } from 'react'
-import { NativeModules, StatusBar } from 'react-native'
+import React from 'react'
+import { StatusBar } from 'react-native'
 import styled from 'styled-components/native'
+import { GoogleSignin } from '@react-native-community/google-signin'
 import auth from '@react-native-firebase/auth'
 import firestore from '@react-native-firebase/firestore'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 
-import config from '../config'
 import colors from './colors'
 import logo from './images/logo.png'
 import onboardingFlow from './onboardingFlow'
-
-const { RNTwitterSignIn } = NativeModules
 
 const Container = styled.View`
   flex: 1;
@@ -55,7 +53,7 @@ const Button = styled.TouchableOpacity`
   elevation: 10;
 `
 
-const TwitterIcon = styled(Icon)`
+const GoogleIcon = styled(Icon)`
   position: absolute;
   left: 20px;
 `
@@ -69,20 +67,14 @@ const ButtonText = styled.Text`
   text-align: center;
 `
 
-export default function SignIn() {
-  useEffect(() => {
-    RNTwitterSignIn.init(
-      config.twitter.consumerKey,
-      config.twitter.consumerSecret
-    )
-  }, [])
+GoogleSignin.configure({ scopes: [], webClientId: '' })
 
-  async function continueWithTwitter() {
-    const { authToken, authTokenSecret } = await RNTwitterSignIn.logIn()
-    const credential = auth.TwitterAuthProvider.credential(
-      authToken,
-      authTokenSecret
-    )
+export default function SignIn() {
+  async function continueWithGoogle() {
+    await GoogleSignin.signIn()
+    const { idToken, accessToken } = await GoogleSignin.getTokens()
+
+    const credential = auth.GoogleAuthProvider.credential(idToken, accessToken)
 
     await auth()
       .signInWithCredential(credential)
@@ -90,20 +82,15 @@ export default function SignIn() {
         const { additionalUserInfo } = userCredential
 
         if (additionalUserInfo?.isNewUser) {
-          const username = userCredential.additionalUserInfo?.username
-
-          if (username) {
-            firestore()
-              .collection('users')
-              .doc(userCredential.user.uid)
-              .set({
-                onboarding: {
-                  isOnboarding: true,
-                  step: onboardingFlow.start
-                },
-                twitter: { username }
-              })
-          }
+          firestore()
+            .collection('users')
+            .doc(userCredential.user.uid)
+            .set({
+              onboarding: {
+                isOnboarding: true,
+                step: onboardingFlow.start
+              }
+            })
         }
       })
   }
@@ -120,9 +107,9 @@ export default function SignIn() {
         </Subtitle>
       </TitleSection>
 
-      <Button onPress={continueWithTwitter}>
-        <TwitterIcon name="twitter" size={24} color={colors.blueTwitter} />
-        <ButtonText>Continue With Twitter</ButtonText>
+      <Button onPress={continueWithGoogle}>
+        <GoogleIcon name="google" size={24} color={colors.black} />
+        <ButtonText>Continue With Google</ButtonText>
       </Button>
     </Container>
   )

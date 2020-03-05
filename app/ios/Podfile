@@ -34,13 +34,12 @@ target 'Matcher' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-  pod 'react-native-twitter-signin', :path => '../node_modules/react-native-twitter-signin'
-
   pod 'react-native-dialogflow', :path => '../node_modules/react-native-dialogflow'
   
   # MANUALLY ADDED
   pod 'react-native-geolocation', path: '../node_modules/@react-native-community/geolocation'
   pod 'react-native-voice', :path => '../node_modules/react-native-voice'
+  pod 'GoogleSignIn', '~> 5.0.2'
 
   target 'MatcherTests' do
     inherit! :search_paths

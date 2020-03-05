@@ -21,6 +21,11 @@
 		6BD77335440D262B6D1C8349 /* libPods-Matcher-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EE718C334B9F3A6BFA6117E2 /* libPods-Matcher-tvOS.a */; };
 		77DEB7E777A5A1876F198D4D /* libPods-Matcher.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8044C1F0537D965D017D894D /* libPods-Matcher.a */; };
 		B5F4370724113D8B009B1696 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B5F4370624113D8B009B1696 /* GoogleService-Info.plist */; };
+		B5F437092411878B009B1696 /* libRNGoogleSignin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B5F437082411878B009B1696 /* libRNGoogleSignin.a */; };
+		B5F4370B24118791009B1696 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5F4370A24118791009B1696 /* AddressBook.framework */; };
+		B5F4370D24118796009B1696 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5F4370C24118796009B1696 /* SafariServices.framework */; };
+		B5F4370F2411879C009B1696 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5F4370E2411879C009B1696 /* SystemConfiguration.framework */; };
+		B5F43711241187A1009B1696 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B5F43710241187A1009B1696 /* libz.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +79,11 @@
 		A0B7A5816CC6F64A5647D688 /* Pods-Matcher-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Matcher-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Matcher-tvOSTests/Pods-Matcher-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		A6B408D2E78941FBB66DDE17 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		B5F4370624113D8B009B1696 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B5F437082411878B009B1696 /* libRNGoogleSignin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNGoogleSignin.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5F4370A24118791009B1696 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		B5F4370C24118796009B1696 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
+		B5F4370E2411879C009B1696 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		B5F43710241187A1009B1696 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		C12F1A5AF35B4DAC951CCE27 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		C1CAC50514FC3CEBB1BCA3A1 /* Pods-Matcher.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Matcher.release.xcconfig"; path = "Target Support Files/Pods-Matcher/Pods-Matcher.release.xcconfig"; sourceTree = "<group>"; };
 		D4965D1CFEF1D38826F533B7 /* Pods-Matcher-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Matcher-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Matcher-tvOS/Pods-Matcher-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
@@ -100,6 +110,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5F43711241187A1009B1696 /* libz.tbd in Frameworks */,
+				B5F4370F2411879C009B1696 /* SystemConfiguration.framework in Frameworks */,
+				B5F4370D24118796009B1696 /* SafariServices.framework in Frameworks */,
+				B5F4370B24118791009B1696 /* AddressBook.framework in Frameworks */,
+				B5F437092411878B009B1696 /* libRNGoogleSignin.a in Frameworks */,
 				77DEB7E777A5A1876F198D4D /* libPods-Matcher.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -158,6 +173,11 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B5F43710241187A1009B1696 /* libz.tbd */,
+				B5F4370E2411879C009B1696 /* SystemConfiguration.framework */,
+				B5F4370C24118796009B1696 /* SafariServices.framework */,
+				B5F4370A24118791009B1696 /* AddressBook.framework */,
+				B5F437082411878B009B1696 /* libRNGoogleSignin.a */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				8044C1F0537D965D017D894D /* libPods-Matcher.a */,
@@ -272,7 +292,6 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				CAE06398F8DC3F8F7F72520C /* [CP] Embed Pods Frameworks */,
 				01B8A864BC4E20EA19869FA0 /* [CP] Copy Pods Resources */,
 				D4C9E5C8C88392CF73C3EBA6 /* [CP-User] [RNFB] Core Configuration */,
 			);
@@ -427,6 +446,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Matcher/Pods-Matcher-resources.sh",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/QBImagePickerController/QBImagePicker.bundle",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
@@ -445,11 +465,11 @@
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
 				"${PODS_ROOT}/RSKImageCropper/RSKImageCropper/RSKImageCropperStrings.bundle",
-				"${PODS_ROOT}/TwitterKit5/iOS/TwitterKit.framework/TwitterKitResources.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/gRPC-C++/gRPCCertificates-Cpp.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QBImagePicker.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
@@ -468,7 +488,6 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RSKImageCropperStrings.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TwitterKitResources.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/gRPCCertificates-Cpp.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -554,26 +573,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		CAE06398F8DC3F8F7F72520C /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Matcher/Pods-Matcher-frameworks.sh",
-				"${PODS_ROOT}/TwitterCore/iOS/TwitterCore.framework",
-				"${PODS_ROOT}/TwitterKit5/iOS/TwitterKit.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TwitterCore.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TwitterKit.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Matcher/Pods-Matcher-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D4C9E5C8C88392CF73C3EBA6 /* [CP-User] [RNFB] Core Configuration */ = {

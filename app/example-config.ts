@@ -8,9 +8,6 @@ const config = {
       serverKey: ''
     }
   },
-  twitter: {
-    consumerKey: '',
-    consumerSecret: ''
   },
   dialogflow: {
     serviceAccount: '',
