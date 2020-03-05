@@ -52,6 +52,10 @@ def find_match(user_id, is_queued=True):
     # Setup the match
     create_match(db, user, match)
 
+    # Schedule the next match
+    if is_queued:
+        start_matching_scheduler(user_id)
+
 
 def find_nearby_unmatched_users(db, user):
     """Finds nearby non-matched users based on the user's location and gender preference"""

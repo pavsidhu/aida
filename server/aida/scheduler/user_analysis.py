@@ -77,6 +77,10 @@ def user_analysis(user_id, is_queued=True):
     # Save the user's analysed personality
     user_ref.update({"personality": personality})
 
+    # Schedule the next analysis
+    if is_queued:
+        start_user_analysis_scheduler(user_id)
+
 
 def predict_personality(texts):
     """Predict the user's personality"""

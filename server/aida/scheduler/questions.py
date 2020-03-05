@@ -44,7 +44,8 @@ def send_question(user_id, is_queued=True):
         send_notification(db, user, question)
 
         # Schedule the next question
-        start_question_scheduler(user_id)
+        if is_queued:
+            start_question_scheduler(user_id)
 
 
 def fetch_random_question(db, user_id):
