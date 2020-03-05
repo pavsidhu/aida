@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { PermissionsAndroid } from 'react-native'
 import ImagePicker, { Image } from 'react-native-image-crop-picker'
 import auth from '@react-native-firebase/auth'
 import storage from '@react-native-firebase/storage'
@@ -7,11 +6,13 @@ import firestore from '@react-native-firebase/firestore'
 import messaging from '@react-native-firebase/messaging'
 import { Dialogflow_V2 } from 'react-native-dialogflow'
 import { IMessage } from 'react-native-gifted-chat'
+import { request, PERMISSIONS, RESULTS } from 'react-native-permissions'
 
 import onboardingFlow from '../onboardingFlow'
 import OnboardingMessage from '../types/OnboardingMessage'
 import { MessageDoc, MessageType, UserDoc } from '../types/firestore'
 import config from '../../config'
+import { Platform } from 'react-native'
 
 const WORDS_PER_MINUTE = 200
 const MESSAGE_DELAY = 1500
@@ -262,16 +263,19 @@ export default function useAida(): AidaResponse {
     if (!onboardingMessage) return
     const { route } = onboardingMessage
 
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+    const granted = await request(
+      Platform.select({
+        ios: PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
+        android: PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION
+      })
     ).catch(() => nextOnboardingMessage(route.failure))
 
     switch (granted) {
-      case PermissionsAndroid.RESULTS.GRANTED:
+      case RESULTS.GRANTED:
         nextOnboardingMessage(route.next)
         break
 
-      case PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN:
+      case RESULTS.BLOCKED:
         nextOnboardingMessage(route.deny)
         break
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StatusBar, Alert } from 'react-native'
+import { StatusBar, Platform } from 'react-native'
 import SplashScreen from 'react-native-splash-screen'
 import Geolocation from 'react-native-geolocation-service'
 import {
@@ -11,6 +11,7 @@ import auth from '@react-native-firebase/auth'
 import firestore from '@react-native-firebase/firestore'
 import messaging from '@react-native-firebase/messaging'
 import { Dialogflow_V2 } from 'react-native-dialogflow'
+import { check, PERMISSIONS, RESULTS } from 'react-native-permissions'
 import geohash from 'ngeohash'
 
 import Home from './Home'
@@ -75,20 +76,29 @@ function App(props: NavigationContainerProps) {
       })
 
     // Update user's location on launch
-    Geolocation.getCurrentPosition(
-      position =>
-        firestore()
-          .collection('users')
-          .doc(currentUser.uid)
-          .update({
-            location: geohash.encode(
-              position.coords.latitude,
-              position.coords.longitude
-            )
-          }),
-      () => null,
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-    )
+    check(
+      Platform.select({
+        ios: PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
+        android: PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION
+      })
+    ).then(result => {
+      if (result !== RESULTS.GRANTED) return
+
+      Geolocation.getCurrentPosition(
+        position =>
+          firestore()
+            .collection('users')
+            .doc(currentUser.uid)
+            .update({
+              location: geohash.encode(
+                position.coords.latitude,
+                position.coords.longitude
+              )
+            }),
+        () => null,
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+      )
+    })
   }, [currentUser, user?.onboarding.isOnboarding])
 
   return (

@@ -35,11 +35,14 @@ target 'Matcher' do
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
   pod 'react-native-dialogflow', :path => '../node_modules/react-native-dialogflow'
-  
+
   # MANUALLY ADDED
   pod 'react-native-geolocation', path: '../node_modules/@react-native-community/geolocation'
   pod 'react-native-voice', :path => '../node_modules/react-native-voice'
   pod 'GoogleSignIn', '~> 5.0.2'
+
+  permissions_path = '../node_modules/react-native-permissions/ios'
+  pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse.podspec"
 
   target 'MatcherTests' do
     inherit! :search_paths

@@ -51,7 +51,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Find matches near you</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Your usage description here</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
