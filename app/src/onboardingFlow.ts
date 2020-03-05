@@ -66,7 +66,7 @@ const onboardingFlow: OnboardingFlow = {
       route: { next: 'photo-prompt' }
     },
     'age-prompt-failure': {
-      message: 'Please choose one of the options.',
+      message: 'Please provide your age.',
       input: { name: 'age', type: 'text' },
       route: {
         next: 'age-prompt-success',
