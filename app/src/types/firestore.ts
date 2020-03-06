@@ -39,6 +39,7 @@ export interface MessageDoc {
   content: string
   type: MessageType
   sender: FirebaseFirestoreTypes.DocumentReference | UserDoc
+  scheduled?: boolean
   createdAt: FirestoreTimestamp
 }
 

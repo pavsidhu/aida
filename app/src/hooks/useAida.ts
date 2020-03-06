@@ -289,22 +289,34 @@ export default function useAida(): AidaResponse {
 
     const text = message.text.trim()
 
-    const messages_ref = firestore()
+    const messagesRef = firestore()
       .collection('users')
       .doc(currentUser.uid)
       .collection('messages')
 
+    const lastMessage = (
+      await firestore()
+        .collection('users')
+        .doc(currentUser.uid)
+        .collection('messages')
+        .orderBy('createdAt', 'desc')
+        .limit(1)
+        .get()
+    ).docs[0].data() as MessageDoc
+
+    if (lastMessage.scheduled) return
+
     Dialogflow_V2.requestQuery(
       text,
       result =>
-        messages_ref.add({
+        messagesRef.add({
           content: (result as any).queryResult.fulfillmentText,
           sender: null,
           type: MessageType.TEXT,
           createdAt: new Date()
         }),
       () =>
-        messages_ref.add({
+        messagesRef.add({
           content:
             "Sorry I can't connect to the internet right now, please try again soon 😢",
           sender: null,

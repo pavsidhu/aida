@@ -88,6 +88,7 @@ def add_question_to_messages(db, user, user_id, question):
             "content": parseMessage(question, user),
             "type": "text",
             "sender": None,
+            "scheduled": True,
             "createdAt": datetime.now(),
         }
     )

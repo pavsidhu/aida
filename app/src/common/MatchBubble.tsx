@@ -17,6 +17,7 @@ const Container = styled.View`
   border-radius: 18px;
   font-size: 16px;
   elevation: 2;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
   border-top-left-radius: 0;
   border-radius: 18px;
   margin-right: 8px;
