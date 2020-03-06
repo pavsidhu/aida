@@ -12,7 +12,7 @@ from firebase_admin import firestore
 
 from aida.scheduler import scheduler
 from aida.user_analysis.model.LstmModel import LstmModel
-from aida.user_analysis.model.tokenizer import tokenize
+from aida.user_analysis.model.utils import generate_embeddings
 
 ANALYSE_USER_HOURS = 24
 MIN_MESSAGES_REQUIRED = 2
@@ -78,11 +78,11 @@ def predict_personality(texts):
     """Predict the user's personality"""
     personality = {}
 
-    tokens = tokenize(texts)
-
     with torch.no_grad():
+        embeddings, embeddings_lengths = generate_embeddings(texts)
+
         for trait, model in models.items():
-            output = model(tokens)
+            output = model(embeddings, embeddings_lengths)
 
             # Calculate average output from the model and round to 0 or 1
             personality[trait] = output.squeeze(1).mean().round().item()
