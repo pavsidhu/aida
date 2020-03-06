@@ -85,7 +85,7 @@ def predict_personality(texts):
             output = model(embeddings, embeddings_lengths)
 
             # Calculate average output from the model and round to 0 or 1
-            personality[trait] = output.squeeze(1).mean().round().item()
+            personality[trait] = output.mean().item()
 
     return personality
 
