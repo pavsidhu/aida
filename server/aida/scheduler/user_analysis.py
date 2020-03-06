@@ -29,8 +29,8 @@ models = {}
 
 for trait in TRAITS:
     model = LstmModel()
-    model.load_state_dict(torch.load(f"aida/user_analysis/model/trained/{trait}.pt"))
-    model.to("cuda:0" if torch.cuda.is_available() else 'cpu')
+    model.load_state_dict(torch.load(f"aida/user_analysis/trained/{trait}.pt"))
+    model.to("cuda:0" if torch.cuda.is_available() else "cpu")
     model.eval()
 
     models[trait] = model
