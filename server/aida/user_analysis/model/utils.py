@@ -34,5 +34,5 @@ def generate_embeddings(texts):
         embeddings.append(output)
         embeddings_lengths.append(len(input_ids))
 
-    return embeddings, embeddings_lengths
+    return torch.tensor(embeddings), torch.tensor(embeddings_lengths)
 
