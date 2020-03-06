@@ -95,32 +95,6 @@ url_pattern = r"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{
 mention_pattern = r"(?:^|\s){1}(@[A-Za-z0-9_]+)"
 
 
-def get_user_tweets(user_ref, pages=25):
-    """Scrapes tweets posted by a user and stores them in Firestore"""
-    user = user_ref.get().to_dict()
-    username = user["twitter"]["username"]
-
-    tweets = []
-
-    for tweet in get_tweets(username, pages=pages):
-        if tweet.get("isRetweet") != True:
-            text = tweet["text"]
-            text = text.lower()
-
-            # Remove hashtags
-            text = re.sub(hashtag_pattern, "", text)
-
-            # Remove URLs
-            text = re.sub(url_pattern, "", text)
-
-            # Remove mentions
-            text = re.sub(mention_pattern, "", text)
-
-            tweets.append(text)
-
-    return tweets
-
-
 def get_messages(user_ref):
     """Fetches all messages sent by the user to Aida"""
     messages_ref = user_ref.collection("messages")
