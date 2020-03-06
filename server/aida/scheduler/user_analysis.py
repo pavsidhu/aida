@@ -114,4 +114,6 @@ def calculate_user_progress(messages):
     """Calculate percentage of data available until ready for personality analysis"""
 
     number_of_messages = len(messages)
-    return number_of_messages / MIN_MESSAGES_REQUIRED
+    progress = number_of_messages / MIN_MESSAGES_REQUIRED
+
+    return min(progress, 1.0)
