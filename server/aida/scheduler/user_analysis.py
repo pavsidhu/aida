@@ -42,7 +42,7 @@ def start_user_analysis_scheduler(user_id):
 
 
 def user_analysis(user_id, is_queued=True):
-    """Analyses a user's personality using chat data and tweets"""
+    """Analyses a user's personality using chat data"""
 
     if is_queued:
         load_dotenv()
@@ -136,7 +136,7 @@ def get_messages(user_ref):
     return messages
 
 
-def calculate_user_progress(tweets, messages):
+def calculate_user_progress(messages):
     """Calculate percentage of data available until ready for personality analysis"""
 
     number_of_messages = len(messages)

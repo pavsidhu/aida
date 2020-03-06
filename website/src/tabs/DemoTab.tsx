@@ -104,7 +104,7 @@ export default function DemoTab() {
       <Subtitle>Calculate Personality</Subtitle>
       <Paragraph>
         Calculates the user's personality according to the Big 5 personality
-        model using their tweets and messages with Aida.
+        model using their messages with Aida.
       </Paragraph>
       <Form
         onSubmit={event => {

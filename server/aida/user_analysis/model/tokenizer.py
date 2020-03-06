@@ -6,7 +6,7 @@ tokenizer = AutoTokenizer.from_pretrained("distilroberta-base")
 
 
 def tokenize(texts):
-    """tokenizes user chat messages and tweets"""
+    """tokenizes user chat messages"""
 
     tokens = [
         torch.tensor(tokenizer.encode(text.lower(), add_special_tokens=True))
