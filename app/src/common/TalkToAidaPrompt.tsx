@@ -48,10 +48,9 @@ export default function TalkToAidaPrompt() {
     firestore()
       .collection('users')
       .doc(currentUser.uid)
-      .get()
-      .then(doc => {
-        const user = doc.data() as UserDoc
-        setProgress(user.progress ? user.progress : 0)
+      .onSnapshot(snapshot => {
+        const user = snapshot.data() as UserDoc
+        if (user.progress !== undefined) setProgress(user.progress)
       })
   }, [currentUser])
 
@@ -60,7 +59,7 @@ export default function TalkToAidaPrompt() {
       <ProgressCircle
         size={180}
         width={25}
-        fill={progress}
+        fill={progress * 100}
         rotation={0}
         tintColor={colors.purple}
         backgroundColor={colors.lightGrey}

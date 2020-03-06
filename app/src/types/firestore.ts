@@ -11,6 +11,7 @@ export interface UserDoc {
   age: string
   gender: string
   location: string
+  photo: string
   onboarding: {
     isOnboarding: boolean
     step: string
