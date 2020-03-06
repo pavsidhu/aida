@@ -28,17 +28,16 @@ TRAITS = [
 
 models = {}
 
-# for trait in TRAITS:
-#     model = LstmModel()
-#     model.load_state_dict(
-#         torch.load(
-#             f"aida/user_analysis/model/pretrained/{trait}.pth",
-#             map_location="cpu",
-#         )
-#     )
-#     model.eval()
+for trait in TRAITS:
+    model = LstmModel()
+    model.load_state_dict(
+        torch.load(
+            f"aida/user_analysis/model/trained/{trait}.pth", map_location="cuda:0"
+        )
+    )
+    model.eval()
 
-#     models[trait] = model
+    models[trait] = model
 
 
 def start_user_analysis_scheduler(user_id):

@@ -2,7 +2,7 @@ import torch
 from torch import nn, optim, tensor
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence, pad_sequence
 
-from aida.user_analysis.model.Attention import Attention
+from .Attention import Attention
 
 
 class LstmModel(nn.Module):

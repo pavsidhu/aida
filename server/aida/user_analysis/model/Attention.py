@@ -9,7 +9,7 @@ class Attention(torch.nn.Module):
         self.attention = self.generate_attention_vector(attention_size, 1)
 
     def generate_attention_vector(self, *size):
-        out = torch.FloatTensor(*size).to(device)
+        out = torch.FloatTensor(*size).to("cuda:0")
         torch.nn.init.xavier_normal_(out)
         return out
 
