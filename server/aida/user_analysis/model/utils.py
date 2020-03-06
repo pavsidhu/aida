@@ -34,5 +34,8 @@ def generate_embeddings(texts):
         embeddings.append(output)
         embeddings_lengths.append(len(input_ids))
 
-    return torch.tensor(embeddings), torch.tensor(embeddings_lengths)
+    embeddings = torch.stack(embeddings, dim=0).to(device)
+    embeddings_lengths = torch.tensor(embeddings_lengths).to(device)
+
+    return embeddings, embeddings_lengths
 
