@@ -9,7 +9,12 @@ class LstmModel(nn.Module):
     """LSTM model to predict personality"""
 
     def __init__(
-        self, dropout_input, dropout_output, hidden_dim, embedding_dim=768, output_dim=1
+        self,
+        dropout_input=0,
+        dropout_output=0,
+        hidden_dim=192,
+        embedding_dim=768,
+        output_dim=1,
     ):
         super(LstmModel, self).__init__()
 
