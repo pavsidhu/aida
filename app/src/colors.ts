@@ -6,7 +6,6 @@ const colors = {
   lilac: '#F9FBFF',
   black: '#424351',
   lightGrey: '#eeeeee',
-  blueTwitter: '#1DA1F2',
   ownMessageBubble: '#eaeaea',
   inActiveTab: '#9b9b9b',
   secondaryText: '#858585'

@@ -9,14 +9,13 @@ import numpy as np
 import torch
 from dotenv import load_dotenv
 from firebase_admin import firestore
-from twitter_scraper import get_tweets
 
 from aida.scheduler import scheduler
 from aida.user_analysis.model.LstmModel import LstmModel
 from aida.user_analysis.model.tokenizer import tokenize
 
 ANALYSE_USER_HOURS = 24
-MIN_TEXTS_REQUIRED = 40
+MIN_MESSAGES_REQUIRED = 2
 
 TRAITS = [
     "extroversion",
@@ -57,21 +56,18 @@ def user_analysis(user_id, is_queued=True):
     # Get the user's reference from Firestore
     user_ref = db.collection("users").document(user_id)
 
-    # Get a user's tweets from their Twitter profile
-    tweets = get_user_tweets(user_ref)
-
     # Get a user's messages through interacting with Aida
     messages = get_messages(user_ref)
 
     # Calculate the user's progress until they're ready for personality analysis
-    progress = calculate_user_progress(tweets, messages)
+    progress = calculate_user_progress(messages)
+    user_ref.update({"progress": progress})
 
     if progress != 1.0:
-        user_ref.update({"progress": progress})
         return
 
     # Predict the user's personality
-    personality = predict_personality(tweets + messages)
+    personality = predict_personality(messages)
 
     # Save the user's analysed personality
     user_ref.update({"personality": personality})
@@ -145,5 +141,5 @@ def get_messages(user_ref):
 def calculate_user_progress(tweets, messages):
     """Calculate percentage of data available until ready for personality analysis"""
 
-    number_of_texts = max(len(tweets), 20) + len(messages)
-    return number_of_texts / MIN_TEXTS_REQUIRED
+    number_of_messages = len(messages)
+    return number_of_messages / MIN_MESSAGES_REQUIRED
