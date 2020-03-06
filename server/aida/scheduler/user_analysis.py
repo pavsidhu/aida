@@ -83,11 +83,12 @@ def predict_personality(texts):
 
     tokens = tokenize(texts)
 
-    for trait, model in models.items():
-        output = model(tokens)
+    with torch.no_grad():
+        for trait, model in models.items():
+            output = model(tokens)
 
-        # Calculate average output from the model and round to 0 or 1
-        personality[trait] = output.squeeze(1).mean().round().item()
+            # Calculate average output from the model and round to 0 or 1
+            personality[trait] = output.squeeze(1).mean().round().item()
 
     return personality
 
