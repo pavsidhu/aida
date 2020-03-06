@@ -31,7 +31,7 @@ for trait in TRAITS:
     model = LstmModel()
     model.load_state_dict(
         torch.load(
-            f"aida/user_analysis/model/trained/{trait}.pth", map_location="cuda:0"
+            f"aida/user_analysis/model/trained/{trait}.pt", map_location="cuda:0"
         )
     )
     model.eval()
