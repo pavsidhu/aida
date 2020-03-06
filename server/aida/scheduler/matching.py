@@ -129,7 +129,7 @@ def create_match(db, user, matching_user):
 
     if user.get("notification_token"):
         tokens.append(user["notification_token"])
-    
+
     if matching_user.get("notification_token"):
         tokens.append(matching_user["notification_token"])
 
@@ -139,8 +139,7 @@ def create_match(db, user, matching_user):
     # Setup notifications for messages between users
     topic = f"/topics/match-{match.id}"
     messaging.subscribe_to_topic(
-        tokens=[tokens],
-        topic=topic,
+        tokens=tokens, topic=topic,
     )
 
     # Send a match notification to both users
