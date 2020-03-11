@@ -65,6 +65,9 @@ def fetch_random_question(db, user_id):
         for doc in db.collection("questions").stream()
     ]
 
+    # Randomly arrange the questions in the list
+    random.shuffle(questions)
+
     for question in questions:
         # Check if the question has been asked
         if question["id"] in asked_questions_ids:
