@@ -300,9 +300,9 @@ export default function useAida(): AidaResponse {
         .doc(currentUser.uid)
         .collection('messages')
         .orderBy('createdAt', 'desc')
-        .limit(1)
+        .limit(2)
         .get()
-    ).docs[0].data() as MessageDoc
+    ).docs[1].data() as MessageDoc
 
     if (lastMessage.scheduled) return
 
