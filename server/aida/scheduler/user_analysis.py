@@ -17,13 +17,7 @@ from aida.user_analysis.model.utils import generate_embeddings
 ANALYSE_USER_HOURS = 24
 MIN_MESSAGES_REQUIRED = 2
 
-TRAITS = [
-    "extroversion",
-    "neuroticism",
-    "agreeableness",
-    "conscientiousness",
-    "openness",
-]
+TRAITS = ["cAGR", "cCON", "cEXT", "cNEU", "cOPN"]
 
 models = {}
 
