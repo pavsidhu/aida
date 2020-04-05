@@ -61,7 +61,17 @@ def user_analysis(user_id, is_queued=True):
     personality = predict_personality(messages)
 
     # Save the user's analysed personality
-    user_ref.update({"personality": personality})
+    user_ref.update(
+        {
+            "personality": {
+                "agreeableness": personality["cAGR"],
+                "conscientiousness": personality["cCON"],
+                "extroversion": personality["cEXT"],
+                "openness": personality["cOPN"],
+                "neuroticism": personality["cNEU"],
+            }
+        }
+    )
 
     # Schedule the next analysis
     if is_queued:
