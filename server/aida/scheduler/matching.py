@@ -69,6 +69,7 @@ def find_nearby_unmatched_users(db, user):
         .where("location", ">=", lowerGeohash)
         .where("location", "<=", upperGeohash)
         .where("gender", "==", preference)
+        .where("progress", "==", 1)
         .stream()
     ]
 
