@@ -2,9 +2,11 @@ import torch
 from transformers import AutoModel, AutoTokenizer
 
 
+model = "roberta-base"
+
 device = "cuda:0" if torch.cuda.is_available() else "cpu"
-tokenizer = AutoTokenizer.from_pretrained("distilroberta-base")
-embeddings_model = AutoModel.from_pretrained("distilroberta-base").to(device)
+tokenizer = AutoTokenizer.from_pretrained(model)
+embeddings_model = AutoModel.from_pretrained(model).to(device)
 
 MAX_LENGTH = 300
 
@@ -38,4 +40,3 @@ def generate_embeddings(texts):
     embeddings_lengths = torch.tensor(embeddings_lengths).to(device)
 
     return embeddings, embeddings_lengths
-
