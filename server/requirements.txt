@@ -4,6 +4,7 @@ firebase-admin==3.1.0
 Flask==1.1.1
 Flask-Cors==3.0.8
 h5py==2.10.0
+hiplot==0.1.7.post3
 Keras==2.2.5
 numpy==1.17.2
 pandas==0.25.3
