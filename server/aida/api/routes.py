@@ -3,12 +3,16 @@ import random
 import re
 from datetime import datetime
 
-from flask import Blueprint
+from flask import Blueprint, request
 
 from aida.api.decorators import auth_required
 from aida.scheduler.questions import start_question_scheduler, send_question
 from aida.scheduler.matching import start_matching_scheduler, find_match
-from aida.scheduler.user_analysis import start_user_analysis_scheduler, user_analysis
+from aida.scheduler.user_analysis import (
+    start_user_analysis_scheduler,
+    user_analysis,
+    predict_personality,
+)
 
 blueprint = Blueprint("routes", __name__, url_prefix="/")
 
@@ -42,3 +46,12 @@ def demo_matching(user_id):
     """Demo finding a match for a user"""
     find_match(user_id, is_queued=False)
     return {}, 200
+
+
+@blueprint.route("/personality-evaluation", methods=["GET"])
+def demo_matching():
+    """Demo finding a match for a user"""
+    input = request.get_json()
+    personality = predict_personality(input)
+
+    return {"personality": personality}, 200
