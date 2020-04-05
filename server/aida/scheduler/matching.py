@@ -11,8 +11,8 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 from aida.scheduler import scheduler
 
-MIN_MATCH_TIME = 30
-MATCH_TIME_RANGE = 300
+MIN_MATCH_TIME = 8 * 60
+MATCH_TIME_RANGE = 24 * 60
 
 
 def start_matching_scheduler(user_id):
