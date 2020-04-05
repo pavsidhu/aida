@@ -110,7 +110,6 @@ def send_notification(db, user, question):
 
 def parseMessage(message, user):
     """Replace entities in a message"""
-    print(message, user.get("name"))
     tags = re.findall("{{(.*?)}}", message)
 
     for tag in tags:
