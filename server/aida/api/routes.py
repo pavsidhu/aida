@@ -48,7 +48,7 @@ def demo_matching(user_id):
     return {}, 200
 
 
-@blueprint.route("/personality-evaluation", methods=["GET"])
+@blueprint.route("/personality-evaluation", methods=["POST"])
 def personality_evaluation():
     """Demo finding a match for a user"""
     input = request.get_json()
