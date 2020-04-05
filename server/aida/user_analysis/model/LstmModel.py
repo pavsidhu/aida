@@ -18,7 +18,7 @@ class LstmModel(nn.Module):
     ):
         super(LstmModel, self).__init__()
 
-        attension_size = hidden_dim * 4 + embedding_dim
+        attention_size = hidden_dim * 4 + embedding_dim
 
         # Model structure
         self.dropout_1 = nn.Dropout(p=dropout_input)
@@ -28,9 +28,9 @@ class LstmModel(nn.Module):
         self.lstm_2 = nn.LSTM(
             hidden_dim * 2, hidden_dim, bidirectional=True, batch_first=True
         )
-        self.attention = Attention(attension_size)
+        self.attention = Attention(attention_size)
         self.dropout_2 = nn.Dropout(p=dropout_output)
-        self.output = nn.Sequential(nn.Linear(attension_size, output_dim), nn.Sigmoid())
+        self.output = nn.Sequential(nn.Linear(attention_size, output_dim), nn.Sigmoid())
 
     def forward(self, embeddings, embeddings_lengths):
         dropout_embeddings = self.dropout_1(embeddings)
