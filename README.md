@@ -12,17 +12,28 @@ My 3rd year final project for [BSc Artificial Intelligence and Computer Science]
 
 ```bash
 cd server
-python -m venv venv
+python3 -m venv venv
 source venv/bin/activate
-pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 ```
 
-2. Start the server
+2. Start a job queue
+
+```bash
+rq worker
+```
+
+3. Start a job scheduler
+
+```bash
+rqscheduler
+```
+
+4. Start the server
 
 ```bash
 python -m flask run
 rq worker # Starts a job queue
-rqscheduler # Starts a job scheduler
 ```
 
 ### App
@@ -34,10 +45,16 @@ cd app
 yarn install
 ```
 
-2. Start the app
+2. Run on an Android device or emulator
 
 ```bash
-yarn start
+yarn run android
+```
+
+3. Run on an iOS device or emulator
+
+```bash
+yarn run ios
 ```
 
 ### Admin Website
@@ -45,7 +62,7 @@ yarn start
 1. Install dependencies
 
 ```bash
-cd app
+cd website
 yarn install
 ```
 
