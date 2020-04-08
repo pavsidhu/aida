@@ -15,7 +15,7 @@ from aida.user_analysis.model.LstmModel import LstmModel
 from aida.user_analysis.model.utils import generate_embeddings
 
 ANALYSE_USER_HOURS = 24
-MIN_MESSAGES_REQUIRED = 2
+MIN_MESSAGES_REQUIRED = 10
 
 TRAITS = ["cAGR", "cCON", "cEXT", "cNEU", "cOPN"]
 

@@ -36,7 +36,7 @@ def find_match(user_id, is_queued=True):
     user["id"] = user_id
 
     # If a user does not have enough data, don't find matches
-    if user["progress"] < 1.0:
+    if user["progress"] < 1.0 or user.get("personality") == None:
         return
 
     # Find potential matches near the user
@@ -178,12 +178,11 @@ def calculate_match_range(geohash, radius=10):
 def calculate_personality_similarity(personality_one, personality_two):
     """Compares two personalities using cosine similarity"""
 
-    # Vectorize personality
-    personality_vectorizer = DictVectorizer()
-    vector = personality_vectorizer.fit_transform([personality_one, personality_two])
+    similarity = 0
 
-    # Calculate cosine similarity
-    similarity_vector = cosine_similarity(vector[0], vector[1])
+    for key in personality_one.keys():
+        same_trait = personality_one[key] == personality_two[key]
+        similarity += 0.2 if same_trait else 0
 
     # Return the average cosine similarity for all traits
     return np.mean(similarity_vector)
