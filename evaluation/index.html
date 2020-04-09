@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aida Personality Evaluation</title>
+  </head>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      background-color: #8e92f4;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+        Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    }
+
+    body {
+      padding: 16px;
+      display: flex;
+      justify-content: center;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      width: 100vw;
+      max-width: 800px;
+      background-color: #fefefe;
+      padding: 16px;
+      border-radius: 4px;
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    form *:not(:last-child) {
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    p {
+      padding-top: 12px;
+    }
+
+    textarea {
+      min-height: 80px;
+      border: 1px solid #afafaf;
+      border-radius: 4px;
+      padding: 14px 18px;
+      color: #353535;
+      font-size: 14px;
+      margin-right: 4px;
+      width: 100%;
+    }
+
+    button {
+      display: block;
+      margin: 16px auto 0;
+      border: none;
+      padding: 16px 18px;
+      background-color: #8e92f4;
+      color: white;
+      font-size: 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    button:hover {
+      cursor: pointer;
+      filter: brightness(1.2);
+    }
+
+    .results {
+      display: none;
+    }
+  </style>
+  <body>
+    <form>
+      <div class="form">
+        <h1>Aida Personality Evaluation</h1>
+
+        <p>1. What would your perfect morning be like?</p>
+        <p><span id="question1-count">80</span> Words</p>
+        <textarea
+          type="text"
+          id="question1"
+          placeholder="Enter an answer"
+        ></textarea>
+
+        <p>2. What odd talent do you have?</p>
+        <p><span id="question2-count">80</span> Words</p>
+        <textarea
+          type="text"
+          id="question2"
+          placeholder="Enter an answer"
+        ></textarea>
+
+        <p>
+          3. Where was your favorite place to go when you were a kid?
+        </p>
+        <p><span id="question3-count">80</span> Words</p>
+        <textarea
+          type="text"
+          id="question3"
+          placeholder="Enter an answer"
+        ></textarea>
+
+        <p>
+          4. What would you do with the extra time if you never had to sleep?
+        </p>
+        <p><span id="question4-count">80</span> Words</p>
+        <textarea
+          type="text"
+          id="question4"
+          placeholder="Enter an answer"
+        ></textarea>
+
+        <p>5. What has been the best period of your life so far?</p>
+        <p><span id="question5-count">80</span> Words</p>
+        <textarea
+          type="text"
+          id="question5"
+          placeholder="Enter an answer"
+        ></textarea>
+
+        <p>6. What were some of the turning points in your life?</p>
+        <p><span id="question6-count">80</span> Words</p>
+        <textarea
+          type="text"
+          id="question6"
+          placeholder="Enter an answer"
+        ></textarea>
+
+        <p>7. What habit do you wish you could start and why?</p>
+        <p><span id="question7-count">80</span> Words</p>
+        <textarea
+          type="text"
+          id="question7"
+          placeholder="Enter an answer"
+        ></textarea>
+
+        <p>8. What are you looking forward to that’s happening soon?</p>
+        <p><span id="question8-count">80</span> Words</p>
+        <textarea
+          type="text"
+          id="question8"
+          placeholder="Enter an answer"
+        ></textarea>
+
+        <button type="button" onclick="send()">Submit</button>
+      </div>
+
+      <div class="results">
+        <h1>Results</h1>
+
+        <p>Openness: <span class="opn"></span></p>
+        <p>Conscientiousness: <span class="con"></span></p>
+        <p>Extroversion: <span class="ext"></span></p>
+        <p>Agreeableness: <span class="agr"></span></p>
+        <p>Neuroticism: <span class="neu"></span></p>
+      </div>
+    </form>
+  </body>
+  <script src="./Countable.js"></script>
+  <script>
+    function send() {
+      const body = JSON.stringify(
+        Array.from(document.querySelectorAll("textarea")).map(
+          (textarea) => textarea.value
+        )
+      );
+
+      const percent = (value) => (value * 100).toFixed(0) + "%";
+
+      fetch("http://35.179.28.135.com/personality-evaluation", {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          document.querySelector(".agr").innerHTML = percent(
+            data.personality.cAGR
+          );
+          document.querySelector(".con").innerHTML = percent(
+            data.personality.cCON
+          );
+          document.querySelector(".ext").innerHTML = percent(
+            data.personality.cEXT
+          );
+          document.querySelector(".opn").innerHTML = percent(
+            data.personality.cOPN
+          );
+          document.querySelector(".neu").innerHTML = percent(
+            data.personality.cNEU
+          );
+
+          document.querySelector(".form").style.display = "none";
+          document.querySelector(".results").style.display = "block";
+        });
+    }
+
+    Countable.on(
+      document.getElementById("question1"),
+      (counter) =>
+        (document.getElementById("question1-count").innerText = Math.max(
+          80 - counter.words,
+          0
+        ))
+    );
+
+    Countable.on(
+      document.getElementById("question2"),
+      (counter) =>
+        (document.getElementById("question2-count").innerText = Math.max(
+          80 - counter.words,
+          0
+        ))
+    );
+
+    Countable.on(
+      document.getElementById("question3"),
+      (counter) =>
+        (document.getElementById("question3-count").innerText = Math.max(
+          80 - counter.words,
+          0
+        ))
+    );
+
+    Countable.on(
+      document.getElementById("question4"),
+      (counter) =>
+        (document.getElementById("question4-count").innerText = Math.max(
+          80 - counter.words,
+          0
+        ))
+    );
+
+    Countable.on(
+      document.getElementById("question5"),
+      (counter) =>
+        (document.getElementById("question5-count").innerText = Math.max(
+          80 - counter.words,
+          0
+        ))
+    );
+
+    Countable.on(
+      document.getElementById("question6"),
+      (counter) =>
+        (document.getElementById("question6-count").innerText = Math.max(
+          80 - counter.words,
+          0
+        ))
+    );
+
+    Countable.on(
+      document.getElementById("question7"),
+      (counter) =>
+        (document.getElementById("question7-count").innerText = Math.max(
+          80 - counter.words,
+          0
+        ))
+    );
+
+    Countable.on(
+      document.getElementById("question8"),
+      (counter) =>
+        (document.getElementById("question8-count").innerText = Math.max(
+          80 - counter.words,
+          0
+        ))
+    );
+  </script>
+</html>
