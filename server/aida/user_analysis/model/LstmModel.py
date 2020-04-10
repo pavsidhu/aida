@@ -29,33 +29,33 @@ class LstmModel(nn.Module):
             hidden_dim * 2, hidden_dim, bidirectional=True, batch_first=True
         )
         self.attention = Attention(attention_size)
-        self.dropout_2 = nn.Dropout(p=dropout_output)
-        self.output = nn.Sequential(nn.Linear(attention_size, output_dim), nn.Sigmoid())
+        self.output = nn.Sequential(
+            nn.Linear(attention_size, output_dim), nn.Sigmoid())
 
     def forward(self, embeddings, embeddings_lengths):
         dropout_embeddings = self.dropout_1(embeddings)
 
         # Pack embeddings for efficency before sending to the LSTM layer
         packed_embeddings = pack_padded_sequence(
-            embeddings, embeddings_lengths, batch_first=True
+            dropout_embeddings, embeddings_lengths, batch_first=True
         )
 
         lstm_1_output, _ = self.lstm_1(packed_embeddings)
         lstm_2_output, _ = self.lstm_2(lstm_1_output)
 
         # Unpack embeddings for use by the attention layer
-        padded_lstm_1_output, _ = pad_packed_sequence(lstm_1_output, batch_first=True)
-        padded_lstm_2_output, _ = pad_packed_sequence(lstm_2_output, batch_first=True)
+        padded_lstm_1_output, _ = pad_packed_sequence(
+            lstm_1_output, batch_first=True)
+        padded_lstm_2_output, _ = pad_packed_sequence(
+            lstm_2_output, batch_first=True)
 
         # Create input for the attention layer of the embeddings and all the LSTM output
         padded_lstm_output = torch.cat(
-            (padded_lstm_1_output, padded_lstm_2_output, embeddings), dim=2
+            (padded_lstm_1_output, padded_lstm_2_output, dropout_embeddings), dim=2
         )
 
         attention_output = self.attention(padded_lstm_output)
 
-        dropout_output = self.dropout_2(attention_output)
-
-        result = self.output(dropout_output).squeeze()
+        result = self.output(attention_output).squeeze()
 
         return result
